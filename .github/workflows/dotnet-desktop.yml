@@ -1,0 +1,39 @@
+name: CI build and test
+
+on:
+  push:
+    branches: [ "Deployment", "Development" ]
+  pull_request:
+    branches: [ "Deployment", "Development" ]
+
+jobs:
+
+  build:
+
+
+    runs-on: ubuntu-latest 
+    
+  
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+
+      # Restores all the depedencies for the solution
+    - name: dotnet restore
+      run: dotnet restore
+  
+      # Builds the solution
+    - name: dotnet build 
+      run: dotnet build
+      
+    # Execute all unit tests in the solution
+    - name: Execute unit tests
+      run: dotnet test
