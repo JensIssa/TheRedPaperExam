@@ -22,7 +22,7 @@ public class AuthService : IAuthService
         _userRepository = userRepository;
     }
 
-    public string Register(LoginRegisterDTO dto)
+    public string Register(RegisterDTO dto)
     {
         try
         {
@@ -34,13 +34,18 @@ public class AuthService : IAuthService
             var user = new User
             {
                 Username = dto.Username,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                BirthDay = dto.Birthday,
+                Email = dto.Email,
+                PhoneNumber = dto.PhoneNumber,
+                Location = dto.location,
                 Salt = salt,
                 Hash = BCrypt.Net.BCrypt.HashPassword(dto.Password + salt)
             };
             _userRepository.CreateNewUser(user);
             return GenerateToken(user);
         }
-
 
         throw new Exception("Username " + dto.Username + " is already taken");
     }
@@ -59,7 +64,7 @@ public class AuthService : IAuthService
         return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
     }
 
-    public string Login(LoginRegisterDTO dto)
+    public string Login(LoginDTO dto)
     {
         var user = _userRepository.GetUserByUsername(dto.Username);
         if (BCrypt.Net.BCrypt.Verify(dto.Password + user.Salt, user.Hash))
