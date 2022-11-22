@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
 
@@ -10,8 +11,9 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<>()
-        modelBuilder.Entity<>()
-        modelBuilder.Entity<>()
+        modelBuilder.Entity<User>().Property(f => f.Id).ValueGeneratedOnAdd();
+
     }
+    
+    public DbSet<User> UserTable { get; set; }
 }
