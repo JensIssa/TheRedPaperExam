@@ -26,7 +26,7 @@ public class User
         set;
     }
 
-    public string UserName
+    public string Username
     {
         get;
         set;
