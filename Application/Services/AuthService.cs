@@ -16,14 +16,14 @@ namespace Application.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly AppSettings _appSettings;
     private readonly IUserRepository _userRepository;
     private readonly IValidator<RegisterDTO> _postValidator;
     private readonly IMapper _mapper;
+    private readonly TokenGenerator _tokenGenerator;
 
-    public AuthService(AppSettings appSettings, IUserRepository userRepository, IValidator<RegisterDTO> postValidator, IMapper mapper)
+    public AuthService(IUserRepository userRepository, IValidator<RegisterDTO> postValidator, IMapper mapper, TokenGenerator tokenGenerator)
     {
-        _appSettings = appSettings;
+        _tokenGenerator = tokenGenerator;
         _userRepository = userRepository;
         _postValidator = postValidator;
         _mapper = mapper;
@@ -56,24 +56,10 @@ public class AuthService : IAuthService
                 throw new FluentValidation.ValidationException(validation.ToString());
             }
             _userRepository.CreateNewUser(_mapper.Map<User>(dto));
-            return GenerateToken(user);
+            return _tokenGenerator.GenerateToken(user);
         }
 
         throw new Exception("Username " + dto.Username + " is already taken");
-    }
-
-    private string GenerateToken(User user)
-    {
-        var key = Encoding.UTF8.GetBytes(_appSettings.Secret);
-        var tokenDescriptor = new SecurityTokenDescriptor()
-        {
-            Subject = new ClaimsIdentity(new[] { new Claim("username", user.Username) }),
-            Expires = DateTime.UtcNow.AddDays(7),
-            SigningCredentials =
-                new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        };
-        var tokenHandler = new JwtSecurityTokenHandler();
-        return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
     }
 
     public string Login(LoginDTO dto)
@@ -81,7 +67,7 @@ public class AuthService : IAuthService
         var user = _userRepository.GetUserByUsername(dto.Username);
         if (BCrypt.Net.BCrypt.Verify(dto.Password + user.Salt, user.Hash))
         {
-            return GenerateToken(user);
+            return _tokenGenerator.GenerateToken(user);
         }
 
         throw new Exception("Invalid login");
