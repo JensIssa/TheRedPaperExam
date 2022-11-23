@@ -16,4 +16,5 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
     }
     
     public DbSet<User> UserTable { get; set; }
+    
 }
