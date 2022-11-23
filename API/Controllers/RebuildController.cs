@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
+[Route("[controller]")]
 public class RebuildController: ControllerBase
 {
     private IRebuildService _service;
@@ -13,7 +14,6 @@ public class RebuildController: ControllerBase
         _service = service;
     }
     
-    [AllowAnonymous]
     [HttpGet]
     [Route("CreateDB")]
     public void CreateDB()

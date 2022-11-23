@@ -2,7 +2,7 @@
 
 namespace Application.Services;
 
-public class RebuildService
+public class RebuildService : IRebuildService
 {
     private readonly IRebuildRepository _rebuild;
 

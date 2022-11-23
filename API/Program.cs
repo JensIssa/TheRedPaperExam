@@ -1,10 +1,12 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using Application.Helpers;
+using Application.InterfaceRepos;
 using Application.InterfaceServices;
 using Application.Services;
 using FluentValidation;
 using Infrastructure;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -22,7 +24,10 @@ builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssembli
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddDbContext<RepositoryDBContext>(options => options.UseSqlite("Data Source =db.db"));
 builder.Services.AddScoped<RepositoryDBContext>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IRebuildService, RebuildService>();
+builder.Services.AddScoped<IRebuildRepository, RebuildRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
