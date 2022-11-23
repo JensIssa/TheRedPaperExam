@@ -1,7 +1,10 @@
-﻿namespace Application.DTOs;
+﻿using Domain.Entities;
+
+namespace Application.DTOs;
 
 public class RegisterDTO
 {
+    public Role AssingedRole { get; set; }
     public string Username { get; set; }
     public string Password { get; set; }
     public string FirstName { get; set; }
