@@ -31,4 +31,10 @@ public class Product
         get;
         set;
     }
+
+    public Condition ProductCondition
+    {
+        get;
+        set;
+    }
 }

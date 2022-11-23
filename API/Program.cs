@@ -1,9 +1,12 @@
 using System.Text;
 using System.Text.Json.Serialization;
+using Application.DTOs;
 using Application.Helpers;
 using Application.InterfaceRepos;
 using Application.InterfaceServices;
 using Application.Services;
+using AutoMapper;
+using Domain.Entities;
 using FluentValidation;
 using Infrastructure;
 using Infrastructure.Repositories;
@@ -21,6 +24,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
+var mapper = new MapperConfiguration(config =>
+{
+    config.CreateMap<PutUserDTO, User>();
+    config.CreateMap<RegisterDTO, User>();
+}).CreateMapper();
+
+builder.Services.AddSingleton(mapper);
+
+
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddDbContext<RepositoryDBContext>(options => options.UseSqlite("Data Source =db.db"));
 builder.Services.AddScoped<RepositoryDBContext>();
@@ -28,7 +40,6 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRebuildService, RebuildService>();
 builder.Services.AddScoped<IRebuildRepository, RebuildRepository>();
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -43,7 +54,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 Infrastructure.DependencyResolvers.DepedencyResolver.RegisterInfrastructure(builder.Services);
 
-
+builder.Services.AddCors();
 
 var app = builder.Build();
 

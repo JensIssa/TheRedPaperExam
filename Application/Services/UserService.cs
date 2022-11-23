@@ -13,18 +13,7 @@ public class UserService : IUserService
     private readonly IMapper _mapper;
     private readonly IValidator<RegisterDTO> _postValidator;
     private readonly IValidator<PutUserDTO> _putValidator;
-
-    public User CreateNewUser(RegisterDTO postDto)
-    {
-        var validation = _postValidator.Validate(postDto);
-        if (!validation.IsValid)
-        {
-            throw new ValidationException(validation.ToString());
-        }
-
-        return _repository.CreateNewUser(_mapper.Map<User>(postDto));
-    }
-
+    
     public User GetUserByUsername(string username)
     {
         return _repository.GetUserByUsername(username);
