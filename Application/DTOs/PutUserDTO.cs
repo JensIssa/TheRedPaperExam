@@ -9,13 +9,6 @@ public class PutUserDTO
         get;
         set;
     }
-    
-    public Role AssignedRole
-    {
-        get;
-        set;
-    }
-    
     public string FirstName
     {
         get;
