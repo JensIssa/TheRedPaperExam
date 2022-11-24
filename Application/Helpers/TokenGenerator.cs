@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using Domain.Entities;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Application.Helpers;
@@ -10,9 +11,9 @@ public class TokenGenerator
 {
     private readonly AppSettings _appSettings;
 
-    public TokenGenerator(AppSettings appSettings)
+    public TokenGenerator(IOptions<AppSettings> appSettings)
     {
-        _appSettings = appSettings;
+        _appSettings = appSettings.Value;
     }
 
     public string GenerateToken(User user)

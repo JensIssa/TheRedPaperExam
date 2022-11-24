@@ -10,14 +10,14 @@ public class UserValidator
     {
         public UserPostValidator()
         {
-            RuleFor(u => u.AssingedRole).NotEmpty();
+            RuleFor(u => u.AssingedRole).NotNull();
             RuleFor(u => u.FirstName).NotEmpty();
             RuleFor(u => u.LastName).NotEmpty();
             RuleFor(u => u.Username).NotEmpty();
             RuleFor(u => u.Password).NotEmpty();
             RuleFor(u => u.Birthday).NotEmpty();
             RuleFor(u => u.Email).NotEmpty();
-            RuleFor(u => u.PhoneNumber).NotEmpty();
+            RuleFor(u => u.PhoneNumber).NotNull();
             RuleFor(u => u.location).NotEmpty();
         }
     }

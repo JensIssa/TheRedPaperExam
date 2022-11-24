@@ -40,6 +40,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRebuildService, RebuildService>();
 builder.Services.AddScoped<IRebuildRepository, RebuildRepository>();
+builder.Services.AddScoped<TokenGenerator>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -51,6 +52,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
             builder.Configuration.GetValue<string>("AppSettings:Secret")))
     };
 });
+
 
 Infrastructure.DependencyResolvers.DepedencyResolver.RegisterInfrastructure(builder.Services);
 

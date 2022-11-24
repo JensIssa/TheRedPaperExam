@@ -10,6 +10,7 @@ using Application.InterfaceServices;
 using AutoMapper;
 using Domain.Entities;
 using FluentValidation;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Application.Services;
@@ -20,8 +21,11 @@ public class AuthService : IAuthService
     private readonly IValidator<RegisterDTO> _postValidator;
     private readonly IMapper _mapper;
     private readonly TokenGenerator _tokenGenerator;
-
-    public AuthService(IUserRepository userRepository, IValidator<RegisterDTO> postValidator, IMapper mapper, TokenGenerator tokenGenerator)
+    public AuthService(IUserRepository userRepository, 
+        IValidator<RegisterDTO> postValidator,
+        IMapper mapper,
+     TokenGenerator tokenGenerator 
+    )
     {
         _tokenGenerator = tokenGenerator;
         _userRepository = userRepository;
@@ -41,14 +45,14 @@ public class AuthService : IAuthService
             var user = new User
             {
                 Username = dto.Username,
+                Salt = salt,
+                Hash = BCrypt.Net.BCrypt.HashPassword(dto.Password + salt),
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 BirthDay = dto.Birthday,
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
                 Location = dto.location,
-                Salt = salt,
-                Hash = BCrypt.Net.BCrypt.HashPassword(dto.Password + salt)
             };
             var validation = _postValidator.Validate(dto);
             if (!validation.IsValid)
@@ -72,4 +76,6 @@ public class AuthService : IAuthService
 
         throw new Exception("Invalid login");
     }
+    
+    
 }
