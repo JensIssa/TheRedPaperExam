@@ -6,6 +6,7 @@ using Application.InterfaceServices;
 using AutoMapper;
 using Domain.Entities;
 using FluentValidation;
+using FluentValidation.TestHelper;
 
 namespace Application.Services;
 
@@ -14,14 +15,15 @@ public class UserService : IUserService
     private readonly IUserRepository _repository;
     private readonly IMapper _mapper;
     private readonly IValidator<PutUserDTO> _putValidator;
-    private readonly TokenGenerator _tokenGenerator;
+    private readonly IValidator<RegisterDTO> _postValidator;
+    
 
-    public UserService(IUserRepository repository, IMapper mapper, IValidator<PutUserDTO> putValidator, TokenGenerator tokenGenerator)
+    public UserService(IUserRepository repository, IMapper mapper, IValidator<PutUserDTO> putValidator, IValidator<RegisterDTO> postValidator)
     {
         _repository = repository;
         _mapper = mapper;
         _putValidator = putValidator;
-        _tokenGenerator = tokenGenerator;
+        _postValidator = postValidator;
     }
 
     public User GetUserByUsername(string username)
@@ -33,33 +35,22 @@ public class UserService : IUserService
     {
         return _repository.GetAllUsers();
     }
-
-    public string UpdateUser(int id, PutUserDTO putUserDto)
+    public User UpdateUser(int id, PutUserDTO putUserDto)
     {
         if (id != putUserDto.Id)
         {
             throw new ValidationException("ID in body and route are different");
         }
-        var salt = RandomNumberGenerator.GetBytes(32).ToString();
-        var user = new User
-        {
-            Username = putUserDto.Username,
-            FirstName = putUserDto.FirstName,
-            LastName = putUserDto.LastName,
-            BirthDay = putUserDto.BirthDay,
-            Email = putUserDto.Email,
-            PhoneNumber = putUserDto.PhoneNumber,
-            Location = putUserDto.Location,
-            Salt = salt,
-            Hash = BCrypt.Net.BCrypt.HashPassword(putUserDto.Password + salt)
-        };
         var validation = _putValidator.Validate(putUserDto);
+        var user =  _repository.GetUserByUsername(putUserDto.Username);
+        user.Hash = BCrypt.Net.BCrypt.HashPassword(putUserDto.Password + user.Salt);
+        
         if (!validation.IsValid)
         {
-            throw new ValidationException(validation.ToString());
+            throw new ValidationTestException(validation.ToString());
         }
-        _repository.UpdateUser(_mapper.Map<User>(putUserDto), id);
-        return _tokenGenerator.GenerateToken(user);
+
+        return _repository.UpdateUser(user, id);
     }
 
     public User DeleteUser(int id)

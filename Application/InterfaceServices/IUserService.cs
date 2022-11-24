@@ -7,6 +7,6 @@ public interface IUserService
 {
     public User GetUserByUsername(string username);
     public List<User> GetAllUsers();
-    public string UpdateUser(int id, PutUserDTO putUserDto);
+    public User UpdateUser(int id, PutUserDTO putUserDto);
     public User DeleteUser(int id);
 }

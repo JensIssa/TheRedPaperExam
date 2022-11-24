@@ -1,12 +1,16 @@
 ﻿using System.Net.Sockets;
+using System.Security.Cryptography;
+using Application.DTOs;
 using Application.InterfaceRepos;
 using Domain.Entities;
+using FluentValidation;
 
 namespace Infrastructure.Repositories;
 
 public class UserRepository : IUserRepository
 {
     private readonly RepositoryDBContext _context;
+
 
     public UserRepository(RepositoryDBContext context)
     {

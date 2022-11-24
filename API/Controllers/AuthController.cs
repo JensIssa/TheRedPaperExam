@@ -11,11 +11,13 @@ public class AuthController: ControllerBase
 {
 
     private readonly IAuthService _auth;
+    private readonly IUserService _user;
     
 
-    public AuthController(IAuthService auth)
+    public AuthController(IAuthService auth, IUserService user)
     {
         _auth = auth;
+        _user = user;
     }
     
     [HttpPost]
