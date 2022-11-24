@@ -32,13 +32,13 @@ public class User
         set;
     }
 
-    public string Hash
+    public string? Hash
     {
         get;
         set;
     }
 
-    public string Salt
+    public string? Salt
     {
         get;
         set;

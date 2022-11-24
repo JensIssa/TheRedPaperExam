@@ -59,7 +59,7 @@ public class AuthService : IAuthService
             {
                 throw new FluentValidation.ValidationException(validation.ToString());
             }
-            _userRepository.CreateNewUser(_mapper.Map<User>(dto));
+            _userRepository.CreateNewUser(user);
             return _tokenGenerator.GenerateToken(user);
         }
 
