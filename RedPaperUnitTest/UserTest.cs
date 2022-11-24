@@ -1,7 +1,8 @@
 namespace RedPaperUnitTest;
 
-public class UnitTest1
+public class UserTest
 {
+    
     [Fact]
     public void Test1()
     {

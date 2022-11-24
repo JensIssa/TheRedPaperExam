@@ -1,19 +1,14 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Entities;
 
-public class User
+namespace Application.DTOs;
+
+public class PutUserDTO
 {
     public int Id
     {
         get;
         set;
     }
-
-    public Role AssignedRole
-    {
-        get;
-        set;
-    }
-    
     public string FirstName
     {
         get;
@@ -32,18 +27,11 @@ public class User
         set;
     }
 
-    public string? Hash
+    public string Password
     {
         get;
         set;
     }
-
-    public string? Salt
-    {
-        get;
-        set;
-    }
-
     public DateTime BirthDay
     {
         get;
