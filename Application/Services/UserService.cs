@@ -13,17 +13,13 @@ namespace Application.Services;
 public class UserService : IUserService
 {
     private readonly IUserRepository _repository;
-    private readonly IMapper _mapper;
     private readonly IValidator<PutUserDTO> _putValidator;
-    private readonly IValidator<RegisterDTO> _postValidator;
     
 
-    public UserService(IUserRepository repository, IMapper mapper, IValidator<PutUserDTO> putValidator, IValidator<RegisterDTO> postValidator)
+    public UserService(IUserRepository repository, IValidator<PutUserDTO> putValidator)
     {
         _repository = repository;
-        _mapper = mapper;
         _putValidator = putValidator;
-        _postValidator = postValidator;
     }
 
     public User GetUserByUsername(string username)

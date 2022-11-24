@@ -19,18 +19,15 @@ public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
     private readonly IValidator<RegisterDTO> _postValidator;
-    private readonly IMapper _mapper;
     private readonly TokenGenerator _tokenGenerator;
     public AuthService(IUserRepository userRepository, 
         IValidator<RegisterDTO> postValidator,
-        IMapper mapper,
      TokenGenerator tokenGenerator 
     )
     {
         _tokenGenerator = tokenGenerator;
         _userRepository = userRepository;
         _postValidator = postValidator;
-        _mapper = mapper;
     }
 
     public string Register(RegisterDTO dto)
