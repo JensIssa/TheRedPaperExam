@@ -24,21 +24,53 @@ public class CategoryService : ICategoryService
 
     public List<Category> GetAllCategories()
     {
-        throw new NotImplementedException();
+        return _repository.GetAllCategories();
     }
 
     public Category CreateCategory(PostCategoryDTO dto)
     {
-        throw new NotImplementedException();
+        ExceptionHandlingCreate(dto);
+        var validation = _postValidator.Validate(dto);
+        if (!validation.IsValid)
+        {
+            throw new ValidationException(validation.ToString());
+        }
+
+        return _repository.CreateCategory(_mapper.Map<Category>(dto));
     }
 
     public Category UpdateCategory(int id, PutCategoryDTO dto)
     {
+        ExceptionHandlingUpdate(dto);
         throw new NotImplementedException();
     }
 
     public Category DeleteCategory(int id)
     {
-        throw new NotImplementedException();
+        if (id==null|| id<1)
+        {
+            throw new ArgumentException("The category is not found");
+        }
+        return _repository.DeleteCategory(id);
+    }
+
+    private void ExceptionHandlingCreate(PostCategoryDTO dto)
+    {
+        if (string.IsNullOrEmpty(dto.CategoryName))
+        {
+            throw new ArgumentException("This category name is empty/null");
+        }
+    }
+
+    private void ExceptionHandlingUpdate(PutCategoryDTO dto)
+    {
+        if (dto.Id==null|| dto.Id<1)
+        {
+            throw new ArgumentException("The category Id is null/<1");
+        }
+        if (string.IsNullOrEmpty(dto.CategoryName))
+        {
+            throw new ArgumentException("This category name is empty/null");
+        }
     }
 }

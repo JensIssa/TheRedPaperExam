@@ -5,14 +5,23 @@ namespace Infrastructure.Repositories;
 
 public class CategoryRepository : ICategoryRepository
 {
-    public List<Category> GetAllCategories()
+    private readonly RepositoryDBContext _context;
+
+    public CategoryRepository(RepositoryDBContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
     }
 
-    public Category CreateCategory(Category dto)
+    public List<Category> GetAllCategories()
     {
-        throw new NotImplementedException();
+        return _context.CategoryTable.ToList();
+    }
+
+    public Category CreateCategory(Category category)
+    {
+        _context.CategoryTable.Add(category);
+        _context.SaveChanges();
+        return category;
     }
 
     public Category UpdateCategory(int id, Category dto)
@@ -22,6 +31,10 @@ public class CategoryRepository : ICategoryRepository
 
     public Category DeleteCategory(int id)
     {
-        throw new NotImplementedException();
+        var categoryToDelete =
+            _context.CategoryTable.Find(id) ?? throw new KeyNotFoundException("Id to delete not found");
+        _context.CategoryTable.Remove(categoryToDelete);
+        _context.SaveChanges();
+        return categoryToDelete;
     }
 }
