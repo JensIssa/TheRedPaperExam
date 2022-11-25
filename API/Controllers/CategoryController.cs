@@ -10,7 +10,7 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class CategoryController : ControllerBase
 {
-    private readonly ICategoryService _service;
+    private ICategoryService _service;
 
     public CategoryController(ICategoryService service)
     {

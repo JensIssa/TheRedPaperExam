@@ -8,7 +8,7 @@ public class Category
         set;
     }
 
-    public string Name
+    public string CategoryName
     {
         get;
         set;

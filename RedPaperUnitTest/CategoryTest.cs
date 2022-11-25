@@ -13,9 +13,9 @@ public class CategoryTest
 {
     public static IEnumerable<Object[]> GetAllCategories_Test()
     {
-        Category category1 = new Category { Id = 1, Name = "TestCategory 1" };
-        Category category2 = new Category { Id = 1, Name = "TestCategory 2" };
-        Category category3 = new Category { Id = 1, Name = "TestCategory 3" };
+        Category category1 = new Category { Id = 1, CategoryName = "TestCategory 1" };
+        Category category2 = new Category { Id = 1, CategoryName = "TestCategory 2" };
+        Category category3 = new Category { Id = 1, CategoryName = "TestCategory 3" };
         yield return new object[]
         {
             new Category[]
@@ -76,10 +76,10 @@ public class CategoryTest
     [InlineData(1)]
     public void CreateValidCategoryTest(int categoryId)
     {
-        Category category = new Category{Id = categoryId, Name = "Sko"};
+        Category category = new Category{Id = categoryId, CategoryName = "Sko"};
         PostCategoryDTO dto = new PostCategoryDTO()
         {
-            CategoryName = category.Name
+            CategoryName = category.CategoryName
         };
         Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
         var mapper = new MapperConfiguration(config =>
@@ -98,7 +98,7 @@ public class CategoryTest
         
         //Assert
         Assert.Equal(category.Id, categoryCreated.Id);
-        Assert.Equal(category.Name, categoryCreated.Name);
+        Assert.Equal(category.CategoryName, categoryCreated.CategoryName);
         mockRepo.Verify(r=>r.CreateCategory(It.IsAny<Category>()), Times.Once);
     }
 
@@ -130,8 +130,8 @@ public class CategoryTest
     [InlineData(1, "Sko")]
     public void UpdateCategoryValidTest(int id, string categoryName)
     {
-        Category category = new Category { Id = 1, Name = "Biler" };
-        PutCategoryDTO dto = new PutCategoryDTO { Id = category.Id, CategoryName = category.Name };
+        Category category = new Category { Id = 1, CategoryName = "Biler" };
+        PutCategoryDTO dto = new PutCategoryDTO { Id = category.Id, CategoryName = category.CategoryName };
         Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
         var mapper = new MapperConfiguration(config =>
         {
@@ -149,7 +149,7 @@ public class CategoryTest
         
         Assert.Equal(category, updateCategory);
         Assert.Equal(category.Id, updateCategory.Id);
-        Assert.Equal(category.Name, updateCategory.Name);
+        Assert.Equal(category.CategoryName, updateCategory.CategoryName);
         mockRepo.Verify(r=>r.UpdateCategory(id, It.IsAny<Category>()),Times.Once);
     }
 
@@ -186,8 +186,8 @@ public class CategoryTest
     public void DeleteValidUserTest(int exeptedListSize)
     {
         List<Category> categories = new List<Category>();
-        Category category1 = new Category{Id = 1, Name = "Katte"};
-        Category categoryToDelete = new Category{Id = 2, Name = "Blomster"};
+        Category category1 = new Category{Id = 1, CategoryName = "Katte"};
+        Category categoryToDelete = new Category{Id = 2, CategoryName = "Blomster"};
         categories.Add(category1);
         categories.Add(categoryToDelete);
         
