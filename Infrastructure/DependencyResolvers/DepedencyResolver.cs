@@ -10,6 +10,7 @@ public class DepedencyResolver
     public static void RegisterInfrastructure(IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
-        
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+
     }
 }

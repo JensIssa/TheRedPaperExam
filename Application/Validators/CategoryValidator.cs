@@ -10,7 +10,7 @@ public class CategoryValidator
     {
         public CategoryPostValidator()
         {
-            RuleFor(c => c.CategoryName).NotNull().NotEmpty(); 
+            RuleFor(c => c.CategoryName).NotEmpty(); 
         }
     }
 

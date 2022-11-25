@@ -5,7 +5,7 @@ namespace Infrastructure.Repositories;
 
 public class CategoryRepository : ICategoryRepository
 {
-    private readonly RepositoryDBContext _context;
+    private  RepositoryDBContext _context;
 
     public CategoryRepository(RepositoryDBContext context)
     {
