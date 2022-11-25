@@ -28,6 +28,8 @@ var mapper = new MapperConfiguration(config =>
 {
     config.CreateMap<PutUserDTO, User>();
     config.CreateMap<RegisterDTO, User>();
+    config.CreateMap<PutCategoryDTO, Category>();
+    config.CreateMap<PostCategoryDTO, Category>();
 }).CreateMapper();
 
 builder.Services.AddSingleton(mapper);
@@ -37,6 +39,8 @@ builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSet
 builder.Services.AddDbContext<RepositoryDBContext>(options => options.UseSqlite("Data Source =db.db"));
 builder.Services.AddScoped<RepositoryDBContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRebuildService, RebuildService>();
