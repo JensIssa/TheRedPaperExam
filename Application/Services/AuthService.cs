@@ -18,49 +18,13 @@ namespace Application.Services;
 public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
-    private readonly IValidator<RegisterDTO> _postValidator;
     private readonly TokenGenerator _tokenGenerator;
-    public AuthService(IUserRepository userRepository, 
-        IValidator<RegisterDTO> postValidator,
-     TokenGenerator tokenGenerator 
+    public AuthService(IUserRepository userRepository,
+        TokenGenerator tokenGenerator 
     )
     {
         _tokenGenerator = tokenGenerator;
         _userRepository = userRepository;
-        _postValidator = postValidator;
-    }
-
-    public string Register(RegisterDTO dto)
-    {
-        try
-        {
-            _userRepository.GetUserByUsername(dto.Username);
-        }
-        catch (KeyNotFoundException)
-        {
-            var salt = RandomNumberGenerator.GetBytes(32).ToString();
-            var user = new User
-            {
-                Username = dto.Username,
-                Salt = salt,
-                Hash = BCrypt.Net.BCrypt.HashPassword(dto.Password + salt),
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                BirthDay = dto.Birthday,
-                Email = dto.Email,
-                PhoneNumber = dto.PhoneNumber,
-                Location = dto.location,
-            };
-            var validation = _postValidator.Validate(dto);
-            if (!validation.IsValid)
-            {
-                throw new FluentValidation.ValidationException(validation.ToString());
-            }
-            _userRepository.CreateNewUser(user);
-            return _tokenGenerator.GenerateToken(user);
-        }
-
-        throw new Exception("Username " + dto.Username + " is already taken");
     }
 
     public string Login(LoginDTO dto)
@@ -70,7 +34,6 @@ public class AuthService : IAuthService
         {
             return _tokenGenerator.GenerateToken(user);
         }
-
         throw new Exception("Invalid login");
     }
     
