@@ -127,6 +127,61 @@ public class CategoryTest
     }
 
     [Theory]
+    [InlineData(1, "Sko")]
+    public void UpdateCategoryValidTest(int id, string categoryName)
+    {
+        Category category = new Category { Id = 1, Name = "Biler" };
+        PutCategoryDTO dto = new PutCategoryDTO { Id = category.Id, CategoryName = category.Name };
+        Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
+        var mapper = new MapperConfiguration(config =>
+        {
+            config.CreateMap<PutCategoryDTO, Category>();
+            config.CreateMap<PostCategoryDTO, Category>();
+        }).CreateMapper();
+        var putCategoryValidator = new CategoryValidator.CategoryPutValidator();
+        var postCategoryValidator = new CategoryValidator.CategoryPostValidator();
+        ICategoryService service =
+            new CategoryService(mockRepo.Object, mapper, putCategoryValidator, postCategoryValidator);
+        mockRepo.Setup(r => r.UpdateCategory(id, It.IsAny<Category>())).Returns(category);
+
+        dto.CategoryName = categoryName;
+        Category updateCategory = service.UpdateCategory(id, dto);
+        
+        Assert.Equal(category, updateCategory);
+        Assert.Equal(category.Id, updateCategory.Id);
+        Assert.Equal(category.Name, updateCategory.Name);
+        mockRepo.Verify(r=>r.UpdateCategory(id, It.IsAny<Category>()),Times.Once);
+    }
+
+    [Theory]
+    [InlineData(0, "Biler", "The category Id is null/<1")]
+    [InlineData(-1, "Sko", "The category Id is null/<1")]
+    [InlineData(null, "Sko", "The category Id is null/<1")]
+    [InlineData(1, null, "This category name is empty/null")]
+    [InlineData(2, "", "This category name is empty/null")]
+    public void UpdateCategoryInvalidTest(int categoryId, string categoryName, string expectedMessage)
+    {
+        PutCategoryDTO dto = new PutCategoryDTO { Id = categoryId, CategoryName = categoryName };
+        Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
+        var mapper = new MapperConfiguration(config =>
+        {
+            config.CreateMap<PutCategoryDTO, Category>();
+            config.CreateMap<PostCategoryDTO, Category>();
+        }).CreateMapper();
+        var putCategoryValidator = new CategoryValidator.CategoryPutValidator();
+        var postCategoryValidator = new CategoryValidator.CategoryPostValidator();
+        ICategoryService service =
+            new CategoryService(mockRepo.Object, mapper, putCategoryValidator, postCategoryValidator);
+
+        var action = () => service.UpdateCategory(categoryId, dto);
+
+        var ex = Assert.Throws<ArgumentException>(action);
+        
+        Assert.Equal(expectedMessage, ex.Message);
+    }
+    
+    
+    [Theory]
     [InlineData(1)]
     public void DeleteValidUserTest(int exeptedListSize)
     {

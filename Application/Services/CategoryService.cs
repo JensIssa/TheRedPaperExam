@@ -42,7 +42,13 @@ public class CategoryService : ICategoryService
     public Category UpdateCategory(int id, PutCategoryDTO dto)
     {
         ExceptionHandlingUpdate(dto);
-        throw new NotImplementedException();
+        var validation = _putValidator.Validate(dto);
+        if (!validation.IsValid)
+        {
+            throw new ValidationException(validation.ToString());
+        }
+
+        return _repository.UpdateCategory(id, _mapper.Map<Category>(dto));
     }
 
     public Category DeleteCategory(int id)
