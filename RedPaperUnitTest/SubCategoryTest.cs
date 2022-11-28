@@ -95,10 +95,12 @@ public class SubCategoryTest
         mockRepo.Setup(r => r.addSubCategoryToCategory(It.IsAny<SubCategory>())).Returns(subCategory);
 
         var subCategoryCreated = service.addSubCategoryToCategory(dto);
+        
         //Assert
         Assert.Equal(subCategory.Id, subCategoryCreated.Id);
         Assert.Equal(subCategory.CategoryID, subCategoryCreated.CategoryID);
-        mockRepo.Verify(r => r.addSubCategoryToCategory( subCategory), Times.Never);
+        Assert.Equal(subCategory, subCategoryCreated);
+        mockRepo.Verify(r => r.addSubCategoryToCategory( subCategory), Times.Once);
     }
     
 

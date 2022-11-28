@@ -1,5 +1,6 @@
 ﻿using Application.InterfaceRepos;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
@@ -14,9 +15,7 @@ public class SubCategoryRepository : ISubCategoryRepository
 
     public List<SubCategory> GetAllSubCategoriesFromCategory(int categoryId)
     {
-        var idToExtractFrom = _context.CategoryTable.Find(categoryId) ??
-                              throw new KeyNotFoundException("Id to update not found");
-        return _context.SubCategoryTable.Where(i => i.CategoryID.Equals(idToExtractFrom)).ToList();
+        return _context.SubCategoryTable.Where(i => i.CategoryID.Equals(categoryId)).Include((x) => x.Category).ToList();
     }
 
     public SubCategory addSubCategoryToCategory(SubCategory dto)

@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace Domain.Entities;
 
 public class SubCategory
 {
@@ -13,14 +15,13 @@ public class SubCategory
         get;
         set;
     }
-
     public Category? Category
     {
         get;
         set;
     }
-
-    public int CategoryID
+    
+    public int? CategoryID
     {
         get;
         set;
