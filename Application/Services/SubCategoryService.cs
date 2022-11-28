@@ -2,7 +2,7 @@
 
 namespace Application.Services;
 
-public class ProductService : IProductService
+public class SubCategoryService : ISubCategoryService
 {
     
 }
