@@ -8,7 +8,25 @@ public class SubCategory
         set;
     }
 
-    public string Name
+    public string SubName
+    {
+        get;
+        set;
+    }
+
+    public Category? Category
+    {
+        get;
+        set;
+    }
+
+    public int CategoryID
+    {
+        get;
+        set;
+    }
+
+    public List<SubCategory> SubCategories
     {
         get;
         set;
