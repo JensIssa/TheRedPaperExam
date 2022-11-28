@@ -40,7 +40,7 @@ public class AuthController: ControllerBase
     {
         try
         {
-            return Ok(_auth.Register(dto));
+            return Ok(_user.CreateUser(dto));
         }
         catch (Exception e)
         {
