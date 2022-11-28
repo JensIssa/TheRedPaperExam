@@ -37,4 +37,16 @@ public class Product
         get;
         set;
     }
+
+    public SubCategory? SubCategory
+    {
+        get;
+        set;
+    }
+
+    public int SubCategoryID
+    {
+        get;
+        set;
+    }
 }
