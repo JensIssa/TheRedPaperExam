@@ -26,7 +26,7 @@ public class SubCategory
         set;
     }
 
-    public List<SubCategory> SubCategories
+    public List<Product>? Products
     {
         get;
         set;
