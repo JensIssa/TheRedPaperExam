@@ -33,40 +33,6 @@ public class AuthService : IAuthService
         _mapper = mapper;
     }
 
-    public string Register(RegisterDTO dto)
-    {
-        try
-        {
-            _userRepository.GetUserByUsername(dto.Username);
-        }
-        catch (KeyNotFoundException)
-        {
-            var salt = RandomNumberGenerator.GetBytes(32).ToString();
-            var user = new User
-            {
-                Username = dto.Username,
-                Salt = salt,
-                Hash = BCrypt.Net.BCrypt.HashPassword(dto.Password + salt),
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                BirthDay = dto.Birthday,
-                Email = dto.Email,
-                PhoneNumber = dto.PhoneNumber,
-                Location = dto.location,
-                AssignedRole = dto.AssingedRole,
-            };
-            var validation = _postValidator.Validate(dto);
-            if (!validation.IsValid)
-            {
-                throw new FluentValidation.ValidationException(validation.ToString());
-            }
-            _userRepository.CreateNewUser(user);
-            return _tokenGenerator.GenerateToken(user);
-        }
-
-        throw new Exception("Username " + dto.Username + " is already taken");
-    }
-
     public string Login(LoginDTO dto)
     {
         var user = _userRepository.GetUserByUsername(dto.Username);
