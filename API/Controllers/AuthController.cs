@@ -35,12 +35,26 @@ public class AuthController: ControllerBase
     }
     
     [HttpPost]
-    [Route("register")]
-    public ActionResult Register(RegisterDTO dto)
+    [Route("RegisterUser")]
+    public ActionResult RegisterUser(RegisterDTO dto)
     {
         try
         {
-            return Ok(_user.CreateUser(dto));
+            return Ok(_user.CreateCustomer(dto));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    [HttpPost]
+    [Route("RegisterAdmin")]
+    public ActionResult RegisterAdmin(RegisterDTO dto)
+    {
+        try
+        {
+            return Ok(_user.CreateAdmin(dto));
         }
         catch (Exception e)
         {

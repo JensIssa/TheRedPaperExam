@@ -47,7 +47,17 @@ public class UserService : IUserService
         return _repository.GetAllUsers();
     }
 
-    public User CreateUser(RegisterDTO dto)
+    public User CreateAdmin( RegisterDTO dto)
+    {
+        return CreateUser(dto, Role.Admin);
+    }
+
+    public User CreateCustomer(RegisterDTO dto)
+    {
+        return CreateUser(dto, Role.Customer);
+    }
+    
+    private User CreateUser(RegisterDTO dto, Role role)
     {
         ExceptionHandlingPost(dto);
         try
@@ -68,20 +78,20 @@ public class UserService : IUserService
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
                 Location = dto.location,
-                AssignedRole = dto.AssingedRole
+                AssignedRole = role
             };
             var validation = _postValidator.Validate(dto);
             if (!validation.IsValid)
             {
                 throw new ValidationException(validation.ToString());
             }
-             _tokenGenerator.GenerateToken(user);
+            _tokenGenerator.GenerateToken(user);
             return _repository.CreateNewUser(user);
 
         }
         throw new Exception("Username " + dto.Username + " is already taken");
     }
-
+    
     public User UpdateUser(int id, PutUserDTO putUserDto)
     {
         ExceptionHandlingPut(putUserDto);
