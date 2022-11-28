@@ -53,6 +53,7 @@ public class AuthService : IAuthService
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
                 Location = dto.location,
+                AssignedRole = dto.AssingedRole,
             };
             var validation = _postValidator.Validate(dto);
             if (!validation.IsValid)
