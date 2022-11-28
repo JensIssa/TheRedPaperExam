@@ -1,6 +1,6 @@
 ﻿namespace Application.InterfaceRepos;
 
-public class ISubCategoryRepository
+public interface ISubCategoryRepository
 {
     
 }

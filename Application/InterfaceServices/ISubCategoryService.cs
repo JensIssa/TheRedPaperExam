@@ -1,6 +1,6 @@
 ﻿namespace Application.InterfaceServices;
 
-public class ISubCategoryService
+public interface ISubCategoryService
 {
     
 }
