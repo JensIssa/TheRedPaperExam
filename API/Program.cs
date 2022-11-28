@@ -57,6 +57,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
             builder.Configuration.GetValue<string>("AppSettings:Secret")))
     };
 });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", (policy) => { policy.RequireRole("Admin");});
+});
 
 
 Infrastructure.DependencyResolvers.DepedencyResolver.RegisterInfrastructure(builder.Services);
