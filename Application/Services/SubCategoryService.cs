@@ -47,8 +47,19 @@ public class SubCategoryService : ISubCategoryService
         }
         return _repository.deleteSubCategoryFromCategory(subcategoryId);
     }
-    
-    
+
+    public SubCategory updateSubCategory(int id, PutSubCategoryDTO dto)
+    {
+        ExceptionHandlingUpdate(dto);
+        var validation = _putDTO.Validate(dto);
+        if (!validation.IsValid)
+        {
+            throw new ValidationException(validation.ToString());
+        }
+        return _repository.updateSubCategory(id, _imapper.Map<SubCategory>(dto));    
+    }
+
+
     private void ExceptionHandlingCreate(PostSubCategoryDTO dto)
     {
         if (string.IsNullOrEmpty(dto.SubName))
@@ -59,6 +70,23 @@ public class SubCategoryService : ISubCategoryService
         if (dto.categoryID == null)
         {
             throw new ArgumentException("This subcategory needs to be linked with a Category");
+        }
+    }
+    
+    private void ExceptionHandlingUpdate(PutSubCategoryDTO dto)
+    {
+        if (string.IsNullOrEmpty(dto.SubName))
+        {
+            throw new ArgumentException("This SubCategory name is empty/null");
+        }
+
+        if (dto.categoryID == null)
+        {
+            throw new ArgumentException("This subcategory needs to be linked with a Category");
+        }
+        if (dto.Id == null)
+        {
+            throw new ArgumentException("This subcategroy is not found");
         }
     }
 }

@@ -9,5 +9,6 @@ public interface ISubCategoryService
     SubCategory addSubCategoryToCategory( PostSubCategoryDTO dto);
     SubCategory deleteSubCategoryFromCategory(int subcategoryId);
 
-
+    SubCategory updateSubCategory(int id, PutSubCategoryDTO dto);
+    
 }

@@ -32,4 +32,12 @@ public class SubCategoryRepository : ISubCategoryRepository
         _context.SaveChanges();
         return subCategoryToDelete;
     }
+
+    public SubCategory updateSubCategory(int id, SubCategory subCategory)
+    {
+        var subCategoryToUpdate = _context.SubCategoryTable.Find(id) ?? throw new KeyNotFoundException("Id to update not found");
+        _context.SubCategoryTable.Update(subCategoryToUpdate);
+        _context.SaveChanges();
+        return subCategoryToUpdate;
+    }
 }
