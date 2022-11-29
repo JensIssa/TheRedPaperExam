@@ -1,6 +1,14 @@
-﻿namespace Application.InterfaceServices;
+﻿using Application.DTOs;
+using Domain.Entities;
 
-public class ISubCategoryService
+namespace Application.InterfaceServices;
+
+public interface ISubCategoryService
 {
+    List<SubCategory> GetAllSubCategoriesFromCategory(int categoryId);
+    SubCategory addSubCategoryToCategory( PostSubCategoryDTO dto);
+    SubCategory deleteSubCategoryFromCategory(int subcategoryId);
+
+    SubCategory updateSubCategory(int id, PutSubCategoryDTO dto);
     
 }

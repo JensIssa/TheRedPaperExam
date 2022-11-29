@@ -1,6 +1,6 @@
 ﻿namespace Application.InterfaceRepos;
 
-public class IProductRepository
+public interface IProductRepository
 {
     
 }

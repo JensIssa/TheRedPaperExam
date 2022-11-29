@@ -30,6 +30,8 @@ var mapper = new MapperConfiguration(config =>
     config.CreateMap<RegisterDTO, User>();
     config.CreateMap<PutCategoryDTO, Category>();
     config.CreateMap<PostCategoryDTO, Category>();
+    config.CreateMap<PostSubCategoryDTO, SubCategory>();
+    config.CreateMap<PutSubCategoryDTO, SubCategory>();
 }).CreateMapper();
 
 builder.Services.AddSingleton(mapper);
@@ -70,6 +72,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", (policy) => { policy.RequireRole("Admin");});
 });
+
 
 
 Infrastructure.DependencyResolvers.DepedencyResolver.RegisterInfrastructure(builder.Services);

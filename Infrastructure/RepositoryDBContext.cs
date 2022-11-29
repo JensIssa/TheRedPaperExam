@@ -19,16 +19,24 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
         //Foreign key relations and one to many
         modelBuilder.Entity<SubCategory>().HasOne(s => s.Category).
             WithMany(c => c.SubCategories)
-            .HasForeignKey(s => s.CategoryID);
+            .HasForeignKey(s => s.CategoryID).OnDelete(DeleteBehavior.Cascade);
         
         modelBuilder.Entity<Product>().HasOne(p => p.SubCategory).
             WithMany(s => s.Products)
             .HasForeignKey(p => p.SubCategoryID);
 
     }
-    
-    public DbSet<User> UserTable { get; set; }
-    public DbSet<Category> CategoryTable { get; set; }
+
+    public DbSet<User> UserTable
+    {
+        get; 
+        set;
+    }
+    public DbSet<Category> CategoryTable 
+    { 
+        get;
+        set; 
+    }
 
     public DbSet<SubCategory> SubCategoryTable
     {

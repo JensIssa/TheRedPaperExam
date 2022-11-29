@@ -152,6 +152,7 @@ public class CategoryTest
         Assert.Equal(category.CategoryName, updateCategory.CategoryName);
         mockRepo.Verify(r=>r.UpdateCategory(id, It.IsAny<Category>()),Times.Once);
     }
+    
 
     [Theory]
     [InlineData(0, "Biler", "The category Id is null/<1")]

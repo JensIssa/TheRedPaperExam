@@ -1,5 +1,6 @@
 ﻿using Application.InterfaceRepos;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
@@ -14,7 +15,7 @@ public class CategoryRepository : ICategoryRepository
 
     public List<Category> GetAllCategories()
     {
-        return _context.CategoryTable.ToList();
+        return _context.CategoryTable.Include(s => s.SubCategories).ToList();
     }
 
     public Category CreateCategory(Category category)

@@ -1,6 +1,6 @@
 ﻿namespace Application.InterfaceServices;
 
-public class IProductService
+public interface IProductService
 {
     
 }
