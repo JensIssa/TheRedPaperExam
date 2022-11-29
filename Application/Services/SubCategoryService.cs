@@ -80,11 +80,11 @@ public class SubCategoryService : ISubCategoryService
             throw new ArgumentException("This SubCategory name is empty/null");
         }
 
-        if (dto.categoryID == null)
+        if (dto.categoryID == null || dto.categoryID < 1)
         {
             throw new ArgumentException("This subcategory needs to be linked with a Category");
         }
-        if (dto.Id == null)
+        if (dto.Id == null || dto.Id < 1)
         {
             throw new ArgumentException("This subcategroy is not found");
         }

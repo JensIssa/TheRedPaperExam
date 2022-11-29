@@ -242,4 +242,36 @@ public class SubCategoryTest
         Assert.Equal(subCategory.SubName, updateSubCategory.SubName);
         mockRepo.Verify(r => r.updateSubCategory(id, It.IsAny<SubCategory>()), Times.Once);
     }
+
+    [Theory]
+    [InlineData(0, "Biler", 1, "This subcategroy is not found")]
+    [InlineData(-1, "Sko", 1, "This subcategroy is not found")]
+    [InlineData(null, "Sko", 1, "This subcategroy is not found")]
+    [InlineData(1, null, 1, "This SubCategory name is empty/null")]
+    [InlineData(1, "", 1, "This SubCategory name is empty/null")]
+    [InlineData(1, "Katte", 0, "This subcategory needs to be linked with a Category")]
+    [InlineData(1, "Hunde", null, "This subcategory needs to be linked with a Category")]
+    [InlineData(1, "Biler", -1, "This subcategory needs to be linked with a Category")]
+    public void UpdateSubCategoryInvalidTest(int id, string categoryName, int categoryId, string expectedMessage)
+    {
+        PutSubCategoryDTO dto = new PutSubCategoryDTO()
+            { Id = id, SubName = categoryName, categoryID = categoryId };
+        Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
+        var mapper = new MapperConfiguration(config =>
+        {
+            config.CreateMap<PostSubCategoryDTO, SubCategory>();
+            config.CreateMap<PutSubCategoryDTO, SubCategory>();
+        }).CreateMapper();
+        var postSubCategoryValidator = new SubCategoryValidator.PostSubCategoryValidator();
+        var putSubCategoryValidator = new SubCategoryValidator.PutSubCategoryValidator();
+        ISubCategoryService service =
+            new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
+
+        var action = () => service.updateSubCategory(id, dto);
+
+        var ex = Assert.Throws<ArgumentException>(action);
+        
+        Assert.Equal(expectedMessage, ex.Message);
+    }
+    
 }
