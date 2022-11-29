@@ -2,8 +2,14 @@
 
 namespace Application.DTOs;
 
-public class PostProductDTO
+public class PutProductDTO
 {
+    public int productId
+    {
+        get;
+        set;
+    }
+    
     public string ProductName
     {
         get;
@@ -29,30 +35,6 @@ public class PostProductDTO
     }
 
     public Condition ProductCondition
-    {
-        get;
-        set;
-    }
-
-    public SubCategory? SubCategory
-    {
-        get;
-        set;
-    }
-
-    public int SubCategoryID
-    {
-        get;
-        set;
-    }
-
-    public User? user
-    {
-        get;
-        set;
-    }
-
-    public int userId
     {
         get;
         set;

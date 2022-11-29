@@ -67,4 +67,10 @@ public class User
         get;
         set;
     }
+
+    public List<Product> products
+    {
+        get;
+        set;
+    }
 }

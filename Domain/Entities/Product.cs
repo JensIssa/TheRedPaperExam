@@ -49,4 +49,16 @@ public class Product
         get;
         set;
     }
+
+    public User? user
+    {
+        get;
+        set;
+    }
+
+    public int userId
+    {
+        get;
+        set;
+    }
 }

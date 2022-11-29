@@ -32,6 +32,8 @@ var mapper = new MapperConfiguration(config =>
     config.CreateMap<PostCategoryDTO, Category>();
     config.CreateMap<PostSubCategoryDTO, SubCategory>();
     config.CreateMap<PutSubCategoryDTO, SubCategory>();
+    config.CreateMap<PostProductDTO, Product>();
+    config.CreateMap<PutProductDTO, Product>();
 }).CreateMapper();
 
 builder.Services.AddSingleton(mapper);

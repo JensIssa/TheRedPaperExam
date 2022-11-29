@@ -24,7 +24,8 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
         modelBuilder.Entity<Product>().HasOne(p => p.SubCategory).
             WithMany(s => s.Products)
             .HasForeignKey(p => p.SubCategoryID);
-
+        modelBuilder.Entity<Product>().HasOne(p => p.user).
+            WithMany(u => u.products).HasForeignKey(p => p.userId);
     }
 
     public DbSet<User> UserTable
@@ -44,7 +45,7 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
         set;
     }
     
-    public DbSet<Product> ProductCategoryTable
+    public DbSet<Product> ProductTable
     {
         get;
         set;
