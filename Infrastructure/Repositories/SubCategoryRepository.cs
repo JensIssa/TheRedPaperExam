@@ -27,6 +27,9 @@ public class SubCategoryRepository : ISubCategoryRepository
 
     public SubCategory deleteSubCategoryFromCategory(int subcategoryId)
     {
-        throw new NotImplementedException();
+        var subCategoryToDelete = _context.SubCategoryTable.Find(subcategoryId) ?? throw new KeyNotFoundException("Id not found");
+        _context.SubCategoryTable.Remove(subCategoryToDelete);
+        _context.SaveChanges();
+        return subCategoryToDelete;
     }
 }
