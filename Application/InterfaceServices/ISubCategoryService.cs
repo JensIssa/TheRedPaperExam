@@ -7,7 +7,7 @@ public interface ISubCategoryService
 {
     List<SubCategory> GetAllSubCategoriesFromCategory(int categoryId);
     SubCategory addSubCategoryToCategory( PostSubCategoryDTO dto);
-    SubCategory deleteSubCategoryFromCategory(int categoryId, int subcategoryId);
+    SubCategory deleteSubCategoryFromCategory(int subcategoryId);
 
 
 }

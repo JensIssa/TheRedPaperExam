@@ -79,7 +79,8 @@ public class SubCategoryTest
         SubCategory subCategory = new SubCategory { Id = subCategoryID, SubName = "TestSub", CategoryID = categoryID };
         PostSubCategoryDTO dto = new PostSubCategoryDTO()
         {
-            SubName = subCategory.SubName
+            SubName = subCategory.SubName,
+            categoryID = subCategory.CategoryID
         };
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
         var mapper = new MapperConfiguration(config =>
@@ -94,15 +95,66 @@ public class SubCategoryTest
 
         mockRepo.Setup(r => r.addSubCategoryToCategory(It.IsAny<SubCategory>())).Returns(subCategory);
 
-        var subCategoryCreated = service.addSubCategoryToCategory(dto);
+         var subCategoryCreated =  service.addSubCategoryToCategory(dto);
         
         //Assert
         Assert.Equal(subCategory.Id, subCategoryCreated.Id);
         Assert.Equal(subCategory.CategoryID, subCategoryCreated.CategoryID);
         Assert.Equal(subCategory, subCategoryCreated);
-        mockRepo.Verify(r => r.addSubCategoryToCategory( subCategory), Times.Once);
+        mockRepo.Verify(r=>r.addSubCategoryToCategory(It.IsAny<SubCategory>()), Times.Once);
+    }
+
+    [Theory]
+    [InlineData("", 1, "This SubCategory name is empty/null")]
+    [InlineData(null, 1, "This SubCategory name is empty/null")]
+    public void CreateInvalidSubCategoryMissingName(string subCategoryName, int categoryID, string expectedException)
+    {
+        PostSubCategoryDTO dto = new PostSubCategoryDTO()
+        {
+            SubName = subCategoryName,
+            categoryID = categoryID
+        };
+        
+        Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
+        var mapper = new MapperConfiguration(config =>
+        {
+            config.CreateMap<PostSubCategoryDTO, SubCategory>();
+            config.CreateMap<PutSubCategoryDTO, SubCategory>();
+        }).CreateMapper();
+        var postSubCategoryValidator = new SubCategoryValidator.PostSubCategoryValidator();
+        var putSubCategoryValidator = new SubCategoryValidator.PutSubCategoryValidator();
+        ISubCategoryService service =
+            new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
+      
+        var ex = Assert.Throws<ArgumentException>(() => service.addSubCategoryToCategory(dto));
+        
+        Assert.Equal("This SubCategory name is empty/null", ex.Message);
     }
     
-
+    [Theory]
+    [InlineData("Test1", "This subcategory needs to be linked with a Category")]
+    [InlineData("Test2", "This subcategory needs to be linked with a Category")]
+    [InlineData("Test3", "This subcategory needs to be linked with a Category")]
+    public void CreateInvalidSubCategoryMissingeCategoryID(string subCategoryName,string expectedException)
+    {
+        PostSubCategoryDTO dto = new PostSubCategoryDTO()
+        {
+            SubName = subCategoryName,
+        };
+        Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
+        var mapper = new MapperConfiguration(config =>
+        {
+            config.CreateMap<PostSubCategoryDTO, SubCategory>();
+            config.CreateMap<PutSubCategoryDTO, SubCategory>();
+        }).CreateMapper();
+        var postSubCategoryValidator = new SubCategoryValidator.PostSubCategoryValidator();
+        var putSubCategoryValidator = new SubCategoryValidator.PutSubCategoryValidator();
+        ISubCategoryService service =
+            new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
+      
+        var ex = Assert.Throws<ArgumentException>(() => service.addSubCategoryToCategory(dto));
+        
+        Assert.Equal("This subcategory needs to be linked with a Category", ex.Message);
+    }
     
 }

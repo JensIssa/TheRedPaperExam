@@ -25,7 +25,7 @@ public class SubCategoryRepository : ISubCategoryRepository
         return dto;
     }
 
-    public SubCategory deleteSubCategoryFromCategory(int categoryId, int subcategoryId)
+    public SubCategory deleteSubCategoryFromCategory(int subcategoryId)
     {
         throw new NotImplementedException();
     }

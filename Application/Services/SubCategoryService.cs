@@ -30,6 +30,7 @@ public class SubCategoryService : ISubCategoryService
 
     public SubCategory addSubCategoryToCategory( PostSubCategoryDTO dto)
     {
+        ExceptionHandlingCreate(dto);
         var validation = _postDTO.Validate(dto);
         if (!validation.IsValid)
         {
@@ -37,14 +38,27 @@ public class SubCategoryService : ISubCategoryService
         }
         return _repository.addSubCategoryToCategory(_imapper.Map<SubCategory>(dto));
     }
-
-    public SubCategory addSubCategoryToCategory(int categoryId, int subcategoryId)
+    
+    public SubCategory deleteSubCategoryFromCategory(int subcategoryId)
     {
-        throw new NotImplementedException();
+        if (subcategoryId==null|| subcategoryId<1)
+        {
+            throw new ArgumentException("The SubCategory id is not found");
+        }
+        return _repository.deleteSubCategoryFromCategory(subcategoryId);
     }
-
-    public SubCategory deleteSubCategoryFromCategory(int categoryId, int subcategoryId)
+    
+    
+    private void ExceptionHandlingCreate(PostSubCategoryDTO dto)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrEmpty(dto.SubName))
+        {
+            throw new ArgumentException("This SubCategory name is empty/null");
+        }
+
+        if (dto.categoryID == null)
+        {
+            throw new ArgumentException("This subcategory needs to be linked with a Category");
+        }
     }
 }
