@@ -38,6 +38,13 @@ public class ProductRepository : IProductRepository
         return productToDelete;
     }
 
+    public Product getProductById(int productID)
+    {
+        return _context.ProductTable.FirstOrDefault(p => p.Id == productID) ?? throw new KeyNotFoundException("There was no matching id found");
+
+        
+    }
+
     public Product UpdateProduct(int productId, Product dto)
     {
         throw new NotImplementedException();

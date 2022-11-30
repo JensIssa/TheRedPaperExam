@@ -90,4 +90,12 @@ public class ProductService : IProductService
     {
         throw new NotImplementedException();
     }
+
+    public Product getProductById(int productID)
+    {
+        if (productID == null || productID < 1)
+        {
+            throw new ArgumentException("id is null or < 1");
+        }
+        return _repository.getProductById(productID);    }
 }

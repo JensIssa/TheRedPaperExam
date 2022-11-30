@@ -14,4 +14,6 @@ public interface IProductService
     public Product DeleteProductFromUser(int productId);
 
     public Product UpdateProduct(int productId, PutProductDTO dto);
+
+    public Product getProductById(int productID);
 }

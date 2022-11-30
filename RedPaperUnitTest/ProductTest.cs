@@ -17,19 +17,19 @@ public class ProductTest
         {
             Id = 1, ProductName = "TestProduct 1", ImageUrl = "This is a tester",
             Description = "This is a description", Price = 5.5, ProductCondition = Condition.Fremragende,
-             userId = 1 };
+             UserId = 1 };
          
         Product product2 = new Product
         {
             Id = 2, ProductName ="TestProduct 2", ImageUrl = "This is a tester",
             Description = "This is a description", Price = 7.5, ProductCondition = Condition.Brugt,
-            userId = 2 }; 
+            UserId = 2 }; 
             
         Product product3 = new Product
         {
             Id = 3, ProductName = "TestProduct 3", ImageUrl = "This is a tester",
             Description = "This is a description", Price = 6.5, ProductCondition = Condition.Nedslidt,
-             userId = 3 };
+             UserId = 3 };
         yield return new object[]
         {
             new Product[]
@@ -147,11 +147,11 @@ public class ProductTest
           {
               Id = 1, ProductName = "TestProduct 1", ImageUrl = "This is a tester",
               Description = "This is a description", Price = 5.5, ProductCondition = Condition.Fremragende,
-              userId = userId, SubCategoryID = subcategoryId};
+              UserId = userId, SubCategoryID = subcategoryId};
           PostProductDTO dto = new PostProductDTO()
           {
               ProductName = product1.ProductName, Description = product1.Description, Price = product1.Price,
-              userId = product1.userId, ProductCondition = product1.ProductCondition, ImageUrl = product1.ImageUrl,
+              UserId = product1.UserId, ProductCondition = product1.ProductCondition, ImageUrl = product1.ImageUrl,
               SubCategoryID = product1.SubCategoryID
           };
           Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
@@ -169,7 +169,7 @@ public class ProductTest
           
           //Assert
           Assert.Equal(product1.Id, productCreated.Id);
-          Assert.Equal(product1.userId, productCreated.userId);
+          Assert.Equal(product1.UserId, productCreated.UserId);
           Assert.Equal(product1, productCreated);
           mockRepo.Verify(p => p.AddProductToUser(It.IsAny<Product>()), Times.Once);
       }
@@ -203,11 +203,11 @@ public class ProductTest
               new ProductService(mockRepo.Object, mapper, postProductValidator, putProductValidator);
 
           Product product = new Product{ Id = productiD, ProductName = productName, ImageUrl = imageUrl,
-              Description = description, Price = price, SubCategoryID = subId, userId = userID, ProductCondition = Condition.Fremragende};
+              Description = description, Price = price, SubCategoryID = subId, UserId = userID, ProductCondition = Condition.Fremragende};
           PostProductDTO dto = new PostProductDTO
           {
               Description = product.Description, ProductName = product.ProductName, Price = product.Price,
-              ImageUrl = product.ImageUrl, userId = product.userId, SubCategoryID = product.SubCategoryID,
+              ImageUrl = product.ImageUrl, UserId = product.UserId, SubCategoryID = product.SubCategoryID,
               ProductCondition = product.ProductCondition
           };
 
@@ -228,13 +228,13 @@ public class ProductTest
           {
               Id = 1, ProductName = "TestProduct 1", ImageUrl = "This is a tester",
               Description = "This is a description", Price = 5.5, ProductCondition = Condition.Fremragende,
-              SubCategoryID = 1, userId = 2};
+              SubCategoryID = 1, UserId = 2};
         
           Product productToDelete = new Product
           {
               Id = 2, ProductName = "TestProduct 2", ImageUrl = "This is a tester",
               Description = "This is a description", Price = 7.5, ProductCondition = Condition.Brugt,
-              SubCategoryID = 1, userId = 2}; 
+              SubCategoryID = 1, UserId = 2}; 
           products.Add(product1);
           products.Add(productToDelete);
           Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();

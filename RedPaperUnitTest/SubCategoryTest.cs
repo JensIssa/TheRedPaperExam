@@ -80,7 +80,7 @@ public class SubCategoryTest
         PostSubCategoryDTO dto = new PostSubCategoryDTO()
         {
             SubName = subCategory.SubName,
-            categoryID = subCategory.CategoryID
+            CategoryID = subCategory.CategoryID
         };
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
         var mapper = new MapperConfiguration(config =>
@@ -112,7 +112,7 @@ public class SubCategoryTest
         PostSubCategoryDTO dto = new PostSubCategoryDTO()
         {
             SubName = subCategoryName,
-            categoryID = categoryID
+            CategoryID = categoryID
         };
 
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
@@ -221,7 +221,7 @@ public class SubCategoryTest
     {
         SubCategory subCategory = new SubCategory() { Id = 1, SubName = "Biler", CategoryID = 2 };
         PutSubCategoryDTO dto = new PutSubCategoryDTO()
-            { Id = subCategory.Id, SubName = subCategory.SubName, categoryID = subCategory.CategoryID };
+            { Id = subCategory.Id, SubName = subCategory.SubName, CategoryID = subCategory.CategoryID };
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
         var mapper = new MapperConfiguration(config =>
         {
@@ -255,7 +255,7 @@ public class SubCategoryTest
     public void UpdateSubCategoryInvalidTest(int id, string categoryName, int categoryId, string expectedMessage)
     {
         PutSubCategoryDTO dto = new PutSubCategoryDTO()
-            { Id = id, SubName = categoryName, categoryID = categoryId };
+            { Id = id, SubName = categoryName, CategoryID = categoryId };
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
         var mapper = new MapperConfiguration(config =>
         {

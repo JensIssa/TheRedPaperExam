@@ -41,4 +41,21 @@ public class ProductController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+    [HttpGet]
+    [Route("id")]
+    public ActionResult<Product> GetProductById(int id)
+    {
+        try
+        {
+            return _service.getProductById(id);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound("No Product has been found" + id);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, e.ToString());
+        }
+    }
 }
