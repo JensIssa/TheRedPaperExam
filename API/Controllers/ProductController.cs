@@ -22,7 +22,7 @@ public class ProductController : ControllerBase
     {
         return _service.GetAllProductsFromSubcategory(subcategoryId);
     }
-
+    
 
     [HttpPost]
     public ActionResult<Product> CreateProduct(PostProductDTO dto)
