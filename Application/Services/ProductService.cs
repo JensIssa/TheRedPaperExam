@@ -62,7 +62,7 @@ public class ProductService : IProductService
             throw new ArgumentException("The productName is empty or null");
         }
 
-        if (dto.userId == null || dto.userId < 1)
+        if (dto.UserId == null || dto.UserId < 1)
         {
             throw new ArgumentException("The userID is null / <1");
         }

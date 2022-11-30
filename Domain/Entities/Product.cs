@@ -37,26 +37,14 @@ public class Product
         get;
         set;
     }
-
-    public SubCategory? SubCategory
-    {
-        get;
-        set;
-    }
+    
 
     public int SubCategoryID
     {
         get;
         set;
     }
-
-    public User? user
-    {
-        get;
-        set;
-    }
-
-    public int userId
+    public int UserId
     {
         get;
         set;

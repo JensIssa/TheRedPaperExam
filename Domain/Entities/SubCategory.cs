@@ -15,12 +15,7 @@ public class SubCategory
         get;
         set;
     }
-    public Category? Category
-    {
-        get;
-        set;
-    }
-    
+
     public int? CategoryID
     {
         get;

@@ -15,8 +15,9 @@ public class SubCategoryRepository : ISubCategoryRepository
 
     public List<SubCategory> GetAllSubCategoriesFromCategory(int categoryId)
     {
-        return _context.SubCategoryTable.Where(i => i.CategoryID == categoryId).Include((x) => x.Category).ToList();
+        return _context.SubCategoryTable.Where(i => i.CategoryID == categoryId).ToList();
     }
+    
     public SubCategory addSubCategoryToCategory(SubCategory dto)
     {
         _context.Add(dto); 

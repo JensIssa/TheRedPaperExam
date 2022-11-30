@@ -17,15 +17,21 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
         modelBuilder.Entity<SubCategory>().Property(s => s.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Product>().Property(p => p.Id).ValueGeneratedOnAdd();
         //Foreign key relations and one to many
-        modelBuilder.Entity<SubCategory>().HasOne(s => s.Category).
-            WithMany(c => c.SubCategories)
-            .HasForeignKey(s => s.CategoryID).OnDelete(DeleteBehavior.Cascade);
+
         
-        modelBuilder.Entity<Product>().HasOne(p => p.SubCategory).
+        modelBuilder.Entity<SubCategory>().
+            HasOne<Category>().
+            WithMany(c => c.SubCategories)
+            .HasForeignKey(s => s.CategoryID).
+            OnDelete(DeleteBehavior.Cascade);
+
+
+        modelBuilder.Entity<Product>().HasOne<SubCategory>().
             WithMany(s => s.Products)
             .HasForeignKey(p => p.SubCategoryID);
-        modelBuilder.Entity<Product>().HasOne(p => p.user).
-            WithMany(u => u.products).HasForeignKey(p => p.userId);
+        
+        modelBuilder.Entity<Product>().HasOne<User>().
+            WithMany(u => u.products).HasForeignKey(p => p.UserId);
     }
 
     public DbSet<User> UserTable

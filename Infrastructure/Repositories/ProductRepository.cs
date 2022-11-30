@@ -15,13 +15,12 @@ public class ProductRepository : IProductRepository
 
     public List<Product> GetAllProductsFromSubcategory(int subcategoryId)
     {
-        return _context.ProductTable.Where(i => i.SubCategoryID == subcategoryId).Include
-            (x => x.SubCategory).ToList();
+        return _context.ProductTable.Where(i => i.SubCategoryID == subcategoryId).ToList();
     }
 
     public List<Product> GetAllProductsFromUser(int userId)
     {
-        return _context.ProductTable.Where(i => i.userId == userId).Include(x => x.user).ToList();
+        return _context.ProductTable.Where(i => i.UserId == userId).ToList();
     }
 
     public Product AddProductToUser(Product dto)

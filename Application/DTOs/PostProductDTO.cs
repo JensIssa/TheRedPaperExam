@@ -34,28 +34,15 @@ public class PostProductDTO
         get;
         set;
     }
-
-    [JsonIgnore]
-    public SubCategory? SubCategory
-    {
-        get;
-        set;
-    }
+    
 
     public int SubCategoryID
     {
         get;
         set;
     }
-
-    [JsonIgnore]
-    public User? user
-    {
-        get;
-        set;
-    }
-
-    public int userId
+    
+    public int UserId
     {
         get;
         set;
