@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using System.Text.Json.Serialization;
+using Domain.Entities;
 
 namespace Application.DTOs;
 
@@ -34,6 +35,7 @@ public class PostProductDTO
         set;
     }
 
+    [JsonIgnore]
     public SubCategory? SubCategory
     {
         get;
@@ -46,6 +48,7 @@ public class PostProductDTO
         set;
     }
 
+    [JsonIgnore]
     public User? user
     {
         get;

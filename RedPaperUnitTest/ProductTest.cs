@@ -228,13 +228,13 @@ public class ProductTest
           {
               Id = 1, ProductName = "TestProduct 1", ImageUrl = "This is a tester",
               Description = "This is a description", Price = 5.5, ProductCondition = Condition.Fremragende,
-              SubCategoryID = 1, userId = 1};
+              SubCategoryID = 1, userId = 2};
         
           Product productToDelete = new Product
           {
               Id = 2, ProductName = "TestProduct 2", ImageUrl = "This is a tester",
               Description = "This is a description", Price = 7.5, ProductCondition = Condition.Brugt,
-              SubCategoryID = 2, userId = 1}; 
+              SubCategoryID = 1, userId = 2}; 
           products.Add(product1);
           products.Add(productToDelete);
           Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
@@ -247,17 +247,17 @@ public class ProductTest
           var putProductValidator = new ProductValidator.PutProductValidator();
           IProductService service =
               new ProductService(mockRepo.Object, mapper, postProductValidator, putProductValidator);
-          mockRepo.Setup(p => p.GetAllProductsFromUser(1)).Returns(products);
+          mockRepo.Setup(p => p.GetAllProductsFromUser(2)).Returns(products);
           mockRepo.Setup(p => p.DeleteProductFromUser(productToDelete.Id)).Returns(() =>
           {
               products.Remove(productToDelete);
               return productToDelete;
           });
-          var actual = service.DeleteProductFromUser(1);
+          var actual = service.DeleteProductFromUser(2);
           
           Assert.Equal(expectedListSize, products.Count);
           Assert.Equal(productToDelete, actual);
           Assert.DoesNotContain(productToDelete, products);
-          mockRepo.Verify(p => p.DeleteProductFromUser(1), Times.Once);
+          mockRepo.Verify(p => p.DeleteProductFromUser(2), Times.Once);
       }
 }
