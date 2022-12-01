@@ -18,11 +18,19 @@ public class SubCategoryController : ControllerBase
     }
     
     [HttpGet]
-    public List<SubCategory> GetAllSubCategories(int categoryId)
+    [Route("GetAllSubsFromCategories")]
+    public List<SubCategory> GetAllSubCategoriesFromCategory(int categoryId)
     {
         return _subCategoryService.GetAllSubCategoriesFromCategory(categoryId);
     }
-    
+
+    [HttpGet]
+    [Route("GetAllSubs")]
+    public List<SubCategory> getAllSubCategories()
+    {
+        return _subCategoryService.getAllSubCategories();
+    }
+
     [HttpPost]
     public ActionResult<Category> CreateSubCategory(PostSubCategoryDTO dto)
     {

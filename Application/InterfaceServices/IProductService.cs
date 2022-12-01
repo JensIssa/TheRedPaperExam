@@ -11,6 +11,8 @@ public interface IProductService
 
     public Product AddProductToUser(PostProductDTO dto);
 
+    public List<Condition> conditionList();
+    
     public Product DeleteProductFromUser(int productId);
 
     public Product UpdateProduct(int productId, PutProductDTO dto);

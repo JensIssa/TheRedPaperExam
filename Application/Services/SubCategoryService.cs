@@ -28,6 +28,11 @@ public class SubCategoryService : ISubCategoryService
         return _repository.GetAllSubCategoriesFromCategory(categoryId); 
     }
 
+    public List<SubCategory> getAllSubCategories()
+    {
+        return _repository.GetAllSubCategories();
+    }
+
     public SubCategory addSubCategoryToCategory( PostSubCategoryDTO dto)
     {
         ExceptionHandlingCreate(dto);
