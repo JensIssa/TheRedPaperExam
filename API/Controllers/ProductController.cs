@@ -23,6 +23,12 @@ public class ProductController : ControllerBase
         return _service.GetAllProductsFromSubcategory(subcategoryId);
     }
     
+    [HttpGet]
+    [Route("getProductsFromUser")]
+    public List<Product> GetAllProductsFromUser(int userId)
+    {
+        return _service.GetAllProductsFromUser(userId);
+    }
 
     [HttpPost]
     public ActionResult<Product> CreateProduct(PostProductDTO dto)
