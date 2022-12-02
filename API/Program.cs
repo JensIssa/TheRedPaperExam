@@ -56,6 +56,8 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
 builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
+builder.Services.AddScoped<IConditionService, ConditionService>();
+builder.Services.AddScoped<IConditionRepository, ConditionRepository>();
 #endregion
 
 

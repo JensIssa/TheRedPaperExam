@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Domain.Entities;
 
 public class Product
 {
@@ -31,14 +33,7 @@ public class Product
         get;
         set;
     }
-
-    public Condition ProductCondition
-    {
-        get;
-        set;
-    }
     
-
     public int SubCategoryID
     {
         get;
@@ -49,4 +44,8 @@ public class Product
         get;
         set;
     }
+    
+    public Condition ProductCondition { get; set; }
+    
+    public int ProductConditionId { get; set; }
 }

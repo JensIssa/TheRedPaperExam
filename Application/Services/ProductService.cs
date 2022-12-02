@@ -44,11 +44,7 @@ public class ProductService : IProductService
 
         return _repository.AddProductToUser(_imapper.Map<Product>(dto));
     }
-
-    public List<Condition> conditionList()
-    {
-        throw new NotImplementedException();
-    }
+    
 
     public void ExceptionHandlingCreate(PostProductDTO dto)
     {

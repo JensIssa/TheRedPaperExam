@@ -32,6 +32,13 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
         
         modelBuilder.Entity<Product>().HasOne<User>().
             WithMany(u => u.products).HasForeignKey(p => p.UserId);
+
+        modelBuilder.Entity<Product>().HasOne(p => p.ProductCondition).WithMany(c => c.Prodcuts)
+            .HasForeignKey(p => p.ProductConditionId);
+
+        modelBuilder.Entity<Condition>().HasData(new Condition() { Id = 1, Name = "Ubrugt" }, new Condition() {Id = 2, Name = "Fremragende"}, new Condition() {Id = 3, Name = "God"},
+            new Condition() {Id = 4, Name = "Brugt"}, new Condition() { Id = 5, Name = "Nedslidt"});
+
     }
 
     public DbSet<User> UserTable
@@ -56,4 +63,10 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
         get;
         set;
     }
+
+    public DbSet<Condition> ConditionTable
+    {
+        get;
+        set;
+    } 
 }

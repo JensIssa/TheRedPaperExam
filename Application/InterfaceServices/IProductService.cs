@@ -10,8 +10,6 @@ public interface IProductService
     public List<Product> GetAllProductsFromUser(int userId);
 
     public Product AddProductToUser(PostProductDTO dto);
-
-    public List<Condition> conditionList();
     
     public Product DeleteProductFromUser(int productId);
 

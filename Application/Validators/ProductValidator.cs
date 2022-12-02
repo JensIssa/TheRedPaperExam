@@ -14,9 +14,9 @@ public class ProductValidator
         {
             RuleFor(p => p.ProductName).NotEmpty();
             RuleFor(p => p.Price).NotEmpty();
-            RuleFor(p => p.ProductCondition).NotEmpty();
-            RuleFor(p => p.ProductCondition).IsInEnum();
             RuleFor(p => p.Price).LessThanOrEqualTo(100000);
+            RuleFor(p => p.ProductConditionId).NotEmpty();
+
         }
     }
     
@@ -28,8 +28,8 @@ public class ProductValidator
             RuleFor(p => p.ProductName).NotEmpty();
             RuleFor(p => p.Price).NotEmpty();
             RuleFor(p => p.ProductCondition).NotEmpty();
-            RuleFor(p => p.ProductCondition).IsInEnum();
             RuleFor(p => p.Price).LessThanOrEqualTo(100000);
+
         }
     }
 }

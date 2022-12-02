@@ -20,7 +20,7 @@ public class ProductRepository : IProductRepository
 
     public List<Product> GetAllProductsFromUser(int userId)
     {
-        return _context.ProductTable.Where(i => i.UserId == userId).ToList();
+        return _context.ProductTable.Where(i => i.UserId == userId).Include(p => p.ProductCondition).ToList();
     }
 
     public Product AddProductToUser(Product dto)

@@ -28,14 +28,13 @@ public class PostProductDTO
         get;
         set;
     }
-
-    public Condition ProductCondition
+    
+    public int ProductConditionId
     {
         get;
         set;
     }
     
-
     public int SubCategoryID
     {
         get;
