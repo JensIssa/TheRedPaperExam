@@ -58,6 +58,8 @@ builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
 builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
 builder.Services.AddScoped<IConditionService, ConditionService>();
 builder.Services.AddScoped<IConditionRepository, ConditionRepository>();
+builder.Services.AddScoped<ISortingRepository, SortingRepository>();
+builder.Services.AddScoped<ISortingService, SortingService>();
 #endregion
 
 
