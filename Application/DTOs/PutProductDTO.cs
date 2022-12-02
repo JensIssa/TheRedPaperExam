@@ -1,10 +1,15 @@
-﻿using System.Text.Json.Serialization;
-using Domain.Entities;
+﻿using Domain.Entities;
 
 namespace Application.DTOs;
 
-public class PostProductDTO
+public class PutProductDTO
 {
+    public int productId
+    {
+        get;
+        set;
+    }
+    
     public string ProductName
     {
         get;
@@ -28,20 +33,8 @@ public class PostProductDTO
         get;
         set;
     }
-    
+
     public int ProductConditionId
-    {
-        get;
-        set;
-    }
-    
-    public int SubCategoryID
-    {
-        get;
-        set;
-    }
-    
-    public int UserId
     {
         get;
         set;

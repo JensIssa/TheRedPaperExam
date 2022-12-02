@@ -16,15 +16,8 @@ public class PutSubCategoryDTO
         get;
         set;
     }
-    
-    [JsonIgnore]
-    public Category? Category
-    {
-        get;
-        set;
-    }
-    
-    public int? categoryID
+
+    public int? CategoryID
     {
         get;
         set;

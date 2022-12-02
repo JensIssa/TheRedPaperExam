@@ -28,6 +28,11 @@ public class SubCategoryService : ISubCategoryService
         return _repository.GetAllSubCategoriesFromCategory(categoryId); 
     }
 
+    public List<SubCategory> getAllSubCategories()
+    {
+        return _repository.GetAllSubCategories();
+    }
+
     public SubCategory addSubCategoryToCategory( PostSubCategoryDTO dto)
     {
         ExceptionHandlingCreate(dto);
@@ -67,7 +72,7 @@ public class SubCategoryService : ISubCategoryService
             throw new ArgumentException("This SubCategory name is empty/null");
         }
 
-        if (dto.categoryID == null)
+        if (dto.CategoryID == null)
         {
             throw new ArgumentException("This subcategory needs to be linked with a Category");
         }
@@ -80,7 +85,7 @@ public class SubCategoryService : ISubCategoryService
             throw new ArgumentException("This SubCategory name is empty/null");
         }
 
-        if (dto.categoryID == null || dto.categoryID < 1)
+        if (dto.CategoryID == null || dto.CategoryID < 1)
         {
             throw new ArgumentException("This subcategory needs to be linked with a Category");
         }

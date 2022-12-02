@@ -32,6 +32,8 @@ var mapper = new MapperConfiguration(config =>
     config.CreateMap<PostCategoryDTO, Category>();
     config.CreateMap<PostSubCategoryDTO, SubCategory>();
     config.CreateMap<PutSubCategoryDTO, SubCategory>();
+    config.CreateMap<PostProductDTO, Product>();
+    config.CreateMap<PutProductDTO, Product>();
 }).CreateMapper();
 
 builder.Services.AddSingleton(mapper);
@@ -54,6 +56,8 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
 builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
+builder.Services.AddScoped<IConditionService, ConditionService>();
+builder.Services.AddScoped<IConditionRepository, ConditionRepository>();
 #endregion
 
 
