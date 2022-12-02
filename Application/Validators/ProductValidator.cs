@@ -27,7 +27,7 @@ public class ProductValidator
             RuleFor(p => p.productId).NotEmpty();
             RuleFor(p => p.ProductName).NotEmpty();
             RuleFor(p => p.Price).NotEmpty();
-            RuleFor(p => p.ProductCondition).NotEmpty();
+            RuleFor(p => p.ProductConditionId).NotEmpty();
             RuleFor(p => p.Price).LessThanOrEqualTo(100000);
 
         }

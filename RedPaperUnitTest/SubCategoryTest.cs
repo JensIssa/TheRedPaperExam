@@ -234,7 +234,7 @@ public class SubCategoryTest
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
         mockRepo.Setup(r => r.updateSubCategory(id, It.IsAny<SubCategory>())).Returns(subCategory);
 
-        dto.SubName = categoryName;
+        dto.SubName = categoryName; 
         SubCategory updateSubCategory = service.updateSubCategory(id, dto);
 
         Assert.Equal(subCategory, updateSubCategory);

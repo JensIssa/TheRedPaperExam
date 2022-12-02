@@ -11,24 +11,41 @@ namespace RedPaperUnitTest;
 
 public class ProductTest
 {
+    private IMapper mapper;
+    private ProductValidator.PostProductValidator postProductValidator;
+    private ProductValidator.PutProductValidator putProductValidator;
+
+    public ProductTest()
+    {
+        var _mapper = new MapperConfiguration(config =>
+        {
+            config.CreateMap<PostProductDTO, Product>();
+            config.CreateMap<PutProductDTO, Product>();
+        }).CreateMapper();
+        mapper = _mapper;
+        postProductValidator = new ProductValidator.PostProductValidator();
+        putProductValidator = new ProductValidator.PutProductValidator();
+    }
+
+
     public static IEnumerable<Object[]> GetAllProductsFromSubcategoryTestcases()
     {
         Product product1 = new Product
         {
             Id = 1, ProductName = "TestProduct 1", ImageUrl = "This is a tester",
-            Description = "This is a description", Price = 5.5, ProductCondition = Condition.Fremragende,
+            Description = "This is a description", Price = 5.5, ProductConditionId = 1,
              UserId = 1 };
          
         Product product2 = new Product
         {
             Id = 2, ProductName ="TestProduct 2", ImageUrl = "This is a tester",
-            Description = "This is a description", Price = 7.5, ProductCondition = Condition.Brugt,
+            Description = "This is a description", Price = 7.5, ProductConditionId = 2,
             UserId = 2 }; 
             
         Product product3 = new Product
         {
             Id = 3, ProductName = "TestProduct 3", ImageUrl = "This is a tester",
-            Description = "This is a description", Price = 6.5, ProductCondition = Condition.Nedslidt,
+            Description = "This is a description", Price = 6.5, ProductConditionId = 3,
              UserId = 3 };
         yield return new object[]
         {
@@ -47,19 +64,19 @@ public class ProductTest
         Product product1 = new Product
         {
             Id = 1, ProductName = "TestProduct 1", ImageUrl = "This is a tester",
-            Description = "This is a description", Price = 5.5, ProductCondition = Condition.Fremragende,
+            Description = "This is a description", Price = 5.5, ProductConditionId = 2,
             SubCategoryID = 1 };
         
         Product product2 = new Product
         {
             Id = 2, ProductName = "TestProduct 2", ImageUrl = "This is a tester",
-            Description = "This is a description", Price = 7.5, ProductCondition = Condition.Brugt,
+            Description = "This is a description", Price = 7.5, ProductConditionId = 3,
             SubCategoryID = 2 }; 
             
         Product product3 = new Product
         {
             Id = 3, ProductName = "TestProduct 3", ImageUrl = "This is a tester",
-            Description = "This is a description", Price = 6.5, ProductCondition = Condition.Nedslidt,
+            Description = "This is a description", Price = 6.5, ProductConditionId = 2,
             SubCategoryID = 3 };
         yield return new object[]
         {
@@ -77,13 +94,6 @@ public class ProductTest
     public void CreateProductServiceTest()
     {
         Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PostProductDTO, Product>();
-            config.CreateMap<PutProductDTO, Product>();
-        }).CreateMapper();
-        var postProductValidator = new ProductValidator.PostProductValidator();
-        var putProductValidator = new ProductValidator.PutProductValidator();
         IProductService service =
             new ProductService(mockRepo.Object, mapper, postProductValidator, putProductValidator);
         // Assert
@@ -99,13 +109,6 @@ public class ProductTest
         int subcategoryID = 2; 
         var fakeRepo = data;
         Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PostProductDTO, Product>();
-            config.CreateMap<PutProductDTO, Product>();
-        }).CreateMapper();
-        var postProductValidator = new ProductValidator.PostProductValidator();
-        var putProductValidator = new ProductValidator.PutProductValidator();
         IProductService service =
             new ProductService(mockRepo.Object, mapper, postProductValidator, putProductValidator);
         mockRepo.Setup(p => p.GetAllProductsFromSubcategory(subcategoryID)).Returns(fakeRepo.ToList);
@@ -116,20 +119,12 @@ public class ProductTest
     }
     
         [Theory]
-        [MemberData(nameof(GetAllProductsFromSubcategoryTestcases))]
-  
-      public void GetAllProductsFromUserTest(Product[] data, List<Product> expectedResult)
-      {
+        [MemberData(nameof(GetAllProductsFromUserTestcases))]
+        public void GetAllProductsFromUserTest(Product[] data, List<Product> expectedResult)
+        {
           int userId = 2; 
           var fakeRepo = data;
           Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
-          var mapper = new MapperConfiguration(config =>
-          {
-              config.CreateMap<PostProductDTO, Product>();
-              config.CreateMap<PutProductDTO, Product>();
-          }).CreateMapper();
-          var postProductValidator = new ProductValidator.PostProductValidator();
-          var putProductValidator = new ProductValidator.PutProductValidator();
           IProductService service =
               new ProductService(mockRepo.Object, mapper, postProductValidator, putProductValidator);
           mockRepo.Setup(p => p.GetAllProductsFromUser(userId)).Returns(fakeRepo.ToList);
@@ -137,7 +132,7 @@ public class ProductTest
           Assert.Equal(expectedResult, actualResult);
           Assert.True(Enumerable.SequenceEqual(expectedResult, actualResult));
           mockRepo.Verify(p => p.GetAllProductsFromUser(2), Times.Once);
-      }
+        }
 
       [Theory]
       [InlineData(1, 2)]
@@ -146,22 +141,15 @@ public class ProductTest
           Product product1 = new Product
           {
               Id = 1, ProductName = "TestProduct 1", ImageUrl = "This is a tester",
-              Description = "This is a description", Price = 5.5, ProductCondition = Condition.Fremragende,
+              Description = "This is a description", Price = 5.5, ProductConditionId = 2 ,
               UserId = userId, SubCategoryID = subcategoryId};
           PostProductDTO dto = new PostProductDTO()
           {
               ProductName = product1.ProductName, Description = product1.Description, Price = product1.Price,
-              UserId = product1.UserId, ProductCondition = product1.ProductCondition, ImageUrl = product1.ImageUrl,
+              UserId = product1.UserId, ProductConditionId = product1.ProductConditionId, ImageUrl = product1.ImageUrl,
               SubCategoryID = product1.SubCategoryID
           };
           Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
-          var mapper = new MapperConfiguration(config =>
-          {
-              config.CreateMap<PostProductDTO, Product>();
-              config.CreateMap<PutProductDTO, Product>();
-          }).CreateMapper();
-          var postProductValidator = new ProductValidator.PostProductValidator();
-          var putProductValidator = new ProductValidator.PutProductValidator();
           IProductService service =
               new ProductService(mockRepo.Object, mapper, postProductValidator, putProductValidator);
           mockRepo.Setup(p => p.AddProductToUser(It.IsAny<Product>())).Returns(product1);
@@ -192,29 +180,18 @@ public class ProductTest
           double price, int subId, int userID, string expectedMesssage)
       {
           Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
-          var mapper = new MapperConfiguration(config =>
-          {
-              config.CreateMap<PostProductDTO, Product>();
-              config.CreateMap<PutProductDTO, Product>();
-          }).CreateMapper();
-          var postProductValidator = new ProductValidator.PostProductValidator();
-          var putProductValidator = new ProductValidator.PutProductValidator();
           IProductService service =
               new ProductService(mockRepo.Object, mapper, postProductValidator, putProductValidator);
-
           Product product = new Product{ Id = productiD, ProductName = productName, ImageUrl = imageUrl,
-              Description = description, Price = price, SubCategoryID = subId, UserId = userID, ProductCondition = Condition.Fremragende};
+              Description = description, Price = price, SubCategoryID = subId, UserId = userID, ProductConditionId = 2 };
           PostProductDTO dto = new PostProductDTO
           {
               Description = product.Description, ProductName = product.ProductName, Price = product.Price,
               ImageUrl = product.ImageUrl, UserId = product.UserId, SubCategoryID = product.SubCategoryID,
-              ProductCondition = product.ProductCondition
+              ProductConditionId = product.ProductConditionId
           };
-
           var action = () => service.AddProductToUser(dto);
-
           var ex = Assert.Throws<ArgumentException>(action);
-
           Assert.Equal(expectedMesssage, ex.Message);
           mockRepo.Verify(r => r.AddProductToUser(product), Times.Never);
       }
@@ -227,24 +204,17 @@ public class ProductTest
           Product product1 = new Product
           {
               Id = 1, ProductName = "TestProduct 1", ImageUrl = "This is a tester",
-              Description = "This is a description", Price = 5.5, ProductCondition = Condition.Fremragende,
+              Description = "This is a description", Price = 5.5, ProductConditionId = 2,
               SubCategoryID = 1, UserId = 2};
         
           Product productToDelete = new Product
           {
               Id = 2, ProductName = "TestProduct 2", ImageUrl = "This is a tester",
-              Description = "This is a description", Price = 7.5, ProductCondition = Condition.Brugt,
+              Description = "This is a description", Price = 7.5, ProductConditionId = 3,
               SubCategoryID = 1, UserId = 2}; 
           products.Add(product1);
           products.Add(productToDelete);
           Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
-          var mapper = new MapperConfiguration(config =>
-          {
-              config.CreateMap<PostProductDTO, Product>();
-              config.CreateMap<PutProductDTO, Product>();
-          }).CreateMapper();
-          var postProductValidator = new ProductValidator.PostProductValidator();
-          var putProductValidator = new ProductValidator.PutProductValidator();
           IProductService service =
               new ProductService(mockRepo.Object, mapper, postProductValidator, putProductValidator);
           mockRepo.Setup(p => p.GetAllProductsFromUser(2)).Returns(products);
@@ -259,5 +229,79 @@ public class ProductTest
           Assert.Equal(productToDelete, actual);
           Assert.DoesNotContain(productToDelete, products);
           mockRepo.Verify(p => p.DeleteProductFromUser(2), Times.Once);
+      }
+
+      [Theory]
+      [InlineData(0, "The Product id is not found")]
+      [InlineData(null, "The Product id is not found")]
+      public void DeleteProductTestInvalid(int productID, string expectedException)
+      {
+          Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
+          IProductService service =
+              new ProductService(mockRepo.Object, mapper, postProductValidator, putProductValidator);
+          var action = () => service.DeleteProductFromUser(productID);
+          var ex = Assert.Throws<ArgumentException>(action);
+          Assert.Equal(expectedException, ex.Message);
+      }
+      
+      [Theory]
+      [InlineData(1, "Product test", "billede", "beskrivelse", 5000, 1, 2, 2)]
+      public void updateProductTest(int productiD, string productName, string imageUrl, string description,
+          double price, int subId, int userID, int productConditionId)
+      {
+          Product product3 = new Product
+          {
+              Id = 3, ProductName = "TestProduct 3", ImageUrl = "This is a tester",
+              Description = "This is a description", Price = 6.5, ProductConditionId = 2,
+              SubCategoryID = 3 };
+          PutProductDTO dto = new PutProductDTO()
+          {
+              productId = product3.Id, ProductName = product3.ProductName, Description = product3.Description,
+              Price = product3.Price, ImageUrl = product3.ImageUrl, ProductConditionId = product3.ProductConditionId
+          };
+          Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
+          IProductService service =
+              new ProductService(mockRepo.Object, mapper, postProductValidator, putProductValidator);
+          mockRepo.Setup(p => p.UpdateProduct(productiD, It.IsAny<Product>())).Returns(product3);
+
+          dto.productId = productiD;
+          dto.ProductName = productName;
+          dto.Description = description;
+          dto.ImageUrl = imageUrl;
+          dto.Price = price;
+          dto.ProductConditionId = productConditionId;
+          var updatedProduct = service.UpdateProduct(productiD, dto);
+          Assert.Equal(product3, updatedProduct);
+          mockRepo.Verify(r => r.UpdateProduct(productiD, It.IsAny<Product>()), Times.Once);
+      }
+
+      [Theory]
+      [InlineData(1, "", "testImageUrl", "testDescription", 2.5, 1,  "The productName is empty or null")]
+      [InlineData(1, null, "testImageUrl", "testDescription", 2.5, 1, "The productName is empty or null")]
+      [InlineData(1, "testProductName", "", "testDescription", 2.5, 1, "The imageUrl is empty or null")]
+      [InlineData(1, "testProductName", null, "testDescription", 2.5, 1, "The imageUrl is empty or null")]
+      [InlineData(1, "testProductName", "testImageU", "", 2.5, 1, "The description is empty or null")]
+      [InlineData(1, "testProductName", "testImageU", null, 2.5, 1, "The description is empty or null")]
+      [InlineData(1, "testProductName", "testImageU", "testDescription", null, 1, "The price is null / <1")]
+      [InlineData(1, "testProductName", "testImageU", "testDescription", 0, 1, "The price is null / <1")]
+      [InlineData(null, "testProductName", "testImageU", "testDescription", 2.5, 1,  "The productId is null / <1")]
+      [InlineData(0, "testProductName", "testImageU", "testDescription", 2.5, 1,  "The productId is null / <1")]
+      [InlineData(1, "testProductName", "testImageU", "testDescription", 2.5, null,  "The conditionId is null / <1")]
+      [InlineData(1, "testProductName", "testImageU", "testDescription", 2.5, 0,  "The conditionId is null / <1")]
+      public void UpdateProductInvalidTest(int id,string productName, string imageUrl, string description, double price,int productConditionId, string expectedMessage)
+      {
+          PutProductDTO dto = new PutProductDTO()
+          {
+              productId = id, ProductName = productName, Description = description, Price = price, ImageUrl = imageUrl,
+              ProductConditionId = productConditionId
+          };
+          Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
+          IProductService service =
+              new ProductService(mockRepo.Object, mapper, postProductValidator, putProductValidator);
+          var action = () => service.UpdateProduct(id, dto);
+
+          var ex = Assert.Throws<ArgumentException>(action);
+          
+          Assert.Equal(expectedMessage, ex.Message);
       }
 }

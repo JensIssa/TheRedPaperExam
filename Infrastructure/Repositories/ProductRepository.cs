@@ -46,6 +46,10 @@ public class ProductRepository : IProductRepository
     }
     public Product UpdateProduct(int productId, Product dto)
     {
-        throw new NotImplementedException();
+        var productToUpdate =
+            _context.ProductTable.Find(productId) ?? throw new KeyNotFoundException("Id to delete not found");
+        _context.ProductTable.Update(productToUpdate);
+        _context.SaveChanges();
+        return productToUpdate; 
     }
 }

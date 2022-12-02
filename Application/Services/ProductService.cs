@@ -78,6 +78,38 @@ public class ProductService : IProductService
             throw new ArgumentException("The price is null / <1");
         }
     }
+    
+    public void ExceptionHandlingUpdate(PutProductDTO dto)
+    {
+        if (string.IsNullOrEmpty(dto.Description))
+        {
+            throw new ArgumentException("The description is empty or null");
+        }
+
+        if (string.IsNullOrEmpty(dto.ImageUrl))
+        {
+            throw new ArgumentException("The imageUrl is empty or null");
+        }
+        
+        if (string.IsNullOrEmpty(dto.ProductName))
+        {
+            throw new ArgumentException("The productName is empty or null");
+        }
+
+        if (dto.productId == null || dto.productId < 1)
+        {
+            throw new ArgumentException("The productId is null / <1");
+        }
+
+        if (dto.Price == null || dto.Price < 1)
+        {
+            throw new ArgumentException("The price is null / <1");
+        }
+        if (dto.ProductConditionId == null || dto.ProductConditionId < 1)
+        {
+            throw new ArgumentException("The conditionId is null / <1");
+        }
+    }
     public Product DeleteProductFromUser(int productId)
     {
         if (productId==null|| productId<1)
@@ -89,8 +121,13 @@ public class ProductService : IProductService
 
     public Product UpdateProduct(int productId, PutProductDTO dto)
     {
-        throw new NotImplementedException();
-    }
+        ExceptionHandlingUpdate(dto);
+        var validation = _putDTO.Validate(dto);
+        if (!validation.IsValid)
+        {
+            throw new ValidationException(validation.ToString());
+        }
+        return _repository.UpdateProduct(productId, _imapper.Map<Product>(dto));      }
 
     public Product getProductById(int productID)
     {

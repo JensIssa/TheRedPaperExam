@@ -34,7 +34,7 @@ public class PutProductDTO
         set;
     }
 
-    public Condition ProductCondition
+    public int ProductConditionId
     {
         get;
         set;

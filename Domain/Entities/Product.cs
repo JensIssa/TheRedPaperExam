@@ -45,7 +45,7 @@ public class Product
         set;
     }
     
-    public Condition ProductCondition { get; set; }
+    public Condition? ProductCondition { get; set; }
     
     public int ProductConditionId { get; set; }
 }
