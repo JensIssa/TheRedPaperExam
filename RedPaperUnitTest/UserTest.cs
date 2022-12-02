@@ -14,6 +14,15 @@ namespace RedPaperUnitTest;
 public class UserTest
 {
 
+    private UserValidator.UserPostValidator postUserValiator;
+    private UserValidator.UserPutValidator putUserValidator;
+
+    public UserTest()
+    {
+        postUserValiator = new UserValidator.UserPostValidator();
+        putUserValidator = new UserValidator.UserPutValidator();
+    }
+
     public static IEnumerable<Object[]> GetALlUsers_Test()
     {
         User user1 = new User{Id = 1, AssignedRole = Role.Customer, BirthDay = new DateTime(2001, 10, 15 ), Email = "jensissa@hotmail.com", FirstName = "Jens", Hash = " ", LastName = "Esbjerg", Username = "JensIKørestol", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
@@ -51,8 +60,6 @@ public class UserTest
         var fakerepo = data;
 
         Mock<IUserRepository> mockRepo = new Mock<IUserRepository>();
-        var putUserValidator = new UserValidator.UserPutValidator();
-        var postUserValiator = new UserValidator.UserPostValidator();
         //Act
         IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator);
 
@@ -81,8 +88,6 @@ public class UserTest
         fakeRepo.Add(user3);
         
         Mock<IUserRepository> mockRepo = new Mock<IUserRepository>();
-        var putUserValidator = new UserValidator.UserPutValidator();
-        var postUserValiator = new UserValidator.UserPostValidator();
         //Act
         IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator);
 
@@ -100,8 +105,6 @@ public class UserTest
     public void InvalidGetUserByUsername(string username, string expectedExceptionMsg)
     {
         Mock<IUserRepository> mockRepo = new Mock<IUserRepository>();
-        var putUserValidator = new UserValidator.UserPutValidator();
-        var postUserValiator = new UserValidator.UserPostValidator();
         //Act
         IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator);
         var ex = Assert.Throws<ArgumentException>(() => service.GetUserByUsername(username));
@@ -160,8 +163,6 @@ public class UserTest
         users.Add(toBeDeleted);
         users.Add(user2);
         Mock<IUserRepository> mockRepo = new Mock<IUserRepository>();
-        var putUserValidator = new UserValidator.UserPutValidator();
-        var postUserValiator = new UserValidator.UserPostValidator();
         //Act
         IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator);
 
@@ -186,10 +187,7 @@ public class UserTest
     public void DeleteInvalidUserTest(int userId, string expectedMessage)
     {
         // Arrange
-        Mock<IUserRepository> mockRepository = new Mock<IUserRepository>();
         Mock<IUserRepository> mockRepo = new Mock<IUserRepository>();
-        var putUserValidator = new UserValidator.UserPutValidator();
-        var postUserValiator = new UserValidator.UserPostValidator();
         //Act
         IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator);
 
@@ -199,7 +197,7 @@ public class UserTest
         // Assert
         var ex = Assert.Throws<ArgumentException>(action);
         Assert.Equal(expectedMessage, ex.Message);
-        mockRepository.Verify(r=>r.DeleteUser(userId),Times.Never);
+        mockRepo.Verify(r=>r.DeleteUser(userId),Times.Never);
     }
     
 }

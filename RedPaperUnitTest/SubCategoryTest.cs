@@ -11,6 +11,23 @@ namespace RedPaperUnitTest;
 
 public class SubCategoryTest
 {
+    private IMapper mapper;
+    private SubCategoryValidator.PostSubCategoryValidator postSubCategoryValidator;
+    private SubCategoryValidator.PutSubCategoryValidator putSubCategoryValidator;
+
+    public SubCategoryTest()
+    {
+        var _mapper = new MapperConfiguration(config =>
+        {
+            config.CreateMap<PostSubCategoryDTO, SubCategory>();
+            config.CreateMap<PutSubCategoryDTO, SubCategory>();
+        }).CreateMapper();
+        mapper = _mapper;
+
+        postSubCategoryValidator = new SubCategoryValidator.PostSubCategoryValidator();
+        putSubCategoryValidator = new SubCategoryValidator.PutSubCategoryValidator();
+    }
+
     public static IEnumerable<Object[]> GetAllSubCategories_Test()
     {
         SubCategory subcategory1 = new SubCategory() { Id = 1, SubName = "TestSubCategory 1", CategoryID = 1 };
@@ -32,13 +49,6 @@ public class SubCategoryTest
     public void CreateSubCategoryServiceTest()
     {
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PostSubCategoryDTO, SubCategory>();
-            config.CreateMap<PutSubCategoryDTO, SubCategory>();
-        }).CreateMapper();
-        var postSubCategoryValidator = new SubCategoryValidator.PostSubCategoryValidator();
-        var putSubCategoryValidator = new SubCategoryValidator.PutSubCategoryValidator();
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
         //
@@ -53,13 +63,6 @@ public class SubCategoryTest
         int categoryID = 1;
         var fakeRepo = data;
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PostSubCategoryDTO, SubCategory>();
-            config.CreateMap<PutSubCategoryDTO, SubCategory>();
-        }).CreateMapper();
-        var postSubCategoryValidator = new SubCategoryValidator.PostSubCategoryValidator();
-        var putSubCategoryValidator = new SubCategoryValidator.PutSubCategoryValidator();
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
         mockRepo.Setup(s => s.GetAllSubCategoriesFromCategory(categoryID)).Returns(fakeRepo.ToList);
@@ -83,13 +86,6 @@ public class SubCategoryTest
             CategoryID = subCategory.CategoryID
         };
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PostSubCategoryDTO, SubCategory>();
-            config.CreateMap<PutSubCategoryDTO, SubCategory>();
-        }).CreateMapper();
-        var postSubCategoryValidator = new SubCategoryValidator.PostSubCategoryValidator();
-        var putSubCategoryValidator = new SubCategoryValidator.PutSubCategoryValidator();
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
 
@@ -116,13 +112,6 @@ public class SubCategoryTest
         };
 
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PostSubCategoryDTO, SubCategory>();
-            config.CreateMap<PutSubCategoryDTO, SubCategory>();
-        }).CreateMapper();
-        var postSubCategoryValidator = new SubCategoryValidator.PostSubCategoryValidator();
-        var putSubCategoryValidator = new SubCategoryValidator.PutSubCategoryValidator();
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
 
@@ -142,18 +131,9 @@ public class SubCategoryTest
             SubName = subCategoryName,
         };
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PostSubCategoryDTO, SubCategory>();
-            config.CreateMap<PutSubCategoryDTO, SubCategory>();
-        }).CreateMapper();
-        var postSubCategoryValidator = new SubCategoryValidator.PostSubCategoryValidator();
-        var putSubCategoryValidator = new SubCategoryValidator.PutSubCategoryValidator();
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
-
         var ex = Assert.Throws<ArgumentException>(() => service.addSubCategoryToCategory(dto));
-
         Assert.Equal("This subcategory needs to be linked with a Category", ex.Message);
     }
 
@@ -162,31 +142,20 @@ public class SubCategoryTest
     public void DeleteSubCategoryValidTest(int expectedListSize)
     {
         List<SubCategory> subCategories = new List<SubCategory>();
-
         SubCategory subCategory = new SubCategory { Id = 1, SubName = "Katte", CategoryID = 1 };
         SubCategory subCategoryToDelete = new SubCategory { Id = 2, SubName = "Blomster", CategoryID = 1 };
         subCategories.Add(subCategory);
         subCategories.Add(subCategoryToDelete);
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PostSubCategoryDTO, SubCategory>();
-            config.CreateMap<PutSubCategoryDTO, SubCategory>();
-        }).CreateMapper();
-        var postSubCategoryValidator = new SubCategoryValidator.PostSubCategoryValidator();
-        var putSubCategoryValidator = new SubCategoryValidator.PutSubCategoryValidator();
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
-
         mockRepo.Setup(r => r.GetAllSubCategoriesFromCategory(1)).Returns(subCategories);
         mockRepo.Setup(r => r.deleteSubCategoryFromCategory(subCategoryToDelete.Id)).Returns(() =>
         {
             subCategories.Remove(subCategoryToDelete);
             return subCategoryToDelete;
         });
-
         var actual = service.deleteSubCategoryFromCategory(2);
-
         Assert.Equal(expectedListSize, subCategories.Count);
         Assert.Equal(subCategoryToDelete, actual);
         Assert.DoesNotContain(subCategoryToDelete, subCategories);
@@ -199,13 +168,6 @@ public class SubCategoryTest
     public void DeleteSubCategoryInvalidTest(int subCategoryID, string expectedException)
     {
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PostSubCategoryDTO, SubCategory>();
-            config.CreateMap<PutSubCategoryDTO, SubCategory>();
-        }).CreateMapper();
-        var postSubCategoryValidator = new SubCategoryValidator.PostSubCategoryValidator();
-        var putSubCategoryValidator = new SubCategoryValidator.PutSubCategoryValidator();
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
 
@@ -223,13 +185,6 @@ public class SubCategoryTest
         PutSubCategoryDTO dto = new PutSubCategoryDTO()
             { Id = subCategory.Id, SubName = subCategory.SubName, CategoryID = subCategory.CategoryID };
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PostSubCategoryDTO, SubCategory>();
-            config.CreateMap<PutSubCategoryDTO, SubCategory>();
-        }).CreateMapper();
-        var postSubCategoryValidator = new SubCategoryValidator.PostSubCategoryValidator();
-        var putSubCategoryValidator = new SubCategoryValidator.PutSubCategoryValidator();
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
         mockRepo.Setup(r => r.updateSubCategory(id, It.IsAny<SubCategory>())).Returns(subCategory);
@@ -257,20 +212,10 @@ public class SubCategoryTest
         PutSubCategoryDTO dto = new PutSubCategoryDTO()
             { Id = id, SubName = categoryName, CategoryID = categoryId };
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PostSubCategoryDTO, SubCategory>();
-            config.CreateMap<PutSubCategoryDTO, SubCategory>();
-        }).CreateMapper();
-        var postSubCategoryValidator = new SubCategoryValidator.PostSubCategoryValidator();
-        var putSubCategoryValidator = new SubCategoryValidator.PutSubCategoryValidator();
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
-
         var action = () => service.updateSubCategory(id, dto);
-
         var ex = Assert.Throws<ArgumentException>(action);
-        
         Assert.Equal(expectedMessage, ex.Message);
     }
     

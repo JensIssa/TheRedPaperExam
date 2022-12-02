@@ -94,8 +94,7 @@ public class ProductTest
     public void CreateProductServiceTest()
     {
         Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
-        IProductService service =
-            new ProductService(mockRepo.Object, mapper, postProductValidator, putProductValidator);
+        IProductService service = new ProductService(mockRepo.Object, mapper, postProductValidator, putProductValidator);
         // Assert
         Assert.NotNull(service);
         Assert.True(service is ProductService);

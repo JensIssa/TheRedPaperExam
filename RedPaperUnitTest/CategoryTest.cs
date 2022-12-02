@@ -11,6 +11,21 @@ namespace RedPaperUnitTest;
 
 public class CategoryTest
 {
+    private IMapper mapper;
+    private CategoryValidator.CategoryPostValidator postCategoryValidator;
+    private CategoryValidator.CategoryPutValidator putCategoryValidator;
+
+    public CategoryTest()
+    {
+        var _mapper = new MapperConfiguration(config =>
+        {
+            config.CreateMap<PutCategoryDTO, Category>();
+            config.CreateMap<PostCategoryDTO, Category>();
+        }).CreateMapper();
+        mapper = _mapper;
+        postCategoryValidator = new CategoryValidator.CategoryPostValidator();
+        putCategoryValidator = new CategoryValidator.CategoryPutValidator();
+    }
     public static IEnumerable<Object[]> GetAllCategories_Test()
     {
         Category category1 = new Category { Id = 1, CategoryName = "TestCategory 1" };
@@ -32,13 +47,6 @@ public class CategoryTest
     public void CreateCategoryService()
     {
         Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PutCategoryDTO, Category>();
-            config.CreateMap<PostCategoryDTO, Category>();
-        }).CreateMapper();
-        var putCategoryValidator = new CategoryValidator.CategoryPutValidator();
-        var postCategoryValidator = new CategoryValidator.CategoryPostValidator();
         ICategoryService service =
             new CategoryService(mockRepo.Object, mapper, putCategoryValidator, postCategoryValidator);
         //Assert
@@ -53,20 +61,10 @@ public class CategoryTest
     {
         var fakerepo = data;
         Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PutCategoryDTO, Category>();
-            config.CreateMap<PostCategoryDTO, Category>();
-        }).CreateMapper();
-        var putCategoryValidator = new CategoryValidator.CategoryPutValidator();
-        var postCategoryValidator = new CategoryValidator.CategoryPostValidator();
         ICategoryService service =
             new CategoryService(mockRepo.Object, mapper, putCategoryValidator, postCategoryValidator);
-
         mockRepo.Setup(u => u.GetAllCategories()).Returns(fakerepo.ToList);
-
         var actualResult = service.GetAllCategories();
-        
         Assert.Equal(expectedResult, actualResult);
         Assert.True(Enumerable.SequenceEqual(expectedResult, actualResult));
         mockRepo.Verify(r=>r.GetAllCategories(), Times.Once);
@@ -82,18 +80,9 @@ public class CategoryTest
             CategoryName = category.CategoryName
         };
         Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PutCategoryDTO, Category>();
-            config.CreateMap<PostCategoryDTO, Category>();
-        }).CreateMapper();
-        var putCategoryValidator = new CategoryValidator.CategoryPutValidator();
-        var postCategoryValidator = new CategoryValidator.CategoryPostValidator();
         ICategoryService service =
             new CategoryService(mockRepo.Object, mapper, putCategoryValidator, postCategoryValidator);
-
         mockRepo.Setup(r => r.CreateCategory(It.IsAny<Category>())).Returns(category);
-
         var categoryCreated = service.CreateCategory(dto);
         
         //Assert
@@ -112,13 +101,6 @@ public class CategoryTest
             CategoryName = categoryName
         };
         Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PutCategoryDTO, Category>();
-            config.CreateMap<PostCategoryDTO, Category>();
-        }).CreateMapper();
-        var putCategoryValidator = new CategoryValidator.CategoryPutValidator();
-        var postCategoryValidator = new CategoryValidator.CategoryPostValidator();
         ICategoryService service =
             new CategoryService(mockRepo.Object, mapper, putCategoryValidator, postCategoryValidator);
         var ex = Assert.Throws<ArgumentException>(() => service.CreateCategory(dto));
@@ -133,13 +115,6 @@ public class CategoryTest
         Category category = new Category { Id = 1, CategoryName = "Biler" };
         PutCategoryDTO dto = new PutCategoryDTO { Id = category.Id, CategoryName = category.CategoryName };
         Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PutCategoryDTO, Category>();
-            config.CreateMap<PostCategoryDTO, Category>();
-        }).CreateMapper();
-        var putCategoryValidator = new CategoryValidator.CategoryPutValidator();
-        var postCategoryValidator = new CategoryValidator.CategoryPostValidator();
         ICategoryService service =
             new CategoryService(mockRepo.Object, mapper, putCategoryValidator, postCategoryValidator);
         mockRepo.Setup(r => r.UpdateCategory(id, It.IsAny<Category>())).Returns(category);
@@ -164,20 +139,10 @@ public class CategoryTest
     {
         PutCategoryDTO dto = new PutCategoryDTO { Id = categoryId, CategoryName = categoryName };
         Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PutCategoryDTO, Category>();
-            config.CreateMap<PostCategoryDTO, Category>();
-        }).CreateMapper();
-        var putCategoryValidator = new CategoryValidator.CategoryPutValidator();
-        var postCategoryValidator = new CategoryValidator.CategoryPostValidator();
         ICategoryService service =
             new CategoryService(mockRepo.Object, mapper, putCategoryValidator, postCategoryValidator);
-
         var action = () => service.UpdateCategory(categoryId, dto);
-
         var ex = Assert.Throws<ArgumentException>(action);
-        
         Assert.Equal(expectedMessage, ex.Message);
     }
     
@@ -191,15 +156,7 @@ public class CategoryTest
         Category categoryToDelete = new Category{Id = 2, CategoryName = "Blomster"};
         categories.Add(category1);
         categories.Add(categoryToDelete);
-        
         Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PutCategoryDTO, Category>();
-            config.CreateMap<PostCategoryDTO, Category>();
-        }).CreateMapper();
-        var putCategoryValidator = new CategoryValidator.CategoryPutValidator();
-        var postCategoryValidator = new CategoryValidator.CategoryPostValidator();
         ICategoryService service =
             new CategoryService(mockRepo.Object, mapper, putCategoryValidator, postCategoryValidator);
 
@@ -210,7 +167,6 @@ public class CategoryTest
             return categoryToDelete;
         });
         var actual = service.DeleteCategory(2);
-        
         Assert.Equal(exeptedListSize, categories.Count);
         Assert.Equal(categoryToDelete, actual);
         Assert.DoesNotContain(categoryToDelete, categories);
@@ -224,13 +180,6 @@ public class CategoryTest
     public void DeleteInvalidCategoryTest(int categoryId, string expectedMessage)
     {
         Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
-        var mapper = new MapperConfiguration(config =>
-        {
-            config.CreateMap<PutCategoryDTO, Category>();
-            config.CreateMap<PostCategoryDTO, Category>();
-        }).CreateMapper();
-        var putCategoryValidator = new CategoryValidator.CategoryPutValidator();
-        var postCategoryValidator = new CategoryValidator.CategoryPostValidator();
         ICategoryService service =
             new CategoryService(mockRepo.Object, mapper, putCategoryValidator, postCategoryValidator);
 
