@@ -39,6 +39,8 @@ public class UserRepository : IUserRepository
         var userToUpdate = _context.UserTable.FirstOrDefault(u => u.Id == id);
         if (userToUpdate.Id == id)
         {
+            userToUpdate.Salt = user.Salt;
+            userToUpdate.Hash = user.Hash;
             userToUpdate.Email = user.Email;
             userToUpdate.FirstName = user.FirstName;
             userToUpdate.LastName = user.LastName;

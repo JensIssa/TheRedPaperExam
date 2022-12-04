@@ -89,7 +89,7 @@ public class UserService : IUserService
                 throw new ValidationException(validation.ToString());
             }
             _tokenGenerator.GenerateToken(user);
-            return _repository.CreateNewUser(_imapper.Map<User>(dto));
+            return _repository.CreateNewUser(_imapper.Map<User>(user));
 
         }
         throw new Exception("Username " + dto.Username + " is already taken");
@@ -102,12 +102,26 @@ public class UserService : IUserService
         {
             throw new ValidationException("ID in body and route are different");
         }
+        var salt = RandomNumberGenerator.GetBytes(32).ToString();
+        var userToUpdate = new User()
+        {
+            Id = putUserDto.Id,
+            Username = putUserDto.Username,
+            Salt = salt,
+            Hash = BCrypt.Net.BCrypt.HashPassword(putUserDto.Password + salt),
+            FirstName = putUserDto.FirstName,
+            LastName = putUserDto.LastName,
+            BirthDay = putUserDto.BirthDay,
+            Email = putUserDto.Email,
+            PhoneNumber = putUserDto.PhoneNumber,
+            Location = putUserDto.Location,
+        };
         var validation = _putValidator.Validate(putUserDto);
         if (!validation.IsValid)
         {
             throw new ValidationTestException(validation.ToString());
         }
-        return _repository.UpdateUser(_imapper.Map<User>(putUserDto), id);
+        return _repository.UpdateUser(_imapper.Map<User>(userToUpdate), id);
     }
 
     public User DeleteUser(int id)
