@@ -16,14 +16,17 @@ public class UserService : IUserService
     private readonly IValidator<PutUserDTO> _putValidator;
     private readonly IValidator<RegisterDTO> _postValidator;
     private readonly TokenGenerator _tokenGenerator;
+    private readonly IMapper _imapper;
+
     
 
-    public UserService(IUserRepository repository, IValidator<PutUserDTO> putValidator, TokenGenerator tokenGenerator, IValidator<RegisterDTO> postValidator)
+    public UserService(IUserRepository repository, IValidator<PutUserDTO> putValidator, TokenGenerator tokenGenerator, IValidator<RegisterDTO> postValidator, IMapper mapper)
     {
         _repository = repository;
         _putValidator = putValidator;
         _postValidator = postValidator;
         _tokenGenerator = tokenGenerator;
+        _imapper = mapper;
     }
     
     public UserService(IUserRepository repository, IValidator<PutUserDTO> putValidator, IValidator<RegisterDTO> postValidator)
@@ -86,7 +89,7 @@ public class UserService : IUserService
                 throw new ValidationException(validation.ToString());
             }
             _tokenGenerator.GenerateToken(user);
-            return _repository.CreateNewUser(user);
+            return _repository.CreateNewUser(_imapper.Map<User>(dto));
 
         }
         throw new Exception("Username " + dto.Username + " is already taken");
@@ -100,15 +103,11 @@ public class UserService : IUserService
             throw new ValidationException("ID in body and route are different");
         }
         var validation = _putValidator.Validate(putUserDto);
-        var user =  _repository.GetUserByUsername(putUserDto.Username);
-        user.Hash = BCrypt.Net.BCrypt.HashPassword(putUserDto.Password + user.Salt);
-        
         if (!validation.IsValid)
         {
             throw new ValidationTestException(validation.ToString());
         }
-
-        return _repository.UpdateUser(user, id);
+        return _repository.UpdateUser(_imapper.Map<User>(putUserDto), id);
     }
 
     public User DeleteUser(int id)
