@@ -65,7 +65,7 @@ public class UserController : ControllerBase
         }
         catch (KeyNotFoundException k)
         {
-            return NotFound("No box has been found " + id);
+            return NotFound("No user has been found " + id);
         }
         catch (Exception e)
         {

@@ -36,9 +36,21 @@ public class UserRepository : IUserRepository
 
     public User UpdateUser(User user, int id)
     {
-        _context.UserTable.Update(user);
-        _context.SaveChanges();
-        return user;
+        var userToUpdate = _context.UserTable.FirstOrDefault(u => u.Id == id);
+        if (userToUpdate.Id == id)
+        {
+            userToUpdate.Email = user.Email;
+            userToUpdate.FirstName = user.FirstName;
+            userToUpdate.LastName = user.LastName;
+            userToUpdate.Location = user.Location;
+            userToUpdate.Username = user.Username;
+            userToUpdate.PhoneNumber = user.PhoneNumber;
+            userToUpdate.BirthDay= user.BirthDay;
+            userToUpdate.Id = user.Id;
+            _context.Update(userToUpdate);
+            _context.SaveChanges();
+        }
+        return userToUpdate;
     }
 
     public User DeleteUser(int id)
