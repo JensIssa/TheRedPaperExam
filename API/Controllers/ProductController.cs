@@ -18,11 +18,14 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
+    [Route("GetAllProducts")]
+
     public List<Product> GetAllProducts()
     {
         return _service.GetAllProducts();
     }
     [HttpGet]
+    [Route("GetAllProductsFromSub")]
     public List<Product> GetAllProductsFromSubcategory(int subcategoryId)
     {
         return _service.GetAllProductsFromSubcategory(subcategoryId);
