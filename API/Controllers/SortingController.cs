@@ -21,7 +21,7 @@ public class SortingController
     }
 
     [HttpGet]
-    [Route("GetAllProductsHighToLow")]
+    [Route("GetAllProductsFromPriceHighToLow")]
     public List<Product> GetAllProductsFromPriceReverse()
     {
         return _service.SortProductsByPriceReverse();
