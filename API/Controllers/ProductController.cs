@@ -16,7 +16,12 @@ public class ProductController : ControllerBase
     {
         _service = service;
     }
-    
+
+    [HttpGet]
+    public List<Product> GetAllProducts()
+    {
+        return _service.GetAllProducts();
+    }
     [HttpGet]
     public List<Product> GetAllProductsFromSubcategory(int subcategoryId)
     {

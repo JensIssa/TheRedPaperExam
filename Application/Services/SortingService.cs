@@ -25,6 +25,10 @@ public class SortingService : ISortingService
 
     public List<Product> SortProductsAlphabeticallyBySubId(int subcategoryId)
     {
+        if (subcategoryId == null || subcategoryId < 1)
+        {
+            throw new ArgumentException("There is no Subcategory to view products from");
+        }
         return _sortingRepository.SortProductsAlphabeticallyBySubId(subcategoryId).OrderBy(p => p.ProductName).Reverse().ToList();
     }
 

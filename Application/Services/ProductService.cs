@@ -23,6 +23,10 @@ public class ProductService : IProductService
         _putDTO = putDto;
     }
 
+    public List<Product> GetAllProducts()
+    {
+        return _repository.GetAllProducts();
+    }
     public List<Product> GetAllProductsFromSubcategory(int subcategoryId)
     {
         return _repository.GetAllProductsFromSubcategory(subcategoryId);
