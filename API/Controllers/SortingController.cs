@@ -26,4 +26,18 @@ public class SortingController
     {
         return _service.SortProductsByPriceReverse();
     }
+
+    [HttpGet]
+    [Route("GetAllProductsAlphabetSortingA-Z")]
+    public List<Product> GetAllProductsAlphabetically()
+    {
+        return _service.SortProductsAlphabetically();
+    }
+    
+    [HttpGet]
+    [Route("GetAllProductsAlphabetSortingZ-A")]
+    public List<Product> GetAllProductsAlphabeticallyReverse()
+    {
+        return _service.SortProductsAlphabeticallyReverse();
+    }
 }
