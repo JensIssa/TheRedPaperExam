@@ -24,6 +24,7 @@ public class ProductController : ControllerBase
     {
         return _service.GetAllProducts();
     }
+    
     [HttpGet]
     [Route("GetAllProductsFromSub")]
     public List<Product> GetAllProductsFromSubcategory(int subcategoryId)
