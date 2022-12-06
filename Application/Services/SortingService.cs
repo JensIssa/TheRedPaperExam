@@ -15,12 +15,12 @@ public class SortingService : ISortingService
 
     public List<Product> SortProductsAlphabetically()
     {
-        return _sortingRepository.SortProductsAlphabetically().OrderBy(p => p.ProductName).ToList();
+        return _sortingRepository.SortProductsAlphabetically().OrderBy(p => p.ProductName, StringComparer.OrdinalIgnoreCase).ToList();
     }
 
     public List<Product> SortProductsAlphabeticallyReverse()
     {
-        return _sortingRepository.SortProductsAlphabeticallyReverse().OrderBy(p => p.ProductName).Reverse().ToList();
+        return _sortingRepository.SortProductsAlphabeticallyReverse().OrderBy(p => p.ProductName, StringComparer.OrdinalIgnoreCase).Reverse().ToList();
     }
 
     public List<Product> SortProductsAlphabeticallyBySubId(int subcategoryId)
@@ -29,7 +29,7 @@ public class SortingService : ISortingService
         {
             throw new ArgumentException("There is no Subcategory to view products from");
         }
-        return _sortingRepository.SortProductsAlphabeticallyBySubId(subcategoryId).OrderBy(p => p.ProductName).Reverse().ToList();
+        return _sortingRepository.SortProductsAlphabeticallyBySubId(subcategoryId).OrderBy(p => p.ProductName, StringComparer.OrdinalIgnoreCase).Reverse().ToList();
     }
 
     public List<Product> SortProductsAlphabeticallyReverseBySubId(int subCategoryId)
@@ -38,7 +38,7 @@ public class SortingService : ISortingService
         {
             throw new ArgumentException("There is no Subcategory to view products from");
         }
-        return _sortingRepository.SortProductsAlphabeticallyReverseBySubId(subCategoryId).OrderBy(p => p.ProductName).Reverse().ToList();
+        return _sortingRepository.SortProductsAlphabeticallyReverseBySubId(subCategoryId).OrderBy(p => p.ProductName, StringComparer.OrdinalIgnoreCase).Reverse().ToList();
     }
 
     public List<Product> SortProductsByPrice()
