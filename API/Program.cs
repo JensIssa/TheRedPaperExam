@@ -58,8 +58,6 @@ builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
 builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
 builder.Services.AddScoped<IConditionService, ConditionService>();
 builder.Services.AddScoped<IConditionRepository, ConditionRepository>();
-builder.Services.AddScoped<ISortingRepository, SortingRepository>();
-builder.Services.AddScoped<ISortingService, SortingService>();
 #endregion
 
 
@@ -78,10 +76,6 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", (policy) => { policy.RequireRole(nameof(Role.Admin));}); 
 });
-
-
-
-Infrastructure.DependencyResolvers.DepedencyResolver.RegisterInfrastructure(builder.Services);
 
 builder.Services.AddCors();
 
