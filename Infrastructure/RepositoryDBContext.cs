@@ -31,7 +31,7 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
             .HasForeignKey(p => p.SubCategoryID);
         
         modelBuilder.Entity<Product>().HasOne<User>().
-            WithMany(u => u.products).HasForeignKey(p => p.UserId);
+            WithMany(u => u.products).HasForeignKey(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Product>().HasOne(p => p.ProductCondition).WithMany(c => c.Prodcuts)
             .HasForeignKey(p => p.ProductConditionId);

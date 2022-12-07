@@ -12,7 +12,7 @@ public interface IProductService
 
     public Product AddProductToUser(PostProductDTO dto);
     
-    public Product DeleteProductFromUser(int productId);
+    public Product DeleteProductFromUser(int id);
 
     public Product UpdateProduct(int productId, PutProductDTO dto);
 

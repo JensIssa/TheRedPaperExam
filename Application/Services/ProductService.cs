@@ -114,13 +114,13 @@ public class ProductService : IProductService
             throw new ArgumentException("The conditionId is null / <1");
         }
     }
-    public Product DeleteProductFromUser(int productId)
+    public Product DeleteProductFromUser(int id)
     {
-        if (productId==null|| productId<1)
+        if (id.Equals(null)|| id<1)
         {
             throw new ArgumentException("The Product id is not found");
         }
-        return _repository.DeleteProductFromUser(productId);
+        return _repository.DeleteProductFromUser(id);
     }
 
     public Product UpdateProduct(int productId, PutProductDTO dto)
