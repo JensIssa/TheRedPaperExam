@@ -5,6 +5,7 @@ namespace Application.InterfaceServices;
 
 public interface IProductService
 {
+    public List<Product> GetAllProducts();
     public List<Product> GetAllProductsFromSubcategory(int subcategoryId);
 
     public List<Product> GetAllProductsFromUser(int userId);

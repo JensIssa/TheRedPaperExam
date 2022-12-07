@@ -15,22 +15,30 @@ public class SortingService : ISortingService
 
     public List<Product> SortProductsAlphabetically()
     {
-        return _sortingRepository.SortProductsAlphabetically().OrderBy(p => p.ProductName).ToList();
+        return _sortingRepository.SortProductsAlphabetically().OrderBy(p => p.ProductName, StringComparer.OrdinalIgnoreCase).ToList();
     }
 
     public List<Product> SortProductsAlphabeticallyReverse()
     {
-        return _sortingRepository.SortProductsAlphabeticallyReverse().OrderBy(p => p.ProductName).Reverse().ToList();
+        return _sortingRepository.SortProductsAlphabeticallyReverse().OrderBy(p => p.ProductName, StringComparer.OrdinalIgnoreCase).Reverse().ToList();
     }
 
     public List<Product> SortProductsAlphabeticallyBySubId(int subcategoryId)
     {
-        return _sortingRepository.SortProductsAlphabeticallyBySubId(subcategoryId).OrderBy(p => p.ProductName).Reverse().ToList();
+        if (subcategoryId == null || subcategoryId < 1)
+        {
+            throw new ArgumentException("There is no Subcategory to view products from");
+        }
+        return _sortingRepository.SortProductsAlphabeticallyBySubId(subcategoryId).OrderBy(p => p.ProductName, StringComparer.OrdinalIgnoreCase).Reverse().ToList();
     }
 
     public List<Product> SortProductsAlphabeticallyReverseBySubId(int subCategoryId)
     {
-        return _sortingRepository.SortProductsAlphabeticallyReverseBySubId(subCategoryId).OrderBy(p => p.ProductName).Reverse().ToList();
+        if (subCategoryId == null || subCategoryId < 1)
+        {
+            throw new ArgumentException("There is no Subcategory to view products from");
+        }
+        return _sortingRepository.SortProductsAlphabeticallyReverseBySubId(subCategoryId).OrderBy(p => p.ProductName, StringComparer.OrdinalIgnoreCase).Reverse().ToList();
     }
 
     public List<Product> SortProductsByPrice()
@@ -45,11 +53,19 @@ public class SortingService : ISortingService
 
     public List<Product> SortProductsByPriceBySubId(int subCategoryId)
     {
+        if (subCategoryId == null || subCategoryId < 1)
+        {
+            throw new ArgumentException("There is no Subcategory to view products from");
+        }
         return _sortingRepository.SortProductsByPriceBySubId(subCategoryId).OrderBy(p => p.Price).ToList();
     }
 
     public List<Product> SortProductsByPriceReverseBySubId(int subCategoryId)
     {
+        if (subCategoryId == null || subCategoryId < 1)
+        {
+            throw new ArgumentException("There is no Subcategory to view products from");
+        }
         return _sortingRepository.SortProductsByPriceBySubId(subCategoryId).OrderBy(p => p.Price).Reverse().ToList();
     }
 }

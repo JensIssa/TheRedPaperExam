@@ -16,11 +16,20 @@ public class ProductController : ControllerBase
     {
         _service = service;
     }
+
+    [HttpGet]
+    [Route("GetAllProducts")]
+
+    public List<Product> GetAllProducts()
+    {
+        return _service.GetAllProducts();
+    }
     
     [HttpGet]
-    public List<Product> GetAllProductsFromSubcategory(int subcategoryId)
+    [Route("GetAllProductsFromSub/{id}")]
+    public List<Product> GetAllProductsFromSubcategory(int id)
     {
-        return _service.GetAllProductsFromSubcategory(subcategoryId);
+        return _service.GetAllProductsFromSubcategory(id);
     }
     
     [HttpGet]

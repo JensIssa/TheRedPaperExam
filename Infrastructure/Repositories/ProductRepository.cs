@@ -13,6 +13,11 @@ public class ProductRepository : IProductRepository
         _context = context;
     }
 
+    public List<Product> GetAllProducts()
+    {
+        return _context.ProductTable.ToList();
+    }
+
     public List<Product> GetAllProductsFromSubcategory(int subcategoryId)
     {
         return _context.ProductTable.Where(i => i.SubCategoryID == subcategoryId).ToList();

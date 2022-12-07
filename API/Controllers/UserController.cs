@@ -1,9 +1,11 @@
 ﻿using Application.DTOs;
 using Application.InterfaceServices;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
+[Authorize("AdminPolicy")]
 [ApiController]
 [Route("[controller]")]
 public class UserController : ControllerBase

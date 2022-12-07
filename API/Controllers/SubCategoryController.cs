@@ -18,10 +18,10 @@ public class SubCategoryController : ControllerBase
     }
     
     [HttpGet]
-    [Route("GetAllSubsFromCategories")]
-    public List<SubCategory> GetAllSubCategoriesFromCategory(int categoryId)
+    [Route("GetAllSubsFromCategories/{id}")]
+    public List<SubCategory> GetAllSubCategoriesFromCategory(int id)
     {
-        return _subCategoryService.GetAllSubCategoriesFromCategory(categoryId);
+        return _subCategoryService.GetAllSubCategoriesFromCategory(id);
     }
 
     [HttpGet]
