@@ -33,10 +33,10 @@ public class ProductController : ControllerBase
     }
     
     [HttpGet]
-    [Route("getProductsFromUser")]
-    public List<Product> GetAllProductsFromUser(int userId)
+    [Route("getProductsFromUser{id}")]
+    public List<Product> GetAllProductsFromUser(int id)
     {
-        return _service.GetAllProductsFromUser(userId);
+        return _service.GetAllProductsFromUser(id);
     }
 
     [HttpPost]
