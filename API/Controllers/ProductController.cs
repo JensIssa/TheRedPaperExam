@@ -33,10 +33,10 @@ public class ProductController : ControllerBase
     }
     
     [HttpGet]
-    [Route("getProductsFromUser")]
-    public List<Product> GetAllProductsFromUser(int userId)
+    [Route("getProductsFromUser{id}")]
+    public List<Product> GetAllProductsFromUser(int id)
     {
-        return _service.GetAllProductsFromUser(userId);
+        return _service.GetAllProductsFromUser(id);
     }
 
     [HttpPost]
@@ -71,6 +71,42 @@ public class ProductController : ControllerBase
         catch (Exception e)
         {
             return StatusCode(500, e.ToString());
+        }
+    }
+    
+    [HttpDelete]
+    [Route("Delete/{Id}")]
+    public ActionResult<Product> DeleteProduct([FromRoute]int id)
+    {
+        try
+        {
+            return Ok(_service.DeleteProductFromUser(id));
+        }
+        catch (ValidationException e)
+        {
+            return BadRequest(e.Message);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, e.Message);
+        }
+    }
+    
+    [HttpPut]
+    [Route("Edit/{Id}")]
+    public ActionResult<Product> UpdateProduct([FromRoute] int Id, [FromBody] PutProductDTO dto)
+    {
+        try
+        {
+            return Ok(_service.UpdateProduct(Id, dto));
+        }
+        catch (ValidationException e)
+        {
+            return BadRequest(e.Message);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, e.Message);
         }
     }
     
