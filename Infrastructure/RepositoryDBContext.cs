@@ -68,5 +68,5 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
     {
         get;
         set;
-    } 
+    }
 }

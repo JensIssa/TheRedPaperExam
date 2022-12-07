@@ -26,10 +26,10 @@ public class ProductController : ControllerBase
     }
     
     [HttpGet]
-    [Route("GetAllProductsFromSub")]
-    public List<Product> GetAllProductsFromSubcategory(int subcategoryId)
+    [Route("GetAllProductsFromSub/{id}")]
+    public List<Product> GetAllProductsFromSubcategory(int id)
     {
-        return _service.GetAllProductsFromSubcategory(subcategoryId);
+        return _service.GetAllProductsFromSubcategory(id);
     }
     
     [HttpGet]
