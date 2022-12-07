@@ -4,7 +4,7 @@ namespace Application.DTOs;
 
 public class PutProductDTO
 {
-    public int productId
+    public int Id
     {
         get;
         set;

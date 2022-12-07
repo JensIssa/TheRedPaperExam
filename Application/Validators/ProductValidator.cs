@@ -24,7 +24,7 @@ public class ProductValidator
     {
         public PutProductValidator()
         {
-            RuleFor(p => p.productId).NotEmpty();
+            RuleFor(p => p.Id).NotEmpty();
             RuleFor(p => p.ProductName).NotEmpty();
             RuleFor(p => p.Price).NotEmpty();
             RuleFor(p => p.ProductConditionId).NotEmpty();
