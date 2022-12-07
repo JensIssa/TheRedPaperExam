@@ -11,7 +11,7 @@ public interface IProductRepository
 
     public Product AddProductToUser(Product dto);
 
-    public Product DeleteProductFromUser(int productId);
+    public Product DeleteProductFromUser(int id);
 
     public Product getProductById(int productID);
     

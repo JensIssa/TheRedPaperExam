@@ -75,20 +75,20 @@ public class ProductController : ControllerBase
     }
     
     [HttpDelete]
-    [Route("Delete/{Id}")]
-    public ActionResult<Product> DeleteProduct([FromRoute]int id)
+    [Route("{id}")]
+    public ActionResult<Product> DeleteProduct(int id)
     {
         try
         {
             return Ok(_service.DeleteProductFromUser(id));
         }
-        catch (ValidationException e)
+        catch (KeyNotFoundException k)
         {
-            return BadRequest(e.Message);
+            return NotFound("No user has been found " + id);
         }
         catch (Exception e)
         {
-            return StatusCode(500, e.Message);
+            return StatusCode(500, e.ToString());
         }
     }
     

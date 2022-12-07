@@ -38,7 +38,6 @@ var mapper = new MapperConfiguration(config =>
 
 builder.Services.AddSingleton(mapper);
 
-
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddDbContext<RepositoryDBContext>(options => options.UseSqlite("Data Source =db.db"));
 
