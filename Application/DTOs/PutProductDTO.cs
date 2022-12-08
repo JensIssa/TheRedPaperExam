@@ -39,4 +39,10 @@ public class PutProductDTO
         get;
         set;
     }
+
+    public int SubCategoryId
+    {
+        get;
+        set;
+    }
 }
