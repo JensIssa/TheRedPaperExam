@@ -48,4 +48,6 @@ public class Product
     public Condition? ProductCondition { get; set; }
     
     public int ProductConditionId { get; set; }
+    
+    public User user { get; set; }
 }
