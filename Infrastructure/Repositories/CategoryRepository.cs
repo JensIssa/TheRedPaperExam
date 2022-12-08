@@ -27,9 +27,13 @@ public class CategoryRepository : ICategoryRepository
 
     public Category UpdateCategory(int id, Category dto)
     {
-        var categoryToUpdate = _context.CategoryTable.Find(id) ?? throw new KeyNotFoundException("Id to update not found");
-        _context.CategoryTable.Update(categoryToUpdate);
-        _context.SaveChanges();
+        var categoryToUpdate = _context.CategoryTable.FirstOrDefault(c => c.Id == id) ?? throw new KeyNotFoundException("Id to update not found");
+        if (categoryToUpdate.Id == id)
+        {
+            categoryToUpdate.CategoryName = dto.CategoryName;
+            _context.CategoryTable.Update(categoryToUpdate);
+            _context.SaveChanges();
+        }
         return categoryToUpdate;
     }
 

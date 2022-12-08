@@ -30,14 +30,14 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
             WithMany(s => s.Products)
             .HasForeignKey(p => p.SubCategoryID);
         
-        modelBuilder.Entity<Product>().HasOne<User>().
+        modelBuilder.Entity<Product>().HasOne(p => p.user).
             WithMany(u => u.products).HasForeignKey(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Product>().HasOne(p => p.ProductCondition).WithMany(c => c.Prodcuts)
             .HasForeignKey(p => p.ProductConditionId);
 
-        modelBuilder.Entity<Condition>().HasData(new Condition() { Id = 1, Name = "Ubrugt" }, new Condition() {Id = 2, Name = "Fremragende"}, new Condition() {Id = 3, Name = "God"},
-            new Condition() {Id = 4, Name = "Brugt"}, new Condition() { Id = 5, Name = "Nedslidt"});
+        modelBuilder.Entity<Condition>().HasData(new Condition() { Id = 1, Name = "Unused" }, new Condition() {Id = 2, Name = "Excellent"}, new Condition() {Id = 3, Name = "Good"},
+            new Condition() {Id = 4, Name = "Used"}, new Condition() { Id = 5, Name = "Worn out"});
 
     }
 
