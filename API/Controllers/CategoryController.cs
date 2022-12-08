@@ -42,12 +42,12 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPut]
-    [Route("Edit/{Id}")]
-    public ActionResult<Category> UpdateCategory([FromRoute] int Id, [FromBody] PutCategoryDTO dto)
+    [Route("Edit/{id}")]
+    public ActionResult<Category> UpdateCategory([FromRoute] int id, [FromBody] PutCategoryDTO dto)
     {
         try
         {
-            return Ok(_service.UpdateCategory(Id, dto));
+            return Ok(_service.UpdateCategory(id, dto));
         }
         catch (ValidationException e)
         {
