@@ -255,7 +255,7 @@ public class ProductTest
               SubCategoryID = 3 };
           PutProductDTO dto = new PutProductDTO()
           {
-              productId = product3.Id, ProductName = product3.ProductName, Description = product3.Description,
+              Id = product3.Id, ProductName = product3.ProductName, Description = product3.Description,
               Price = product3.Price, ImageUrl = product3.ImageUrl, ProductConditionId = product3.ProductConditionId
           };
           Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
@@ -263,7 +263,7 @@ public class ProductTest
               new ProductService(mockRepo.Object, mapper, postProductValidator, putProductValidator);
           mockRepo.Setup(p => p.UpdateProduct(productiD, It.IsAny<Product>())).Returns(product3);
 
-          dto.productId = productiD;
+          dto.Id = productiD;
           dto.ProductName = productName;
           dto.Description = description;
           dto.ImageUrl = imageUrl;
@@ -291,7 +291,7 @@ public class ProductTest
       {
           PutProductDTO dto = new PutProductDTO()
           {
-              productId = id, ProductName = productName, Description = description, Price = price, ImageUrl = imageUrl,
+              Id = id, ProductName = productName, Description = description, Price = price, ImageUrl = imageUrl,
               ProductConditionId = productConditionId
           };
           Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
