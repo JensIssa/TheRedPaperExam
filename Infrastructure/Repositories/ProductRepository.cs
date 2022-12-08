@@ -61,7 +61,6 @@ public class ProductRepository : IProductRepository
             productToUpdate.ProductName = dto.ProductName ;
             productToUpdate.ProductConditionId = dto.ProductConditionId;
             productToUpdate.SubCategoryID = dto.SubCategoryID;
-            dto.SubCategoryID = dto.SubCategoryID; 
             _context.Update(productToUpdate);
             _context.SaveChanges();
         }
