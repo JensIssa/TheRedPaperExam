@@ -15,7 +15,7 @@ public class ProductRepository : IProductRepository
 
     public List<Product> GetAllProducts()
     {
-        return _context.ProductTable.Include(p=>p.user).Include(p=>p.ProductCondition).ToList();
+        return _context.ProductTable.Where(p => p.isSold == false).Include(p=>p.user).Include(p=>p.ProductCondition).ToList();
     }
 
     public List<Product> GetAllProductsFromSubcategory(int subcategoryId)
@@ -72,6 +72,7 @@ public class ProductRepository : IProductRepository
         products.ForEach(p =>
         {
             p.isSold = true;
+            _context.Entry(p.user).State = EntityState.Detached;
         });
         _context.UpdateRange(products);
         _context.SaveChanges();
