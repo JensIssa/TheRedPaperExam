@@ -15,8 +15,8 @@ public class OrderRepository : IOrderRepository
 
     public Order BuyProduct(Order order)
     {
+        _context.ChangeTracker.Clear();
         _context.OrderTable.Add(order);
-        
         _context.SaveChanges();
         return order;
     }
