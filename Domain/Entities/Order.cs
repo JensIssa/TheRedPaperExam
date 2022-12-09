@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace Domain.Entities;
 
 public class Order
 {
@@ -7,7 +9,7 @@ public class Order
         get;
         set;
     }
-    
+    [JsonIgnore]
     public User? user { get; set; }
     
     public int userId { get; set; }

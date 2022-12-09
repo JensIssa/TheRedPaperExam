@@ -28,6 +28,7 @@ public class OrderController : ControllerBase
     [HttpPost]
     public ActionResult<Order> CreateOrder(PostOrderDTO dto)
     {
+        Console.WriteLine(dto);
         try
         {
             Order result = _service.BuyProduct(dto);
