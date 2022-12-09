@@ -7,5 +7,5 @@ public class Condition
     
     public string Name { get; set;  }
     
-    public List<Product>? Prodcuts { get; set; }
+    public List<Product>? Products { get; set; }
 }

@@ -73,4 +73,10 @@ public class User
         get;
         set;
     }
+
+    public List<Order>? Orders
+    {
+        get;
+        set;
+    }
 }

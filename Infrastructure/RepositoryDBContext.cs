@@ -18,14 +18,14 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
         modelBuilder.Entity<Product>().Property(p => p.Id).ValueGeneratedOnAdd();
         //Foreign key relations and one to many
 
+        modelBuilder.Entity<Product>().Property(p => p.isSold).HasDefaultValue(false);
         
         modelBuilder.Entity<SubCategory>().
             HasOne<Category>().
             WithMany(c => c.SubCategories)
             .HasForeignKey(s => s.CategoryID).
             OnDelete(DeleteBehavior.Cascade);
-
-
+        
         modelBuilder.Entity<Product>().HasOne<SubCategory>().
             WithMany(s => s.Products)
             .HasForeignKey(p => p.SubCategoryID);
@@ -33,8 +33,13 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
         modelBuilder.Entity<Product>().HasOne(p => p.user).
             WithMany(u => u.products).HasForeignKey(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<Product>().HasOne(p => p.ProductCondition).WithMany(c => c.Prodcuts)
+        modelBuilder.Entity<Product>().HasOne(p => p.ProductCondition).WithMany(c => c.Products)
             .HasForeignKey(p => p.ProductConditionId);
+
+        modelBuilder.Entity<Product>().HasOne(p => p.Order).WithMany(o => o.Products).HasForeignKey(p => p.OrderId);
+
+        modelBuilder.Entity<Order>().HasOne(o => o.user).WithMany(u => u.Orders).HasForeignKey(o => o.userId);
+        
 
         modelBuilder.Entity<Condition>().HasData(new Condition() { Id = 1, Name = "Unused" }, new Condition() {Id = 2, Name = "Excellent"}, new Condition() {Id = 3, Name = "Good"},
             new Condition() {Id = 4, Name = "Used"}, new Condition() { Id = 5, Name = "Worn out"});
@@ -65,6 +70,12 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
     }
 
     public DbSet<Condition> ConditionTable
+    {
+        get;
+        set;
+    }
+
+    public DbSet<Order> OrderTable
     {
         get;
         set;

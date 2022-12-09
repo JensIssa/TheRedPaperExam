@@ -7,10 +7,10 @@ public class Order
         get;
         set;
     }
-
-    public double SumPrice
-    {
-        get;
-        set;
-    }
+    
+    public User user { get; set; }
+    
+    public int userId { get; set; }
+    
+    public List<Product> Products { get; set; }
 }
