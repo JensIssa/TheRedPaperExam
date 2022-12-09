@@ -16,6 +16,7 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
         modelBuilder.Entity<Category>().Property(c => c.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<SubCategory>().Property(s => s.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Product>().Property(p => p.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<Order>().Property(o => o.Id).ValueGeneratedOnAdd();
         //Foreign key relations and one to many
 
         modelBuilder.Entity<Product>().Property(p => p.isSold).HasDefaultValue(false);

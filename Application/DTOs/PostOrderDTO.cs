@@ -1,11 +1,12 @@
-﻿using Domain.Entities;
+﻿using System.Text.Json.Serialization;
+using Domain.Entities;
 
 namespace Application.DTOs;
 
 public class PostOrderDTO
 {
     public int userId { get; set; }
-    
+
     public List<Product> Products 
     { 
         get; 

@@ -49,7 +49,7 @@ public class Product
     
     public int ProductConditionId { get; set; }
     
-    public Boolean isSold { get; set; }
+    public bool isSold { get; set; }
     public User? user { get; set; }
     
     public Order? Order { get; set; }

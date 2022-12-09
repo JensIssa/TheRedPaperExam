@@ -8,7 +8,7 @@ public class Order
         set;
     }
     
-    public User user { get; set; }
+    public User? user { get; set; }
     
     public int userId { get; set; }
     
