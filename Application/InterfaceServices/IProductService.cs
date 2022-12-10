@@ -18,4 +18,7 @@ public interface IProductService
 
 
     public Product getProductById(int productID);
+    
+    public List<Product> GetProductsByOrderId(int orderId);
+
 }

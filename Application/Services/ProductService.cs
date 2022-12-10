@@ -141,4 +141,8 @@ public class ProductService : IProductService
         }
         return _repository.getProductById(productID);    }
 
+    public List<Product> GetProductsByOrderId(int orderId)
+    {
+        return _repository.GetProductsByOrderId(orderId);
+    }
 }

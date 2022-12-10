@@ -10,4 +10,5 @@ public interface IOrderService
     List<Order> getAllOrders();
 
     List<Order> GetAllOrdersByUser(int userId);
+    
 }

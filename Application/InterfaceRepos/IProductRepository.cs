@@ -20,5 +20,7 @@ public interface IProductRepository
     public List<Product> SetProductsToSold(List<Product> products);
     
     public List<Product> GetProductsById(List<int> productIds);
+    public List<Product> GetProductsByOrderId(int orderId);
+
 
 }

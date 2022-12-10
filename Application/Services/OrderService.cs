@@ -31,8 +31,6 @@ public class OrderService : IOrderService
             throw new ValidationException(validation.ToString());
         }
         dto.Products = _productrepository.GetProductsById(dto.ProductsId);
-        
-        
         _productrepository.SetProductsToSold(dto.Products);
         return _orderRepository.CreateOrder(_imapper.Map<Order>(dto));
     }
@@ -45,5 +43,10 @@ public class OrderService : IOrderService
     public List<Order> GetAllOrdersByUser(int userId)
     {
         return _orderRepository.GetAllOrdersByUser(userId);
+    }
+
+    public List<Product> GetProductsByOrderId(int orderId)
+    {
+        return _productrepository.GetProductsByOrderId(orderId);
     }
 }

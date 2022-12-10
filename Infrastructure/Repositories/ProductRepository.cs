@@ -78,6 +78,10 @@ public class ProductRepository : IProductRepository
         return products;
     }
 
+    public List<Product> GetProductsByOrderId(int orderId)
+    {
+        return _context.ProductTable.Where(p => p.OrderId == orderId).ToList();
+    }
     public List<Product> GetProductsById(List<int> productIds)
     {
         return _context.ProductTable.Where(p => productIds.Any(x => x.Equals(p.Id))).ToList();
