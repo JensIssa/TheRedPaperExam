@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace Domain.Entities;
 
 public class User
 {
@@ -68,7 +70,14 @@ public class User
         set;
     }
 
-    public List<Product> products
+    [JsonIgnore]
+    public List<Product>? products
+    {
+        get;
+        set;
+    }
+
+    public List<Order>? Orders
     {
         get;
         set;

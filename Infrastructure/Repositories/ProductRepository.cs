@@ -15,12 +15,12 @@ public class ProductRepository : IProductRepository
 
     public List<Product> GetAllProducts()
     {
-        return _context.ProductTable.Include(p=>p.user).Include(p=>p.ProductCondition).ToList();
+        return _context.ProductTable.Where(p => p.isSold == false).Include(p=>p.user).Include(p=>p.ProductCondition).ToList();
     }
 
     public List<Product> GetAllProductsFromSubcategory(int subcategoryId)
     {
-        return _context.ProductTable.Where(i => i.SubCategoryID == subcategoryId).Include(p => p.user).Include(p => p.ProductCondition).ToList();
+        return _context.ProductTable.Where(i => i.SubCategoryID == subcategoryId).Where(p => p.isSold == false).Include(p => p.user).Include(p => p.ProductCondition).ToList();
     }
 
     public List<Product> GetAllProductsFromUser(int userId)
@@ -65,5 +65,25 @@ public class ProductRepository : IProductRepository
             _context.SaveChanges();
         }
         return productToUpdate; 
+    }
+
+    public List<Product> SetProductsToSold(List<Product> products)
+    {
+        products.ForEach(p =>
+        {
+            p.isSold = true;
+        });
+        _context.UpdateRange(products);
+       _context.SaveChanges();
+        return products;
+    }
+
+    public List<Product> GetProductsByOrderId(int orderId)
+    {
+        return _context.ProductTable.Where(p => p.OrderId == orderId).ToList();
+    }
+    public List<Product> GetProductsById(List<int> productIds)
+    {
+        return _context.ProductTable.Where(p => productIds.Any(x => x.Equals(p.Id))).ToList();
     }
 }

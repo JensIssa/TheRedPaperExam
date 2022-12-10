@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Domain.Entities;
 
@@ -49,5 +50,16 @@ public class Product
     
     public int ProductConditionId { get; set; }
     
-    public User user { get; set; }
+    public bool isSold { get; set; }
+    
+    public User? user { get; set; }
+    
+    [JsonIgnore]
+    public Order? Order { get; set; }
+    
+    [JsonIgnore]
+    public int? OrderId { get; set; }
+    
+    
+    
 }
