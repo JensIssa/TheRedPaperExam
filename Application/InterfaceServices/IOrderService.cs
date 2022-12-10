@@ -5,7 +5,7 @@ namespace Application.InterfaceServices;
 
 public interface IOrderService
 {
-    Order BuyProduct(PostOrderDTO dto);
+    Order CreateOrder(PostOrderDTO dto);
 
     List<Order> getAllOrders();
 

@@ -4,6 +4,7 @@ using Application.InterfaceServices;
 using AutoMapper;
 using Domain.Entities;
 using FluentValidation;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace Application.Services;
 
@@ -22,15 +23,18 @@ public class OrderService : IOrderService
         _postdto = postdto;
     }
 
-    public Order BuyProduct(PostOrderDTO dto)
+    public Order CreateOrder(PostOrderDTO dto)
     {
         var validation = _postdto.Validate(dto);
         if (!validation.IsValid)
         {
             throw new ValidationException(validation.ToString());
         }
+        dto.Products = _productrepository.GetProductsById(dto.ProductsId);
+        
+        
         _productrepository.SetProductsToSold(dto.Products);
-        return _orderRepository.BuyProduct(_imapper.Map<Order>(dto));
+        return _orderRepository.CreateOrder(_imapper.Map<Order>(dto));
     }
 
     public List<Order> getAllOrders()

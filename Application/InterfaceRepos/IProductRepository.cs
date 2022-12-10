@@ -18,4 +18,7 @@ public interface IProductRepository
     public Product UpdateProduct(int productId, Product dto);
 
     public List<Product> SetProductsToSold(List<Product> products);
+    
+    public List<Product> GetProductsById(List<int> productIds);
+
 }

@@ -13,7 +13,7 @@ public class OrderRepository : IOrderRepository
         _context = context;
     }
 
-    public Order BuyProduct(Order order)
+    public Order CreateOrder(Order order)
     {
         _context.OrderTable.Add(order);
         _context.SaveChanges();

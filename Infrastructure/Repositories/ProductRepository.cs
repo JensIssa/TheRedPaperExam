@@ -72,10 +72,14 @@ public class ProductRepository : IProductRepository
         products.ForEach(p =>
         {
             p.isSold = true;
-            _context.Entry(p.user).State = EntityState.Detached;
         });
         _context.UpdateRange(products);
-        _context.SaveChanges();
+       _context.SaveChanges();
         return products;
+    }
+
+    public List<Product> GetProductsById(List<int> productIds)
+    {
+        return _context.ProductTable.Where(p => productIds.Any(x => x.Equals(p.Id))).ToList();
     }
 }

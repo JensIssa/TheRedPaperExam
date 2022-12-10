@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using Domain.Entities;
 
 namespace Application.DTOs;
@@ -6,10 +7,10 @@ namespace Application.DTOs;
 public class PostOrderDTO
 {
     public int userId { get; set; }
-
-    public List<Product> Products 
-    { 
-        get; 
-        set; 
+    
+    public List<int> ProductsId
+    {
+        get; set;
     }
+    public List<Product>? Products { get; set; }
 }

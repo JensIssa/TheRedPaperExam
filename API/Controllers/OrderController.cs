@@ -31,7 +31,7 @@ public class OrderController : ControllerBase
         Console.WriteLine(dto);
         try
         {
-            Order result = _service.BuyProduct(dto);
+            Order result = _service.CreateOrder(dto);
             return Created("Order" + result.Id, result);
         }
         catch (ValidationException e)

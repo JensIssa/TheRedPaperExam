@@ -14,5 +14,5 @@ public class Order
     
     public int userId { get; set; }
     
-    public List<Product> Products { get; set; }
+    public List<Product>? Products { get; set; }
 }
