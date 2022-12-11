@@ -46,11 +46,10 @@ public class OrderController : ControllerBase
     }
     
     [HttpGet]
-    [Route("GetAllOrdersFromUser/{id}")]
+    [Route("GetAllOrdersFromUser/{userId}")]
 
-    public List<Order> GetAllOrdersFromUser(int id)
+    public List<Order> GetAllOrdersFromUser(int userId)
     {
-        return _service.GetAllOrdersByUser(id);
+        return _service.GetAllOrdersByUser(userId);
     }
-    
 }

@@ -111,10 +111,10 @@ public class ProductController : ControllerBase
     }
     
     [HttpGet]
-    [Route("GetAllProductsByOrderId/{id}")]
-    public List<Product> GetAllProductsByOrderId(int id)
+    [Route("GetAllProductsByOrderId/{orderId}")]
+    public List<Product> GetAllProductsByOrderId(int orderId)
     {
-        return _service.GetProductsByOrderId(id);
+        return _service.GetProductsByOrderId(orderId);
     }
     
 }
