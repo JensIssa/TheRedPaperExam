@@ -61,4 +61,19 @@ public class AuthController: ControllerBase
             return BadRequest(e.Message);
         }
     }
+    [HttpPut]
+    [Route("UpdatePassword/{id}")]
+    public ActionResult UpdatePassword([FromRoute] int id, [FromBody] PutUserDTO dto)
+    {
+        try
+        {
+            Console.WriteLine(id);
+            Console.WriteLine(dto);
+            return Ok(_auth.UpdatePassword(id, dto));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 }

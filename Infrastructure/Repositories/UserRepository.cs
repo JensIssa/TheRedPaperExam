@@ -39,8 +39,6 @@ public class UserRepository : IUserRepository
         var userToUpdate = _context.UserTable.FirstOrDefault(u => u.Id == id);
         if (userToUpdate.Id == id)
         {
-            userToUpdate.Salt = user.Salt;
-            userToUpdate.Hash = user.Hash;
             userToUpdate.Email = user.Email;
             userToUpdate.FirstName = user.FirstName;
             userToUpdate.LastName = user.LastName;
@@ -61,5 +59,14 @@ public class UserRepository : IUserRepository
         _context.UserTable.Remove(userToDelete);
         _context.SaveChanges();
         return userToDelete;
+    }
+
+    public User UpdateUserPassword(int userId, User user)
+    {
+        var userToUpdate = _context.UserTable.Find(userId);
+        userToUpdate.Hash = user.Hash;
+        _context.UserTable.Update(userToUpdate);
+        _context.SaveChanges();
+        return userToUpdate;
     }
 }

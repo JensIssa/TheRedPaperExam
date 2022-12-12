@@ -4,5 +4,8 @@ namespace Application.InterfaceServices;
 
 public interface IAuthService
 {
-    public string Login(LoginDTO dto);
+     string Login(LoginDTO dto);
+
+     string UpdatePassword(int userId, PutUserDTO dto);
+     
 }
