@@ -69,4 +69,10 @@ public class UserRepository : IUserRepository
         _context.SaveChanges();
         return userToUpdate;
     }
+
+    public User GetUserById(int id)
+    {
+        var user = _context.UserTable.FirstOrDefault(u => u.Id == id);
+        return user;
+    }
 }

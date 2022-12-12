@@ -6,6 +6,6 @@ public interface IAuthService
 {
      string Login(LoginDTO dto);
 
-     string UpdatePassword(int userId, PutUserDTO dto);
+     string UpdatePassword(int userId, PutPasswordDTO dto);
      
 }

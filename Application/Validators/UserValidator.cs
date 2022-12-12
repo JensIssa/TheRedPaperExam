@@ -35,4 +35,12 @@ public class UserValidator
             RuleFor(u => u.Location).NotEmpty();
         }
     }
+    
+    public class UserPutPasswordValidator: AbstractValidator<PutPasswordDTO>
+    {
+        public UserPutPasswordValidator()
+        {
+            RuleFor(u => u.Password).NotEmpty();
+        }
+    }
 }

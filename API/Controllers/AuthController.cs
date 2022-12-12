@@ -63,7 +63,7 @@ public class AuthController: ControllerBase
     }
     [HttpPut]
     [Route("UpdatePassword/{id}")]
-    public ActionResult UpdatePassword([FromRoute] int id, [FromBody] PutUserDTO dto)
+    public ActionResult UpdatePassword([FromRoute] int id, [FromBody] PutPasswordDTO dto)
     {
         try
         {

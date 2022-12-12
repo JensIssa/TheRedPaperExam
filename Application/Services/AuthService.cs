@@ -19,10 +19,10 @@ public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
     private readonly TokenGenerator _tokenGenerator;
-    private readonly IValidator<PutUserDTO> _putValidator;
+    private readonly IValidator<PutPasswordDTO> _putValidator;
 
     public AuthService(IUserRepository userRepository,
-        TokenGenerator tokenGenerator, IValidator<PutUserDTO> putValidator
+        TokenGenerator tokenGenerator, IValidator<PutPasswordDTO> putValidator
     )
     {
         _tokenGenerator = tokenGenerator;
@@ -39,8 +39,8 @@ public class AuthService : IAuthService
         }
         throw new Exception("Invalid login");
     }
-    
-    public string UpdatePassword(int userId, PutUserDTO dto)
+
+    public string UpdatePassword(int userId, PutPasswordDTO dto)
     {
         try
         {
@@ -49,7 +49,7 @@ public class AuthService : IAuthService
             {
                 throw new ArgumentException(validate.ToString());
             }
-            var user = _userRepository.GetUserByUsername(dto.Username);
+            var user = _userRepository.GetUserById(dto.Id);
             user.Hash = BCrypt.Net.BCrypt.HashPassword(dto.Password + user.Salt);
             _userRepository.UpdateUserPassword(userId, user);
             return _tokenGenerator.GenerateToken(user);
@@ -60,5 +60,5 @@ public class AuthService : IAuthService
             throw;
         }
     }
-    
+
 }
