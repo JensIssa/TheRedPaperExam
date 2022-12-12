@@ -27,6 +27,6 @@ public class OrderRepository : IOrderRepository
 
     public List<Order> GetAllOrdersByUser(int id)
     {
-        return _context.OrderTable.Where(o => o.userId == id).ToList();
+        return _context.OrderTable.Where(o => o.userId == id).Include(o => o.Products).ToList();
     }
 }
