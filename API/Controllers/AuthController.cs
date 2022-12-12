@@ -67,8 +67,6 @@ public class AuthController: ControllerBase
     {
         try
         {
-            Console.WriteLine(id);
-            Console.WriteLine(dto);
             return Ok(_auth.UpdatePassword(id, dto));
         }
         catch (Exception e)
