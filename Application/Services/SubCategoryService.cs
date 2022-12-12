@@ -28,12 +28,12 @@ public class SubCategoryService : ISubCategoryService
         return _repository.GetAllSubCategoriesFromCategory(categoryId); 
     }
 
-    public List<SubCategory> getAllSubCategories()
+    public List<SubCategory> GetAllSubCategories()
     {
         return _repository.GetAllSubCategories();
     }
 
-    public SubCategory addSubCategoryToCategory( PostSubCategoryDTO dto)
+    public SubCategory AddSubCategoryToCategory( PostSubCategoryDTO dto)
     {
         ExceptionHandlingCreate(dto);
         var validation = _postDTO.Validate(dto);
@@ -41,19 +41,19 @@ public class SubCategoryService : ISubCategoryService
         {
             throw new ValidationException(validation.ToString());
         }
-        return _repository.addSubCategoryToCategory(_imapper.Map<SubCategory>(dto));
+        return _repository.AddSubCategoryToCategory(_imapper.Map<SubCategory>(dto));
     }
     
-    public SubCategory deleteSubCategoryFromCategory(int subcategoryId)
+    public SubCategory DeleteSubCategoryFromCategory(int subcategoryId)
     {
         if (subcategoryId==null|| subcategoryId<1)
         {
             throw new ArgumentException("The SubCategory id is not found");
         }
-        return _repository.deleteSubCategoryFromCategory(subcategoryId);
+        return _repository.DeleteSubCategoryFromCategory(subcategoryId);
     }
 
-    public SubCategory updateSubCategory(int id, PutSubCategoryDTO dto)
+    public SubCategory UpdateSubCategory(int id, PutSubCategoryDTO dto)
     {
         ExceptionHandlingUpdate(dto);
         var validation = _putDTO.Validate(dto);
@@ -61,7 +61,7 @@ public class SubCategoryService : ISubCategoryService
         {
             throw new ValidationException(validation.ToString());
         }
-        return _repository.updateSubCategory(id, _imapper.Map<SubCategory>(dto));    
+        return _repository.UpdateSubCategory(id, _imapper.Map<SubCategory>(dto));    
     }
 
 

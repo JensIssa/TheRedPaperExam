@@ -80,7 +80,7 @@ public class UserService : IUserService
                 BirthDay = dto.Birthday,
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
-                Location = dto.location,
+                Location = dto.Location,
                 AssignedRole = role
             };
             var validation = _postValidator.Validate(dto);
@@ -139,7 +139,7 @@ public class UserService : IUserService
         if (string.IsNullOrEmpty(user.LastName)) throw new ArgumentException("Last name cannot be null or empty");
         if (string.IsNullOrEmpty(user.Email)) throw new ArgumentException("Email cannot be null, nor empty");
         if (String.IsNullOrEmpty(user.PhoneNumber.ToString())) throw new ArgumentException("Work number cannot be null or empty ");
-        if (string.IsNullOrEmpty(user.location)) throw new ArgumentException("Email cannot be null, nor empty");
+        if (string.IsNullOrEmpty(user.Location)) throw new ArgumentException("Email cannot be null, nor empty");
         if (string.IsNullOrEmpty(user.Email)) throw new ArgumentException("Email cannot be null, nor empty");
     }
     private void ExceptionHandlingPut(PutUserDTO user)

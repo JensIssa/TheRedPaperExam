@@ -62,11 +62,11 @@ public class ProductController : ControllerBase
     {
         try
         {
-            return _service.getProductById(id);
+            return _service.GetProductById(id);
         }
         catch (KeyNotFoundException ex)
         {
-            return NotFound("No Product has been found" + id);
+            return NotFound("No product has been found" + id);
         }
         catch (Exception e)
         {
@@ -84,7 +84,7 @@ public class ProductController : ControllerBase
         }
         catch (KeyNotFoundException k)
         {
-            return NotFound("No user has been found " + id);
+            return NotFound("No product has been found " + id);
         }
         catch (Exception e)
         {

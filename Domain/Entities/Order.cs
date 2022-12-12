@@ -10,9 +10,9 @@ public class Order
         set;
     }
     [JsonIgnore]
-    public User? user { get; set; }
+    public User? User { get; set; }
     
-    public int userId { get; set; }
+    public int UserId { get; set; }
     
     public List<Product>? Products { get; set; }
 }

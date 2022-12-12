@@ -22,7 +22,7 @@ public class OrderController : ControllerBase
 
     public List<Order> GetAllOrders()
     {
-        return _service.getAllOrders();
+        return _service.GetAllOrders();
     }
 
     [HttpPost]

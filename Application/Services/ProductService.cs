@@ -133,7 +133,7 @@ public class ProductService : IProductService
         }
         return _repository.UpdateProduct(productId, _imapper.Map<Product>(dto));      }
 
-    public Product getProductById(int productID)
+    public Product GetProductById(int productID)
     {
         if (productID == null || productID < 1)
         {

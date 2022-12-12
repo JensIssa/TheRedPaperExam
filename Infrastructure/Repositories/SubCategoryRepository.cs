@@ -23,14 +23,14 @@ public class SubCategoryRepository : ISubCategoryRepository
         return _context.SubCategoryTable.ToList();
     }
 
-    public SubCategory addSubCategoryToCategory(SubCategory dto)
+    public SubCategory AddSubCategoryToCategory(SubCategory dto)
     {
         _context.Add(dto); 
         _context.SaveChanges();
         return dto;
     }
 
-    public SubCategory deleteSubCategoryFromCategory(int subcategoryId)
+    public SubCategory DeleteSubCategoryFromCategory(int subcategoryId)
     {
         var subCategoryToDelete = _context.SubCategoryTable.Find(subcategoryId) ?? throw new KeyNotFoundException("Id not found");
         _context.SubCategoryTable.Remove(subCategoryToDelete);
@@ -38,7 +38,7 @@ public class SubCategoryRepository : ISubCategoryRepository
         return subCategoryToDelete;
     }
 
-    public SubCategory updateSubCategory(int id, SubCategory subCategory)
+    public SubCategory UpdateSubCategory(int id, SubCategory subCategory)
     {
         var subCategoryToUpdate = _context.SubCategoryTable.Find(id) ?? throw new KeyNotFoundException("Id to update not found");
         _context.SubCategoryTable.Update(subCategoryToUpdate);

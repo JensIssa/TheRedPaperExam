@@ -12,5 +12,5 @@ public class RegisterDTO
     public DateTime Birthday { get; set; }
     public string Email { get; set;}
     public int PhoneNumber { get; set; }
-    public string location { get; set; }
+    public string Location { get; set; }
 }

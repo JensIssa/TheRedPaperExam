@@ -18,6 +18,6 @@ public class ConditionController
     [HttpGet]
     public ActionResult<List<Condition>> GetAllCategories()
     {
-        return _service.getAllConditions();
+        return _service.GetAllConditions();
     }
 }
