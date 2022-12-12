@@ -7,7 +7,7 @@ public class OrderValidator : AbstractValidator<PostOrderDTO>
 {
     public OrderValidator()
     {
-        RuleFor(o => o.userId).NotEmpty();
+        RuleFor(o => o.UserId).NotEmpty();
     }
     
 }

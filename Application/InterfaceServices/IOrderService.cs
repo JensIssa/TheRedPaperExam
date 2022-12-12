@@ -7,7 +7,7 @@ public interface IOrderService
 {
     Order CreateOrder(PostOrderDTO dto);
 
-    List<Order> getAllOrders();
+    List<Order> GetAllOrders();
 
     List<Order> GetAllOrdersByUser(int userId);
     

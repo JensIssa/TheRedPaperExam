@@ -24,6 +24,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
+#region Mapping
 var mapper = new MapperConfiguration(config =>
 {
     config.CreateMap<PutUserDTO, User>();
@@ -36,8 +37,8 @@ var mapper = new MapperConfiguration(config =>
     config.CreateMap<PutProductDTO, Product>();
     config.CreateMap<PostOrderDTO, Order>();
 }).CreateMapper();
-
 builder.Services.AddSingleton(mapper);
+#endregion
 
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddDbContext<RepositoryDBContext>(options => options.UseSqlite("Data Source =db.db"));
@@ -62,7 +63,7 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 #endregion
 
-
+#region Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -78,6 +79,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", (policy) => { policy.RequireRole(nameof(Role.Admin));}); 
 });
+#endregion
 
 builder.Services.AddCors();
 

@@ -28,7 +28,7 @@ public class SubCategoryController : ControllerBase
     [Route("GetAllSubs")]
     public List<SubCategory> getAllSubCategories()
     {
-        return _subCategoryService.getAllSubCategories();
+        return _subCategoryService.GetAllSubCategories();
     }
 
     [HttpPost]
@@ -36,8 +36,8 @@ public class SubCategoryController : ControllerBase
     {
         try
         {
-            SubCategory result = _subCategoryService.addSubCategoryToCategory(dto);
-            return Created("Category" + result.Id, result);
+            SubCategory result = _subCategoryService.AddSubCategoryToCategory(dto);
+            return Created("SubCategory" + result.Id, result);
         }
         catch (ValidationException e)
         {

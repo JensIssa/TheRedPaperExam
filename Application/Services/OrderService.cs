@@ -35,7 +35,7 @@ public class OrderService : IOrderService
         return _orderRepository.CreateOrder(_imapper.Map<Order>(dto));
     }
 
-    public List<Order> getAllOrders()
+    public List<Order> GetAllOrders()
     {
         return _orderRepository.GetAllOrders();
     }

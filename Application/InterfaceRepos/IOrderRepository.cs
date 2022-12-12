@@ -4,9 +4,9 @@ namespace Application.InterfaceRepos;
 
 public interface IOrderRepository
 {
-    public Order CreateOrder(Order order);
+    Order CreateOrder(Order order);
 
-    public List<Order> GetAllOrders();
+    List<Order> GetAllOrders();
 
-    public List<Order> GetAllOrdersByUser(int id);
+    List<Order> GetAllOrdersByUser(int id);
 }

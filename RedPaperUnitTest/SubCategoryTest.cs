@@ -89,15 +89,15 @@ public class SubCategoryTest
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
 
-        mockRepo.Setup(r => r.addSubCategoryToCategory(It.IsAny<SubCategory>())).Returns(subCategory);
+        mockRepo.Setup(r => r.AddSubCategoryToCategory(It.IsAny<SubCategory>())).Returns(subCategory);
 
-        var subCategoryCreated = service.addSubCategoryToCategory(dto);
+        var subCategoryCreated = service.AddSubCategoryToCategory(dto);
 
         //Assert
         Assert.Equal(subCategory.Id, subCategoryCreated.Id);
         Assert.Equal(subCategory.CategoryID, subCategoryCreated.CategoryID);
         Assert.Equal(subCategory, subCategoryCreated);
-        mockRepo.Verify(r => r.addSubCategoryToCategory(It.IsAny<SubCategory>()), Times.Once);
+        mockRepo.Verify(r => r.AddSubCategoryToCategory(It.IsAny<SubCategory>()), Times.Once);
     }
 
     [Theory]
@@ -115,7 +115,7 @@ public class SubCategoryTest
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
 
-        var ex = Assert.Throws<ArgumentException>(() => service.addSubCategoryToCategory(dto));
+        var ex = Assert.Throws<ArgumentException>(() => service.AddSubCategoryToCategory(dto));
 
         Assert.Equal("This SubCategory name is empty/null", ex.Message);
     }
@@ -133,7 +133,7 @@ public class SubCategoryTest
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
-        var ex = Assert.Throws<ArgumentException>(() => service.addSubCategoryToCategory(dto));
+        var ex = Assert.Throws<ArgumentException>(() => service.AddSubCategoryToCategory(dto));
         Assert.Equal("This subcategory needs to be linked with a Category", ex.Message);
     }
 
@@ -150,16 +150,16 @@ public class SubCategoryTest
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
         mockRepo.Setup(r => r.GetAllSubCategoriesFromCategory(1)).Returns(subCategories);
-        mockRepo.Setup(r => r.deleteSubCategoryFromCategory(subCategoryToDelete.Id)).Returns(() =>
+        mockRepo.Setup(r => r.DeleteSubCategoryFromCategory(subCategoryToDelete.Id)).Returns(() =>
         {
             subCategories.Remove(subCategoryToDelete);
             return subCategoryToDelete;
         });
-        var actual = service.deleteSubCategoryFromCategory(2);
+        var actual = service.DeleteSubCategoryFromCategory(2);
         Assert.Equal(expectedListSize, subCategories.Count);
         Assert.Equal(subCategoryToDelete, actual);
         Assert.DoesNotContain(subCategoryToDelete, subCategories);
-        mockRepo.Verify(r => r.deleteSubCategoryFromCategory(2), Times.Once);
+        mockRepo.Verify(r => r.DeleteSubCategoryFromCategory(2), Times.Once);
     }
 
     [Theory]
@@ -171,7 +171,7 @@ public class SubCategoryTest
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
 
-        var action = () => service.deleteSubCategoryFromCategory(subCategoryID);
+        var action = () => service.DeleteSubCategoryFromCategory(subCategoryID);
 
         var ex = Assert.Throws<ArgumentException>(action);
         Assert.Equal(expectedException, ex.Message);
@@ -187,15 +187,15 @@ public class SubCategoryTest
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
-        mockRepo.Setup(r => r.updateSubCategory(id, It.IsAny<SubCategory>())).Returns(subCategory);
+        mockRepo.Setup(r => r.UpdateSubCategory(id, It.IsAny<SubCategory>())).Returns(subCategory);
 
         dto.SubName = categoryName; 
-        SubCategory updateSubCategory = service.updateSubCategory(id, dto);
+        SubCategory updateSubCategory = service.UpdateSubCategory(id, dto);
 
         Assert.Equal(subCategory, updateSubCategory);
         Assert.Equal(subCategory.Id, updateSubCategory.Id);
         Assert.Equal(subCategory.SubName, updateSubCategory.SubName);
-        mockRepo.Verify(r => r.updateSubCategory(id, It.IsAny<SubCategory>()), Times.Once);
+        mockRepo.Verify(r => r.UpdateSubCategory(id, It.IsAny<SubCategory>()), Times.Once);
     }
 
     [Theory]
@@ -214,7 +214,7 @@ public class SubCategoryTest
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
-        var action = () => service.updateSubCategory(id, dto);
+        var action = () => service.UpdateSubCategory(id, dto);
         var ex = Assert.Throws<ArgumentException>(action);
         Assert.Equal(expectedMessage, ex.Message);
     }

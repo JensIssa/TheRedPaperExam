@@ -13,8 +13,8 @@ public class ConditionService : IConditionService
         _repository = repository;
     }
 
-    public List<Condition> getAllConditions()
+    public List<Condition> GetAllConditions()
     {
-        return _repository.getConditions();
+        return _repository.GetConditions();
     }
 }

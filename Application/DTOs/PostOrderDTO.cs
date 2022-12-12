@@ -6,7 +6,7 @@ namespace Application.DTOs;
 
 public class PostOrderDTO
 {
-    public int userId { get; set; }
+    public int UserId { get; set; }
     
     public List<int> ProductsId
     {

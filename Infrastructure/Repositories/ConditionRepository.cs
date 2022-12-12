@@ -11,7 +11,7 @@ public class ConditionRepository : IConditionRepository
     {
         _context = context;
     }
-    public List<Condition> getConditions()
+    public List<Condition> GetConditions()
     {
         return _context.ConditionTable.ToList();
     }

@@ -4,5 +4,5 @@ namespace Application.InterfaceRepos;
 
 public interface IConditionRepository
 {
-    List<Condition> getConditions();
+    List<Condition> GetConditions();
 }

@@ -33,7 +33,7 @@ public class UserController : ControllerBase
         }
         catch (KeyNotFoundException ex)
         {
-            return NotFound("No User has been found" + username);
+            return NotFound("No user has been found" + username);
         }
         catch (Exception e)
         {

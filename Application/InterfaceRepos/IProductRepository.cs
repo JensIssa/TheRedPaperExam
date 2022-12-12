@@ -4,20 +4,20 @@ namespace Application.InterfaceRepos;
 
 public interface IProductRepository
 {
-    public List<Product> GetAllProducts();
-    public List<Product> GetAllProductsFromSubcategory(int subcategoryId);
+    List<Product> GetAllProducts();
+    List<Product> GetAllProductsFromSubcategory(int subcategoryId);
 
-    public List<Product> GetAllProductsFromUser(int userId);
+    List<Product> GetAllProductsFromUser(int userId);
 
-    public Product AddProductToUser(Product dto);
+    Product AddProductToUser(Product dto);
 
-    public Product DeleteProductFromUser(int id);
+    Product DeleteProductFromUser(int id);
 
-    public Product getProductById(int productID);
+    Product getProductById(int productID);
     
-    public Product UpdateProduct(int productId, Product dto);
+    Product UpdateProduct(int productId, Product dto);
 
-    public List<Product> SetProductsToSold(List<Product> products);
+    List<Product> SetProductsToSold(List<Product> products);
     
     public List<Product> GetProductsById(List<int> productIds);
     public List<Product> GetProductsByOrderId(int orderId);

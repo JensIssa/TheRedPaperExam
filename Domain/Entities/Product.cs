@@ -52,7 +52,7 @@ public class Product
     
     public bool isSold { get; set; }
     
-    public User? user { get; set; }
+    public User? User { get; set; }
     
     [JsonIgnore]
     public Order? Order { get; set; }

@@ -18,7 +18,7 @@ public class UserValidator
             RuleFor(u => u.Birthday).NotEmpty();
             RuleFor(u => u.Email).NotEmpty();
             RuleFor(u => u.PhoneNumber).NotNull();
-            RuleFor(u => u.location).NotEmpty();
+            RuleFor(u => u.Location).NotEmpty();
         }
     }
     public class UserPutValidator: AbstractValidator<PutUserDTO>

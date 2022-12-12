@@ -4,5 +4,5 @@ namespace Application.InterfaceServices;
 
 public interface IConditionService
 {
-    List<Condition> getAllConditions();
+    List<Condition> GetAllConditions();
 }

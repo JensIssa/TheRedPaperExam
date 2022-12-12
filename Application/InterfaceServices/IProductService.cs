@@ -17,7 +17,7 @@ public interface IProductService
     public Product UpdateProduct(int productId, PutProductDTO dto);
 
 
-    public Product getProductById(int productID);
+    public Product GetProductById(int productID);
     
     public List<Product> GetProductsByOrderId(int orderId);
 
