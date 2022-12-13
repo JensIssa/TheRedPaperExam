@@ -135,7 +135,6 @@ public class UserService : IUserService
         if (string.IsNullOrEmpty(user.LastName)) throw new ArgumentException("Last name cannot be null or empty");
         if (string.IsNullOrEmpty(user.Email)) throw new ArgumentException("Email cannot be null, nor empty");
         if (String.IsNullOrEmpty(user.PhoneNumber.ToString())) throw new ArgumentException("Work number cannot be null or empty ");
-        if (string.IsNullOrEmpty(user.Password) || user.Password.Length < 8) throw new ArgumentException("Password cannot be null, empty and must have a minimum length greater than 7");
         if (string.IsNullOrEmpty(user.Location)) throw new ArgumentException("Email cannot be null, nor empty");
         if (string.IsNullOrEmpty(user.Email)) throw new ArgumentException("Email cannot be null, nor empty");
     }
