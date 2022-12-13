@@ -102,28 +102,14 @@ public class UserService : IUserService
         {
             throw new ValidationException("ID in body and route are different");
         }
-        var salt = RandomNumberGenerator.GetBytes(32).ToString();
-        var userToUpdate = new User()
-        {
-            Id = putUserDto.Id,
-            Username = putUserDto.Username,
-            Salt = salt,
-            Hash = BCrypt.Net.BCrypt.HashPassword(putUserDto.Password + salt),
-            FirstName = putUserDto.FirstName,
-            LastName = putUserDto.LastName,
-            BirthDay = putUserDto.BirthDay,
-            Email = putUserDto.Email,
-            PhoneNumber = putUserDto.PhoneNumber,
-            Location = putUserDto.Location,
-        };
         var validation = _putValidator.Validate(putUserDto);
         if (!validation.IsValid)
         {
             throw new ValidationTestException(validation.ToString());
         }
-        return _repository.UpdateUser(_imapper.Map<User>(userToUpdate), id);
+        return _repository.UpdateUser(_imapper.Map<User>(putUserDto), id);
     }
-
+    
     public User DeleteUser(int id)
     {
         if (id.Equals(null) || id < 1)
@@ -149,7 +135,6 @@ public class UserService : IUserService
         if (string.IsNullOrEmpty(user.LastName)) throw new ArgumentException("Last name cannot be null or empty");
         if (string.IsNullOrEmpty(user.Email)) throw new ArgumentException("Email cannot be null, nor empty");
         if (String.IsNullOrEmpty(user.PhoneNumber.ToString())) throw new ArgumentException("Work number cannot be null or empty ");
-        if (string.IsNullOrEmpty(user.Password) || user.Password.Length < 8) throw new ArgumentException("Password cannot be null, empty and must have a minimum length greater than 7");
         if (string.IsNullOrEmpty(user.Location)) throw new ArgumentException("Email cannot be null, nor empty");
         if (string.IsNullOrEmpty(user.Email)) throw new ArgumentException("Email cannot be null, nor empty");
     }

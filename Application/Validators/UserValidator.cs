@@ -28,11 +28,18 @@ public class UserValidator
             RuleFor(u => u.FirstName).NotEmpty();
             RuleFor(u => u.LastName).NotEmpty();
             RuleFor(u => u.Username).NotEmpty();
-            RuleFor(u => u.Password).NotEmpty();
             RuleFor(u => u.BirthDay).NotEmpty();
             RuleFor(u => u.Email).NotEmpty();
             RuleFor(u => u.PhoneNumber).NotEmpty();
             RuleFor(u => u.Location).NotEmpty();
+        }
+    }
+    
+    public class UserPutPasswordValidator: AbstractValidator<PutPasswordDTO>
+    {
+        public UserPutPasswordValidator()
+        {
+            RuleFor(u => u.Password).NotEmpty();
         }
     }
 }

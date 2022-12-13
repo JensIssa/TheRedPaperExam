@@ -10,4 +10,7 @@ public interface IUserRepository
     public User UpdateUser(User user, int id);
     public User DeleteUser(int id);
 
+    User UpdateUserPassword(int userId, User user);
+
+    User GetUserById(int id);
 }

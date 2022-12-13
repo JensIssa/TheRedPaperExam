@@ -12,5 +12,9 @@ public interface IUserService
     public User CreateCustomer( RegisterDTO dto);
     
     public User UpdateUser(int id, PutUserDTO putUserDto);
+    
+    
     public User DeleteUser(int id);
+    
+    
 }
