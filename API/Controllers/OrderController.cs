@@ -16,7 +16,10 @@ public class OrderController : ControllerBase
     {
         _service = service;
     }
-
+    /// <summary>
+    /// Method used to get a list of all the orders by sending a http get request
+    /// </summary>
+    /// <returns>A list of orders</returns>
     [HttpGet]
     [Route("GetAllOrders")]
 
@@ -24,7 +27,11 @@ public class OrderController : ControllerBase
     {
         return _service.GetAllOrders();
     }
-
+    /// <summary>
+    /// Method used to create an order by sending a http post request
+    /// </summary>
+    /// <param name="dto">The dto containing all properties used to create an order</param>
+    /// <returns>An order</returns>
     [HttpPost]
     public ActionResult<Order> CreateOrder(PostOrderDTO dto)
     {
@@ -44,7 +51,11 @@ public class OrderController : ControllerBase
 
         }
     }
-    
+    /// <summary>
+    /// Method used to get all the orders from an user by sending a http get request
+    /// </summary>
+    /// <param name="userId">the user's id</param>
+    /// <returns>a list of orders</returns>
     [HttpGet]
     [Route("GetAllOrdersFromUser/{userId}")]
 

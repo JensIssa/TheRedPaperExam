@@ -14,11 +14,15 @@ public class EmailController: ControllerBase
     {
         _emailService = emailService;
     }
-    
+    /// <summary>
+    /// Method used to send an email by sending a http post request
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns>sends an email</returns>
     [HttpPost]
-    public IActionResult SendEmail(SendEmailDTO request)
+    public IActionResult SendEmail(SendEmailDTO email)
     {
-        _emailService.sendEmail(request);
+        _emailService.sendEmail(email);
         return Ok();
     }
 }

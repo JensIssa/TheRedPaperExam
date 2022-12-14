@@ -16,13 +16,21 @@ public class CategoryController : ControllerBase
     {
         _service = service;
     }
-
+    
+    /// <summary>
+    /// Method used to get a list of Categories by sending a http get request
+    /// </summary>
+    /// <returns>A list of categories</returns>
     [HttpGet]
     public ActionResult<List<Category>> GetAllCategories()
     {
         return _service.GetAllCategories();
     }
-
+    /// <summary>
+    /// Method used to create a category by sending a http post request
+    /// </summary>
+    /// <param name="dto">The dto containing all the properties to create a category</param>
+    /// <returns>A category object</returns>
     [HttpPost]
     public ActionResult<Category> CreateCategory(PostCategoryDTO dto)
     {
@@ -40,7 +48,12 @@ public class CategoryController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
-
+    /// <summary>
+    /// A method used to update a category by sending a http put request
+    /// </summary>
+    /// <param name="id">The category id</param>
+    /// <param name="dto">The dto containing all the properties used to update a category</param>
+    /// <returns>An updated category object</returns>
     [HttpPut]
     [Route("Edit/{id}")]
     public ActionResult<Category> UpdateCategory([FromRoute] int id, [FromBody] PutCategoryDTO dto)
@@ -58,7 +71,11 @@ public class CategoryController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
-
+    /// <summary>
+    /// Method used to delete a category by sending a http delete request
+    /// </summary>
+    /// <param name="id">the category id</param>
+    /// <returns>A deleted category object</returns>
     [HttpDelete]
     [Route("Delete/{Id}")]
     public ActionResult<Category> DeleteCategory([FromRoute]int id)
