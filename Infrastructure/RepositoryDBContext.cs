@@ -22,7 +22,7 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
         //Foreign key relations and one to many
 
         modelBuilder.Entity<Product>().Property(p => p.isSold).HasDefaultValue(false);
-        
+        // We have an on delete cascade behavior
         modelBuilder.Entity<SubCategory>().
             HasOne<Category>().
             WithMany(c => c.SubCategories)
@@ -32,7 +32,7 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
         modelBuilder.Entity<Product>().HasOne<SubCategory>().
             WithMany(s => s.Products)
             .HasForeignKey(p => p.SubCategoryID);
-        
+            // We have an on delete cascade behaviour
         modelBuilder.Entity<Product>().HasOne(p => p.User).
             WithMany(u => u.products).HasForeignKey(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
 
@@ -48,7 +48,7 @@ public class RepositoryDBContext : Microsoft.EntityFrameworkCore.DbContext
             new Condition() {Id = 4, Name = "Used"}, new Condition() { Id = 5, Name = "Worn out"});
 
     }
-
+    // Making tables here
     public DbSet<User> UserTable
     {
         get; 

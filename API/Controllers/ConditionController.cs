@@ -9,12 +9,12 @@ namespace API.Controllers;
 public class ConditionController
 {
     private IConditionService _service;
-
+    
     public ConditionController(IConditionService service)
     {
         _service = service;
     }
-
+   // Delete this
     [HttpGet]
     public ActionResult<List<Condition>> GetAllCategories()
     {

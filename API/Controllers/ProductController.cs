@@ -16,7 +16,11 @@ public class ProductController : ControllerBase
     {
         _service = service;
     }
-
+    
+    /// <summary>
+    /// Method used to get all products by sending a http get request
+    /// </summary>
+    /// <returns>All products</returns>
     [HttpGet]
     [Route("GetAllProducts")]
 
@@ -24,14 +28,22 @@ public class ProductController : ControllerBase
     {
         return _service.GetAllProducts();
     }
-    
+    /// <summary>
+    /// Method used to get all products from a subcategory by sending a http get request
+    /// </summary>
+    /// <param name="id">subcategory id</param>
+    /// <returns>List of all the products</returns>
     [HttpGet]
     [Route("GetAllProductsFromSub/{id}")]
     public List<Product> GetAllProductsFromSubcategory(int id)
     {
         return _service.GetAllProductsFromSubcategory(id);
     }
-    
+    /// <summary>
+    /// Method used to get all products from an user by sending a http get request
+    /// </summary>
+    /// <param name="id">user id</param>
+    /// <returns>List of all the products</returns>
     [HttpGet]
     [Route("getProductsFromUser{id}")]
     public List<Product> GetAllProductsFromUser(int id)
@@ -39,6 +51,11 @@ public class ProductController : ControllerBase
         return _service.GetAllProductsFromUser(id);
     }
 
+    /// <summary>
+    /// Method used to create a product by sending a http post request
+    /// </summary>
+    /// <param name="dto">Dto containing all the properties to create a product</param>
+    /// <returns>A new product</returns>
     [HttpPost]
     public ActionResult<Product> CreateProduct(PostProductDTO dto)
     {
@@ -56,6 +73,11 @@ public class ProductController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+    /// <summary>
+    /// Method used to get a product by id by sending a http get request
+    /// </summary>
+    /// <param name="id">product id</param>
+    /// <returns>A product</returns>
     [HttpGet]
     [Route("id")]
     public ActionResult<Product> GetProductById(int id)
@@ -73,7 +95,11 @@ public class ProductController : ControllerBase
             return StatusCode(500, e.ToString());
         }
     }
-    
+    /// <summary>
+    /// Method used to delete a product by sending a http delete request
+    /// </summary>
+    /// <param name="id">The product id</param>
+    /// <returns>Product is deleted</returns>
     [HttpDelete]
     [Route("{id}")]
     public ActionResult<Product> DeleteProduct(int id)
@@ -91,7 +117,12 @@ public class ProductController : ControllerBase
             return StatusCode(500, e.ToString());
         }
     }
-    
+    /// <summary>
+    /// Method used to edit a product by sending a http put request
+    /// </summary>
+    /// <param name="Id">product id</param>
+    /// <param name="dto">dto containing all the properties to update a product</param>
+    /// <returns>An updated product</returns>
     [HttpPut]
     [Route("Edit/{Id}")]
     public ActionResult<Product> UpdateProduct([FromRoute] int Id, [FromBody] PutProductDTO dto)
@@ -109,7 +140,11 @@ public class ProductController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
-    
+    /// <summary>
+    /// Method used to get a list of all the products by orderId by sending a http get request
+    /// </summary>
+    /// <param name="orderId">the id of the order</param>
+    /// <returns>A list of all the products</returns>
     [HttpGet]
     [Route("GetAllProductsByOrderId/{orderId}")]
     public List<Product> GetAllProductsByOrderId(int orderId)

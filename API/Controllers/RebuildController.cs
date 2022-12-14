@@ -14,6 +14,9 @@ public class RebuildController: ControllerBase
         _service = service;
     }
     
+    /// <summary>
+    /// Method used to create the database by sending a http get request
+    /// </summary>
     [HttpGet]
     [Route("CreateDB")]
     public void CreateDB()
