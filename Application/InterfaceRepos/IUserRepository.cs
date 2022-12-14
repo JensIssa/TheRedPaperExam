@@ -4,6 +4,7 @@ namespace Application.InterfaceRepos;
 
 public interface IUserRepository
 {
+    
     public User CreateNewUser(User user);
     public User GetUserByUsername(string username);
     public List<User> GetAllUsers();

@@ -61,6 +61,7 @@ builder.Services.AddScoped<IConditionService, ConditionService>();
 builder.Services.AddScoped<IConditionRepository, ConditionRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 #endregion
 
 #region Authentication
