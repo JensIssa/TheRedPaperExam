@@ -15,6 +15,9 @@ public class OrderTest
     private IMapper mapper;
     private OrderValidator postOrderValidator;
 
+    /// <summary>
+    /// The constructor, where we initialize the mapper and the validator
+    /// </summary>
     public OrderTest()
     {
         var _mapper = new MapperConfiguration(config =>
@@ -24,9 +27,13 @@ public class OrderTest
         mapper = _mapper;
         postOrderValidator = new OrderValidator();
     }
+    /// <summary>
+    /// Testing whether we can create a valid OrderService
+    /// </summary>
     [Fact]
     public void CreateOrderServiceTest()
     {
+        //Arrange & act
         Mock<IOrderRepository> mockRepoOrder = new Mock<IOrderRepository>();
         Mock<IProductRepository> mockRepoProduct = new Mock<IProductRepository>();
         IOrderService service = new OrderService(mockRepoProduct.Object, mapper, mockRepoOrder.Object,postOrderValidator );
@@ -35,27 +42,38 @@ public class OrderTest
         Assert.True(service is OrderService);
     }
     
+    /// <summary>
+    /// Tests whether we get the correct expectMessage, when we try to create an Order service
+    /// with a product repository that is null
+    /// </summary>
+    /// <param name="expectedMessage">the expected exceptionMessage</param>
     [Theory]
     [InlineData("This service cannot be constructed without a product repository")]
     public void CreateInvalidOrderServiceWithoutProductRepository(string expectedMessage)
     {
+        //Arrange & Act
         Mock<IOrderRepository> mockRepoOrder = new Mock<IOrderRepository>();
         var action = () => new OrderService(null, mapper, mockRepoOrder.Object, postOrderValidator);
+        //Assert
         var ex = Assert.Throws<ArgumentException>(action);
-        // Assert
         Assert.Equal(expectedMessage, ex.Message);
     }
     
-    
+    /// <summary>
+    /// Tests whether we get the correct expectMessage, when we try to create an Order service
+    /// with a mapper that is null
+    /// </summary>
+    /// <param name="expectedMessage">the expected exceptionMessage</param>
     [Theory]
     [InlineData("This service cannot be constructed without a mapper")]
     public void CreateInvalidOrderServiceWithoutMapper(string expectedMessage)
     {
+        //Arrange & Act
         Mock<IProductRepository> mockRepoProduct = new Mock<IProductRepository>();
         Mock<IOrderRepository> mockRepoOrder = new Mock<IOrderRepository>();
         var action = () => new OrderService(mockRepoProduct.Object, null, mockRepoOrder.Object, postOrderValidator);
+        //Assert
         var ex = Assert.Throws<ArgumentException>(action);
-        // Assert
         Assert.Equal(expectedMessage, ex.Message);
     }
 
