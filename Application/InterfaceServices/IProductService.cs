@@ -42,8 +42,6 @@ public interface IProductService
     /// <returns>the updated product</returns>
     public Product UpdateProduct(int productId, PutProductDTO dto);
     
-    public Product GetProductById(int productID);
-    
     /// <summary>
     /// This method gets a list of all the products connected to a specific order
     /// </summary>

@@ -42,13 +42,6 @@ public class ProductRepository : IProductRepository
         _context.SaveChanges();
         return productToDelete;
     }
-
-    public Product getProductById(int productID)
-    {
-        return _context.ProductTable.FirstOrDefault(p => p.Id == productID) ?? throw new KeyNotFoundException("There was no matching id found");
-
-        
-    }
     public Product UpdateProduct(int productId, Product dto)
     {
         var productToUpdate = _context.ProductTable.FirstOrDefault(p => p.Id == productId) ?? throw new KeyNotFoundException("Id to update not found");

@@ -74,28 +74,6 @@ public class ProductController : ControllerBase
         }
     }
     /// <summary>
-    /// Method used to get a product by id by sending a http get request
-    /// </summary>
-    /// <param name="id">product id</param>
-    /// <returns>A product</returns>
-    [HttpGet]
-    [Route("id")]
-    public ActionResult<Product> GetProductById(int id)
-    {
-        try
-        {
-            return _service.GetProductById(id);
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound("No product has been found" + id);
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500, e.ToString());
-        }
-    }
-    /// <summary>
     /// Method used to delete a product by sending a http delete request
     /// </summary>
     /// <param name="id">The product id</param>

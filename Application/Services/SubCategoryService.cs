@@ -21,6 +21,7 @@ public class SubCategoryService : ISubCategoryService
         _imapper = imapper;
         _postDTO = postDto;
         _putDTO = putDto;
+        ExceptionHandlingConstructor();
     }
 
     public List<SubCategory> GetAllSubCategoriesFromCategory(int categoryId)
@@ -35,7 +36,6 @@ public class SubCategoryService : ISubCategoryService
 
     public SubCategory AddSubCategoryToCategory( PostSubCategoryDTO dto)
     {
-        ExceptionHandlingCreate(dto);
         var validation = _postDTO.Validate(dto);
         if (!validation.IsValid)
         {
@@ -55,7 +55,6 @@ public class SubCategoryService : ISubCategoryService
 
     public SubCategory UpdateSubCategory(int id, PutSubCategoryDTO dto)
     {
-        ExceptionHandlingUpdate(dto);
         var validation = _putDTO.Validate(dto);
         if (!validation.IsValid)
         {
@@ -63,35 +62,27 @@ public class SubCategoryService : ISubCategoryService
         }
         return _repository.UpdateSubCategory(id, _imapper.Map<SubCategory>(dto));    
     }
-
-
-    private void ExceptionHandlingCreate(PostSubCategoryDTO dto)
-    {
-        if (string.IsNullOrEmpty(dto.SubName))
-        {
-            throw new ArgumentException("This SubCategory name is empty/null");
-        }
-
-        if (dto.CategoryID == null)
-        {
-            throw new ArgumentException("This subcategory needs to be linked with a Category");
-        }
-    }
     
-    private void ExceptionHandlingUpdate(PutSubCategoryDTO dto)
+    public void ExceptionHandlingConstructor()
     {
-        if (string.IsNullOrEmpty(dto.SubName))
+        if (_repository == null)
         {
-            throw new ArgumentException("This SubCategory name is empty/null");
+            throw new ArgumentException("This service cannot be constructed without a repository");
         }
 
-        if (dto.CategoryID == null || dto.CategoryID < 1)
+        if (_imapper == null)
         {
-            throw new ArgumentException("This subcategory needs to be linked with a Category");
+            throw new ArgumentException("This service cannot be constructed without a mapper");
         }
-        if (dto.Id == null || dto.Id < 1)
+
+        if (_putDTO == null )
         {
-            throw new ArgumentException("This subcategroy is not found");
+            throw new ArgumentException("This service cannot be constructed without a putValidator");
+        }
+
+        if (_postDTO == null)
+        {
+            throw new ArgumentException("This service cannot be constructed without a postValidator");
         }
     }
 }

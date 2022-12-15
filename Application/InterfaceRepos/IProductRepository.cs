@@ -39,13 +39,6 @@ public interface IProductRepository
     Product DeleteProductFromUser(int id);
 
     /// <summary>
-    /// This method returns a Product object by its id from the database
-    /// </summary>
-    /// <param name="productID">The id of the product object</param>
-    /// <returns>A product object</returns>
-    Product getProductById(int productID);
-    
-    /// <summary>
     /// This method updates a product object by its id in the database
     /// </summary>
     /// <param name="productId">The id of the product object to be updated</param>

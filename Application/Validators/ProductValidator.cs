@@ -12,10 +12,13 @@ public class ProductValidator
     {
         public PostProductValidator()
         {
-            RuleFor(p => p.ProductName).NotEmpty();
-            RuleFor(p => p.Price).NotEmpty();
-            RuleFor(p => p.Price).LessThanOrEqualTo(100000);
-            RuleFor(p => p.ProductConditionId).NotEmpty();
+            RuleFor(p => p.ProductName).NotEmpty().NotNull();
+            RuleFor(p => p.ImageUrl).NotEmpty().NotNull();
+            RuleFor(p => p.Description).NotEmpty().NotNull();
+            RuleFor(p => p.Price).NotEmpty().NotNull();
+            RuleFor(p => p.Price).GreaterThan(0);
+            RuleFor(p => p.SubCategoryID).NotNull().GreaterThan(0);
+            RuleFor(p => p.UserId).NotNull().GreaterThan(0);
 
         }
     }
@@ -24,11 +27,12 @@ public class ProductValidator
     {
         public PutProductValidator()
         {
-            RuleFor(p => p.Id).NotEmpty();
-            RuleFor(p => p.ProductName).NotEmpty();
-            RuleFor(p => p.Price).NotEmpty();
-            RuleFor(p => p.ProductConditionId).NotEmpty();
-            RuleFor(p => p.Price).LessThanOrEqualTo(100000);
+            RuleFor(p => p.Id).NotEmpty().NotNull();
+            RuleFor(p => p.ProductName).NotEmpty().NotNull();
+            RuleFor(p => p.ImageUrl).NotNull().NotEmpty();
+            RuleFor(p => p.Description).NotNull().NotEmpty();
+            RuleFor(p => p.Price).NotEmpty().GreaterThan(0);
+            RuleFor(p => p.ProductConditionId).NotEmpty().NotNull();
 
         }
     }
