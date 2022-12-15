@@ -77,7 +77,11 @@ public class OrderTest
         Assert.Equal(expectedMessage, ex.Message);
     }
 
-    
+    /// <summary>
+    /// Tests whether we get the correct expectMessage, when we try to create an Order service
+    /// with an Order repository that is null
+    /// </summary>
+    /// <param name="expectedMessage">the expected exceptionMessage</param>
     [Theory]
     [InlineData("This service cannot be constructed without a order repository")]
     public void CreateInvalidOrderServiceWithoutOrderRepository(string expectedMessage)
@@ -89,7 +93,11 @@ public class OrderTest
         Assert.Equal(expectedMessage, ex.Message);
     }
 
-    
+    /// <summary>
+    /// Tests whether we get the correct expectMessage, when we try to create an Order service
+    /// with a postValidator that is null
+    /// </summary>
+    /// <param name="expectedMessage">the expected exceptionMessage</param>
     [Theory]
     [InlineData("This service cannot be constructed without a postValidator")]
     public void CreateInvalidOrderServiceWithoutPostValidator(string expectedMessage)
@@ -102,6 +110,9 @@ public class OrderTest
         Assert.Equal(expectedMessage, ex.Message);
     }
 
+    /// <summary>
+    /// Testing whether we can create a valid order, with a list of products
+    /// </summary>
     [Fact]
     public void CreateValidOrderTest()
     {
@@ -150,6 +161,12 @@ public class OrderTest
         mockRepoOrder.Verify(o => o.CreateOrder(It.IsAny<Order>()), Times.Once);
     }
 
+    /// <summary>
+    /// Testing whether we can get the correct validationException
+    /// when the userId is null or empty
+    /// </summary>
+    /// <param name="userId">the invalid userId</param>
+    /// <param name="exceptionMessage">the correct validationException</param>
     [Theory]
     [InlineData(0, typeof(ValidationException))]
     [InlineData(null, typeof(ValidationException))]
