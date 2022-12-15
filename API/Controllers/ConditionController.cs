@@ -14,9 +14,13 @@ public class ConditionController
     {
         _service = service;
     }
-   // Delete this
+    
+/// <summary>
+/// Gets a list of all the conditions
+/// </summary>
+/// <returns>a list of condition objects</returns>
     [HttpGet]
-    public ActionResult<List<Condition>> GetAllCategories()
+    public ActionResult<List<Condition>> GetAllConditions()
     {
         return _service.GetAllConditions();
     }

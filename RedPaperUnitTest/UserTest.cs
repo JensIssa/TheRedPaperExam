@@ -16,11 +16,19 @@ public class UserTest
 
     private UserValidator.UserPostValidator postUserValiator;
     private UserValidator.UserPutValidator putUserValidator;
+    private IMapper _mapper;
 
     public UserTest()
     {
         postUserValiator = new UserValidator.UserPostValidator();
         putUserValidator = new UserValidator.UserPutValidator();
+
+        var mapper = new MapperConfiguration(config =>
+        {
+            config.CreateMap<PutUserDTO, User>();
+            config.CreateMap<RegisterDTO, User>();
+        }).CreateMapper();
+        _mapper = mapper;
     }
 
     public static IEnumerable<Object[]> GetALlUsers_Test()
@@ -47,7 +55,7 @@ public class UserTest
         var putUserValidator = new UserValidator.UserPutValidator();
         var postUserValiator = new UserValidator.UserPostValidator();
         //Act
-        IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator);
+        IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator, _mapper);
         //Assert
         Assert.NotNull(service);
         Assert.True(service is UserService);
@@ -61,7 +69,7 @@ public class UserTest
 
         Mock<IUserRepository> mockRepo = new Mock<IUserRepository>();
         //Act
-        IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator);
+        IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator, _mapper);
 
         mockRepo.Setup(u => u.GetAllUsers()).Returns(fakerepo.ToList);
 
@@ -89,7 +97,7 @@ public class UserTest
         
         Mock<IUserRepository> mockRepo = new Mock<IUserRepository>();
         //Act
-        IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator);
+        IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator, _mapper);
 
         mockRepo.Setup(u => u.GetUserByUsername(userUsername)).Returns(fakeRepo.Find(u => u.Username == userUsername));
         
@@ -106,56 +114,18 @@ public class UserTest
     {
         Mock<IUserRepository> mockRepo = new Mock<IUserRepository>();
         //Act
-        IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator);
+        IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator, _mapper);
         var ex = Assert.Throws<ArgumentException>(() => service.GetUserByUsername(username));
         //Assert
         Assert.Equal("Username is empty or null", ex.Message);
         mockRepo.Verify(r => r.GetUserByUsername(username), Times.Never);
     }
     
-    /*
-    /// <summary>
-/// Doesn't work yet
-/// </summary>
-/// <param name="userId"></param>
-    [Theory]
-    [InlineData(1)] 
-    public void CreateValidUser(int userId)
-    {
-        User user = new User{Id = userId, AssignedRole = Role.Customer, BirthDay = new DateTime(2001, 10, 15 ), Email = "jensissa@hotmail.com", FirstName = "Jens", Hash = " ", LastName = "Issa", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
-        RegisterDTO dto = new RegisterDTO
-        {
-            AssingedRole = user.AssignedRole, Birthday = user.BirthDay, Email = user.Email, FirstName = user.FirstName,
-            Password = user.Salt, LastName = user.LastName, location = user.Location,
-            PhoneNumber = user.PhoneNumber
-        };
-        Mock<IUserRepository> mockRepo = new Mock<IUserRepository>();
-        var putUserValidator = new UserValidator.UserPutValidator();
-        var postUserValiator = new UserValidator.UserPostValidator();
-        //Act
-        IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator);
-
-        mockRepo.Setup(r => r.CreateNewUser(It.IsAny<User>())).Returns(user);
-
-        var userCreated = service.CreateUser(dto);
-        
-        //Assert
-        Assert.Equal(user.Id, userCreated.Id);
-        Assert.Equal(user.FirstName, userCreated.Email);
-        Assert.Equal(user.LastName, userCreated.LastName);
-        Assert.Equal(user.Email, userCreated.Email);
-        Assert.Equal(user.Location, userCreated.Location);
-        Assert.Equal(user.AssignedRole, userCreated.AssignedRole);
-        Assert.Equal(user.BirthDay, userCreated.BirthDay);
-        Assert.Equal(user.PhoneNumber, userCreated.PhoneNumber);
-        mockRepo.Verify(r=>r.CreateNewUser(It.IsAny<User>()), Times.Once);
-    }
-
-*/
     [Theory]
     [InlineData(1)] // Delete user with id 1 and expectedListSize 
     public void DeleteValidUserTest(int expectedListSize)
     {
+        //Arrange
         List<User> users = new List<User>();
         User toBeDeleted = new User{Id = 1, AssignedRole = Role.Customer, BirthDay = new DateTime(2001, 10, 15 ), Email = "jensissa@hotmail.com", FirstName = "Jens", Hash = " ", LastName = "Issa", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
         User user2 = new User{Id = 2, AssignedRole = Role.Customer, BirthDay = new DateTime(2001, 10, 15 ), Email = "jensissa@hotmail.com", FirstName = "Jens", Hash = " ", LastName = "Issa", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
@@ -164,16 +134,17 @@ public class UserTest
         users.Add(user2);
         Mock<IUserRepository> mockRepo = new Mock<IUserRepository>();
         //Act
-        IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator);
-
+        IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator, _mapper);
         mockRepo.Setup(r => r.GetAllUsers()).Returns(users);
         mockRepo.Setup(r => r.DeleteUser(toBeDeleted.Id)).Returns(() =>
         {
             users.Remove(toBeDeleted);
             return toBeDeleted;
         });
+        //Act
         var actual = service.DeleteUser(1);
         
+        //Assert
         Assert.Equal(expectedListSize, users.Count);
         Assert.Equal(toBeDeleted, actual);
         Assert.DoesNotContain(toBeDeleted, users);
@@ -188,8 +159,7 @@ public class UserTest
     {
         // Arrange
         Mock<IUserRepository> mockRepo = new Mock<IUserRepository>();
-        //Act
-        IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator);
+        IUserService service = new UserService(mockRepo.Object, putUserValidator, postUserValiator, _mapper);
 
         // Act 
         var action = () => service.DeleteUser(userId);
@@ -199,5 +169,32 @@ public class UserTest
         Assert.Equal(expectedMessage, ex.Message);
         mockRepo.Verify(r=>r.DeleteUser(userId),Times.Never);
     }
+    
+    [Fact]
+    public void UpdateValidUser()
+    {
+        User user2 = new User{Id = 2, AssignedRole = Role.Customer, BirthDay = new DateTime(2001, 10, 15 ), Email = "jensissa@hotmail.com", FirstName = "Jens", Hash = " ", LastName = "Issa", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " ", Username = "JensIssa"};
+        PutUserDTO dto = new PutUserDTO()
+        {
+            Email = user2.Email,
+            FirstName = user2.FirstName,
+            LastName = user2.LastName,
+            Location = user2.Location,
+            PhoneNumber = user2.PhoneNumber,
+            Username = user2.Username, 
+            BirthDay = user2.BirthDay
+        };
+            Mock<IUserRepository> mockRepo = new Mock<IUserRepository>();
+        IUserService service =
+            new UserService(mockRepo.Object, putUserValidator, postUserValiator, _mapper);
+        mockRepo.Setup(r => r.UpdateUser(It.IsAny<User>(), dto.Id)).Returns(user2);
+        var userCreated = service.UpdateUser(dto.Id, dto);
+        //Assert
+        
+        Assert.Equal(user2.Id, userCreated.Id);
+        Assert.Equal(user2.Username, userCreated.Username);
+        mockRepo.Verify(r=>r.CreateNewUser(It.IsAny<User>()), Times.Never);
+    }
+    
     
 }

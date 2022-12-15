@@ -5,6 +5,7 @@ using Application.Services;
 using Application.Validators;
 using AutoMapper;
 using Domain.Entities;
+using FluentValidation;
 using Moq;
 
 namespace RedPaperUnitTest;
@@ -54,7 +55,49 @@ public class CategoryTest
         Assert.True(service is CategoryService);
     }
 
+    [Theory]
+    [InlineData("This service cannot be constructed without a repository")]
+    
+    public void CreateInvalidCategoryServiceWithoutRepository(string expectedMessage)
+    {
+        var action = () => new CategoryService(null, mapper, putCategoryValidator, postCategoryValidator);
+        var ex = Assert.Throws<ArgumentException>(action);
+        // Assert
+        Assert.Equal(expectedMessage, ex.Message);
+    }
+    
+    [Theory]
+    [InlineData("This service cannot be constructed without a mapper")]
+    public void CreateInvalidCategoryServiceWithoutMapper(string expectedMessage)
+    {
+        Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
+        var action = () => new CategoryService(mockRepo.Object, null, putCategoryValidator, postCategoryValidator);
+        var ex = Assert.Throws<ArgumentException>(action);
+        // Assert
+        Assert.Equal(expectedMessage, ex.Message);
+    }
+    [Theory]
+    [InlineData("This service cannot be constructed without a putValidator")]
+    public void CreateInvalidCategoryServiceWithoutPutValidator(string expectedMessage)
+    {
+        Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
+        var action = () => new CategoryService(mockRepo.Object, mapper, null, postCategoryValidator);
+        var ex = Assert.Throws<ArgumentException>(action);
+        // Assert
+        Assert.Equal(expectedMessage, ex.Message);
+    }
 
+    [Theory]
+    [InlineData("This service cannot be constructed without a postValidator")]
+    public void CreateInvalidCategoryServiceWithoutPostValidator(string expectedMessage)
+    {
+        Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
+        var action = () => new CategoryService(mockRepo.Object, mapper, putCategoryValidator, null);
+        var ex = Assert.Throws<ArgumentException>(action);
+        // Assert
+        Assert.Equal(expectedMessage, ex.Message);
+    }
+    
     [Theory]
     [MemberData((nameof(GetAllCategories_Test)))]
     public void GetAllCategoriesTest(Category[] data, List<Category> expectedResult)
@@ -92,9 +135,9 @@ public class CategoryTest
     }
 
     [Theory]
-    [InlineData("", "This category name is empty/null")]
-    [InlineData(null, "This category name is empty/null")]
-    public void CreateInvalidCategoryTest(string categoryName, string expectedExceptionMsg)
+    [InlineData("", typeof(ValidationException))]
+    [InlineData(null, typeof(ValidationException))]
+    public void CreateInvalidCategoryTest(string categoryName, Type expectedExceptionMsg)
     {
         PostCategoryDTO dto = new PostCategoryDTO()
         {
@@ -103,9 +146,9 @@ public class CategoryTest
         Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
         ICategoryService service =
             new CategoryService(mockRepo.Object, mapper, putCategoryValidator, postCategoryValidator);
-        var ex = Assert.Throws<ArgumentException>(() => service.CreateCategory(dto));
+        var ex = Assert.Throws<ValidationException>(() => service.CreateCategory(dto));
         
-        Assert.Equal("This category name is empty/null", ex.Message);
+        Assert.Equal(expectedExceptionMsg, ex.GetType());
     }
 
     [Theory]
@@ -130,26 +173,27 @@ public class CategoryTest
     
 
     [Theory]
-    [InlineData(0, "Biler", "The category Id is null/<1")]
-    [InlineData(-1, "Sko", "The category Id is null/<1")]
-    [InlineData(null, "Sko", "The category Id is null/<1")]
-    [InlineData(1, null, "This category name is empty/null")]
-    [InlineData(2, "", "This category name is empty/null")]
-    public void UpdateCategoryInvalidTest(int categoryId, string categoryName, string expectedMessage)
+    [InlineData(0, "Biler", typeof(ValidationException))]
+    [InlineData(-1, "Sko", typeof(ValidationException))]
+    [InlineData(null, "Sko", typeof(ValidationException))]
+    [InlineData(1, null, typeof(ValidationException))]
+    [InlineData(2, "", typeof(ValidationException))]
+    public void UpdateCategoryInvalidTest(int categoryId, string categoryName, Type expectedMessage)
     {
         PutCategoryDTO dto = new PutCategoryDTO { Id = categoryId, CategoryName = categoryName };
         Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
         ICategoryService service =
             new CategoryService(mockRepo.Object, mapper, putCategoryValidator, postCategoryValidator);
         var action = () => service.UpdateCategory(categoryId, dto);
-        var ex = Assert.Throws<ArgumentException>(action);
-        Assert.Equal(expectedMessage, ex.Message);
+        var ex = Assert.Throws<ValidationException>(action);
+        
+        Assert.Equal(expectedMessage, ex.GetType());
     }
     
     
     [Theory]
     [InlineData(1)]
-    public void DeleteValidUserTest(int exeptedListSize)
+    public void DeleteValidCategoryTest(int exeptedListSize)
     {
         List<Category> categories = new List<Category>();
         Category category1 = new Category{Id = 1, CategoryName = "Katte"};

@@ -34,7 +34,6 @@ public class OrderTest
         Assert.NotNull(service);
         Assert.True(service is OrderService);
     }
-    
     [Fact]
     public void CreateValidOrderTest()
     {
@@ -78,4 +77,6 @@ public class OrderTest
         Assert.Equal(order, OrderCreated);
         mockRepoOrder.Verify(o => o.CreateOrder(It.IsAny<Order>()), Times.Once);
     }
+    
+    
 }

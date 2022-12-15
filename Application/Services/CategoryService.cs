@@ -20,6 +20,8 @@ public class CategoryService : ICategoryService
         _mapper = mapper;
         _putValidator = putValidator;
         _postValidator = postValidator;
+        ExceptionHandlingConstructor();
+
     }
 
     public List<Category> GetAllCategories()
@@ -29,7 +31,6 @@ public class CategoryService : ICategoryService
 
     public Category CreateCategory(PostCategoryDTO dto)
     {
-        ExceptionHandlingCreate(dto);
         var validation = _postValidator.Validate(dto);
         if (!validation.IsValid)
         {
@@ -41,7 +42,6 @@ public class CategoryService : ICategoryService
 
     public Category UpdateCategory(int id, PutCategoryDTO dto)
     {
-        ExceptionHandlingUpdate(dto);
         var validation = _putValidator.Validate(dto);
         if (!validation.IsValid)
         {
@@ -60,23 +60,26 @@ public class CategoryService : ICategoryService
         return _repository.DeleteCategory(id);
     }
 
-    private void ExceptionHandlingCreate(PostCategoryDTO dto)
+    public void ExceptionHandlingConstructor()
     {
-        if (string.IsNullOrEmpty(dto.CategoryName))
+        if (_repository == null)
         {
-            throw new ArgumentException("This category name is empty/null");
+            throw new ArgumentException("This service cannot be constructed without a repository");
         }
-    }
 
-    private void ExceptionHandlingUpdate(PutCategoryDTO dto)
-    {
-        if (dto.Id==null|| dto.Id<1)
+        if (_mapper == null)
         {
-            throw new ArgumentException("The category Id is null/<1");
+            throw new ArgumentException("This service cannot be constructed without a mapper");
         }
-        if (string.IsNullOrEmpty(dto.CategoryName))
+
+        if (_putValidator == null )
         {
-            throw new ArgumentException("This category name is empty/null");
+            throw new ArgumentException("This service cannot be constructed without a putValidator");
+        }
+
+        if (_postValidator == null)
+        {
+            throw new ArgumentException("This service cannot be constructed without a postValidator");
         }
     }
 }

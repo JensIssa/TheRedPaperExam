@@ -10,7 +10,7 @@ public class CategoryValidator
     {
         public CategoryPostValidator()
         {
-            RuleFor(c => c.CategoryName).NotEmpty(); 
+            RuleFor(c => c.CategoryName).NotEmpty().NotNull(); 
         }
     }
 
@@ -18,6 +18,7 @@ public class CategoryValidator
     {
         public CategoryPutValidator()
         {
+            RuleFor(c => c.Id).NotNull().GreaterThan(0);
             RuleFor(c => c.CategoryName).NotNull().NotEmpty();
         }
     }

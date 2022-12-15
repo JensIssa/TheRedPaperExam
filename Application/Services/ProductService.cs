@@ -21,6 +21,7 @@ public class ProductService : IProductService
         _imapper = imapper;
         _postDTO = postDto;
         _putDTO = putDto;
+        ExceptionHandlingConstructor();
     }
 
     public List<Product> GetAllProducts()
@@ -39,7 +40,6 @@ public class ProductService : IProductService
 
     public Product AddProductToUser(PostProductDTO dto)
     {
-        ExceptionHandlingCreate(dto);
         var validation = _postDTO.Validate(dto);
         if (!validation.IsValid)
         {
@@ -49,71 +49,6 @@ public class ProductService : IProductService
         return _repository.AddProductToUser(_imapper.Map<Product>(dto));
     }
     
-
-    public void ExceptionHandlingCreate(PostProductDTO dto)
-    {
-        if (string.IsNullOrEmpty(dto.Description))
-        {
-            throw new ArgumentException("The description is empty or null");
-        }
-
-        if (string.IsNullOrEmpty(dto.ImageUrl))
-        {
-            throw new ArgumentException("The imageUrl is empty or null");
-        }
-        
-        if (string.IsNullOrEmpty(dto.ProductName))
-        {
-            throw new ArgumentException("The productName is empty or null");
-        }
-
-        if (dto.UserId == null || dto.UserId < 1)
-        {
-            throw new ArgumentException("The userID is null / <1");
-        }
-        
-        if (dto.SubCategoryID == null || dto.SubCategoryID < 1)
-        {
-            throw new ArgumentException("The subCategoryId is null / <1");
-        }
-
-        if (dto.Price == null || dto.Price < 1)
-        {
-            throw new ArgumentException("The price is null / <1");
-        }
-    }
-    
-    public void ExceptionHandlingUpdate(PutProductDTO dto)
-    {
-        if (string.IsNullOrEmpty(dto.Description))
-        {
-            throw new ArgumentException("The description is empty or null");
-        }
-
-        if (string.IsNullOrEmpty(dto.ImageUrl))
-        {
-            throw new ArgumentException("The imageUrl is empty or null");
-        }
-        
-        if (string.IsNullOrEmpty(dto.ProductName))
-        {
-            throw new ArgumentException("The productName is empty or null");
-        }
-
-        if (dto.Id == null || dto.Id < 1)
-        {
-            throw new ArgumentException("The productId is null / <1");
-        }
-
-        if (dto.Price == null || dto.Price < 1)
-        {
-            throw new ArgumentException("The price is null / <1");
-        }
-        if (dto.ProductConditionId == null || dto.ProductConditionId < 1)
-        {
-            throw new ArgumentException("The conditionId is null / <1");
-        }
-    }
     public Product DeleteProductFromUser(int id)
     {
         if (id.Equals(null)|| id<1)
@@ -125,7 +60,6 @@ public class ProductService : IProductService
 
     public Product UpdateProduct(int productId, PutProductDTO dto)
     {
-        ExceptionHandlingUpdate(dto);
         var validation = _putDTO.Validate(dto);
         if (!validation.IsValid)
         {
@@ -133,16 +67,32 @@ public class ProductService : IProductService
         }
         return _repository.UpdateProduct(productId, _imapper.Map<Product>(dto));      }
 
-    public Product GetProductById(int productID)
-    {
-        if (productID == null || productID < 1)
-        {
-            throw new ArgumentException("id is null or < 1");
-        }
-        return _repository.getProductById(productID);    }
 
     public List<Product> GetProductsByOrderId(int orderId)
     {
         return _repository.GetProductsByOrderId(orderId);
+    }
+    
+    public void ExceptionHandlingConstructor()
+    {
+        if (_repository == null)
+        {
+            throw new ArgumentException("This service cannot be constructed without a repository");
+        }
+
+        if (_imapper == null)
+        {
+            throw new ArgumentException("This service cannot be constructed without a mapper");
+        }
+
+        if (_putDTO == null )
+        {
+            throw new ArgumentException("This service cannot be constructed without a putValidator");
+        }
+
+        if (_postDTO == null)
+        {
+            throw new ArgumentException("This service cannot be constructed without a postValidator");
+        }
     }
 }

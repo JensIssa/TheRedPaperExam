@@ -5,6 +5,7 @@ using Application.Services;
 using Application.Validators;
 using AutoMapper;
 using Domain.Entities;
+using FluentValidation;
 using Moq;
 
 namespace RedPaperUnitTest;
@@ -101,6 +102,55 @@ public class ProductTest
     }
 
     [Theory]
+    [InlineData("This service cannot be constructed without a repository")]
+    
+    public void CreateInvalidProductServiceWithoutRepository(string expectedMessage)
+    {
+        var action = () => new ProductService(null, mapper, postProductValidator, putProductValidator);
+        var ex = Assert.Throws<ArgumentException>(action);
+        // Assert
+        Assert.Equal(expectedMessage, ex.Message);
+    }
+    
+    
+    [Theory]
+    [InlineData("This service cannot be constructed without a mapper")]
+    public void CreateInvalidProductServiceWithoutMapper(string expectedMessage)
+    {
+        Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
+
+        var action = () => new ProductService(mockRepo.Object, null, postProductValidator, putProductValidator);
+        var ex = Assert.Throws<ArgumentException>(action);
+        // Assert
+        Assert.Equal(expectedMessage, ex.Message);
+    }
+    
+    [Theory]
+    [InlineData("This service cannot be constructed without a postValidator")]
+    public void CreateInvalidProductServiceWithoutPostValidator(string expectedMessage)
+    {
+        Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
+
+        var action = () => new ProductService(mockRepo.Object, mapper, null, putProductValidator);
+        var ex = Assert.Throws<ArgumentException>(action);
+        // Assert
+        Assert.Equal(expectedMessage, ex.Message);
+    }
+
+    
+    [Theory]
+    [InlineData("This service cannot be constructed without a putValidator")]
+    public void CreateInvalidProductServiceWithoutPutValidator(string expectedMessage)
+    {
+        Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
+
+        var action = () => new ProductService(mockRepo.Object, mapper, postProductValidator, null);
+        var ex = Assert.Throws<ArgumentException>(action);
+        // Assert
+        Assert.Equal(expectedMessage, ex.Message);
+    }
+    
+    [Theory]
     [MemberData(nameof(GetAllProductsFromSubcategoryTestcases))]
 
     public void GetAllProductsFromSubcategoryTest(Product[] data, List<Product> expectedResult)
@@ -162,21 +212,21 @@ public class ProductTest
       }
 
       [Theory]
-      [InlineData(1, "", "testImageUrl", "testDescription", 2.5, 1, 2, "The productName is empty or null")]
-      [InlineData(1, null, "testImageUrl", "testDescription", 2.5, 1, 2, "The productName is empty or null")]
-      [InlineData(1, "testProductName", "", "testDescription", 2.5, 1, 2, "The imageUrl is empty or null")]
-      [InlineData(1, "testProductName", null, "testDescription", 2.5, 1, 2, "The imageUrl is empty or null")]
-      [InlineData(1, "testProductName", "testImageU", "", 2.5, 1, 2, "The description is empty or null")]
-      [InlineData(1, "testProductName", "testImageU", null, 2.5, 1, 2, "The description is empty or null")]
-      [InlineData(1, "testProductName", "testImageU", "testDescription", null, 1, 2, "The price is null / <1")]
-      [InlineData(1, "testProductName", "testImageU", "testDescription", 0, 1, 2, "The price is null / <1")]
-      [InlineData(1, "testProductName", "testImageU", "testDescription", 2.5, 0, 2, "The subCategoryId is null / <1")]
+      [InlineData(1, "", "testImageUrl", "testDescription", 2.5, 1, 2, typeof(ValidationException))]
+      [InlineData(1, null, "testImageUrl", "testDescription", 2.5, 1, 2, typeof(ValidationException))]
+      [InlineData(1, "testProductName", "", "testDescription", 2.5, 1, 2, typeof(ValidationException))]
+      [InlineData(1, "testProductName", null, "testDescription", 2.5, 1, 2, typeof(ValidationException))]
+      [InlineData(1, "testProductName", "testImageU", "", 2.5, 1, 2, typeof(ValidationException))]
+      [InlineData(1, "testProductName", "testImageU", null, 2.5, 1, 2, typeof(ValidationException))]
+      [InlineData(1, "testProductName", "testImageU", "testDescription", null, 1, 2, typeof(ValidationException))]
+      [InlineData(1, "testProductName", "testImageU", "testDescription", 0, 1, 2, typeof(ValidationException))]
+      [InlineData(1, "testProductName", "testImageU", "testDescription", 2.5, 0, 2, typeof(ValidationException))]
       [InlineData(1, "testProductName", "testImageU", "testDescription", 2.5, null, 2,
-          "The subCategoryId is null / <1")]
-      [InlineData(1, "testProductName", "testImageU", "testDescription", 2.5, 1, null, "The userID is null / <1")]
-      [InlineData(1, "testProductName", "testImageU", "testDescription", 2.5, 1, 0, "The userID is null / <1")]
+          typeof(ValidationException))]
+      [InlineData(1, "testProductName", "testImageU", "testDescription", 2.5, 1, null, typeof(ValidationException))]
+      [InlineData(1, "testProductName", "testImageU", "testDescription", 2.5, 1, 0, typeof(ValidationException))]
       public void CreateInvalidProductTest(int productiD, string productName, string imageUrl, string description,
-          double price, int subId, int userID, string expectedMesssage)
+          double price, int subId, int userID, Type expectedMesssage)
       {
           Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
           IProductService service =
@@ -190,8 +240,8 @@ public class ProductTest
               ProductConditionId = product.ProductConditionId
           };
           var action = () => service.AddProductToUser(dto);
-          var ex = Assert.Throws<ArgumentException>(action);
-          Assert.Equal(expectedMesssage, ex.Message);
+          var ex = Assert.Throws<ValidationException>(action);
+          Assert.Equal(expectedMesssage, ex.GetType());
           mockRepo.Verify(r => r.AddProductToUser(product), Times.Never);
       }
 
@@ -245,7 +295,7 @@ public class ProductTest
       
       [Theory]
       [InlineData(1, "Product test", "billede", "beskrivelse", 5000, 1, 2, 2)]
-      public void updateProductTest(int productiD, string productName, string imageUrl, string description,
+      public void UpdateProductTest(int productiD, string productName, string imageUrl, string description,
           double price, int subId, int userID, int productConditionId)
       {
           Product product3 = new Product
@@ -262,32 +312,26 @@ public class ProductTest
           IProductService service =
               new ProductService(mockRepo.Object, mapper, postProductValidator, putProductValidator);
           mockRepo.Setup(p => p.UpdateProduct(productiD, It.IsAny<Product>())).Returns(product3);
-
-          dto.Id = productiD;
-          dto.ProductName = productName;
-          dto.Description = description;
-          dto.ImageUrl = imageUrl;
-          dto.Price = price;
-          dto.ProductConditionId = productConditionId;
+          
           var updatedProduct = service.UpdateProduct(productiD, dto);
           Assert.Equal(product3, updatedProduct);
           mockRepo.Verify(r => r.UpdateProduct(productiD, It.IsAny<Product>()), Times.Once);
       }
 
       [Theory]
-      [InlineData(1, "", "testImageUrl", "testDescription", 2.5, 1,  "The productName is empty or null")]
-      [InlineData(1, null, "testImageUrl", "testDescription", 2.5, 1, "The productName is empty or null")]
-      [InlineData(1, "testProductName", "", "testDescription", 2.5, 1, "The imageUrl is empty or null")]
-      [InlineData(1, "testProductName", null, "testDescription", 2.5, 1, "The imageUrl is empty or null")]
-      [InlineData(1, "testProductName", "testImageU", "", 2.5, 1, "The description is empty or null")]
-      [InlineData(1, "testProductName", "testImageU", null, 2.5, 1, "The description is empty or null")]
-      [InlineData(1, "testProductName", "testImageU", "testDescription", null, 1, "The price is null / <1")]
-      [InlineData(1, "testProductName", "testImageU", "testDescription", 0, 1, "The price is null / <1")]
-      [InlineData(null, "testProductName", "testImageU", "testDescription", 2.5, 1,  "The productId is null / <1")]
-      [InlineData(0, "testProductName", "testImageU", "testDescription", 2.5, 1,  "The productId is null / <1")]
-      [InlineData(1, "testProductName", "testImageU", "testDescription", 2.5, null,  "The conditionId is null / <1")]
-      [InlineData(1, "testProductName", "testImageU", "testDescription", 2.5, 0,  "The conditionId is null / <1")]
-      public void UpdateProductInvalidTest(int id,string productName, string imageUrl, string description, double price,int productConditionId, string expectedMessage)
+      [InlineData(1, "", "testImageUrl", "testDescription", 2.5, 1,  typeof(ValidationException))]
+      [InlineData(1, null, "testImageUrl", "testDescription", 2.5, 1, typeof(ValidationException))]
+      [InlineData(1, "testProductName", "", "testDescription", 2.5, 1, typeof(ValidationException))]
+      [InlineData(1, "testProductName", null, "testDescription", 2.5, 1, typeof(ValidationException))]
+      [InlineData(1, "testProductName", "testImageU", "", 2.5, 1, typeof(ValidationException))]
+      [InlineData(1, "testProductName", "testImageU", null, 2.5, 1, typeof(ValidationException))]
+      [InlineData(1, "testProductName", "testImageU", "testDescription", null, 1, typeof(ValidationException))]
+      [InlineData(1, "testProductName", "testImageU", "testDescription", 0, 1, typeof(ValidationException))]
+      [InlineData(null, "testProductName", "testImageU", "testDescription", 2.5, 1, typeof(ValidationException))]
+      [InlineData(0, "testProductName", "testImageU", "testDescription", 2.5, 1,  typeof(ValidationException))]
+      [InlineData(1, "testProductName", "testImageU", "testDescription", 2.5, null,  typeof(ValidationException))]
+      [InlineData(1, "testProductName", "testImageU", "testDescription", 2.5, 0,  typeof(ValidationException))]
+      public void UpdateProductInvalidTest(int id,string productName, string imageUrl, string description, double price,int productConditionId, Type expectedMessage)
       {
           PutProductDTO dto = new PutProductDTO()
           {
@@ -299,8 +343,8 @@ public class ProductTest
               new ProductService(mockRepo.Object, mapper, postProductValidator, putProductValidator);
           var action = () => service.UpdateProduct(id, dto);
 
-          var ex = Assert.Throws<ArgumentException>(action);
+          var ex = Assert.Throws<ValidationException>(action);
           
-          Assert.Equal(expectedMessage, ex.Message);
+          Assert.Equal(expectedMessage, ex.GetType());
       }
 }

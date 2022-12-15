@@ -29,11 +29,12 @@ public class UserService : IUserService
         _imapper = mapper;
     }
     
-    public UserService(IUserRepository repository, IValidator<PutUserDTO> putValidator, IValidator<RegisterDTO> postValidator)
+    public UserService(IUserRepository repository, IValidator<PutUserDTO> putValidator, IValidator<RegisterDTO> postValidator, IMapper mapper)
     {
         _repository = repository;
         _putValidator = putValidator;
         _postValidator = postValidator;
+        _imapper = mapper;
     }
 
     public User GetUserByUsername(string username)
@@ -62,7 +63,6 @@ public class UserService : IUserService
     
     private User CreateUser(RegisterDTO dto, Role role)
     {
-        ExceptionHandlingPost(dto);
         try
         {
             _repository.GetUserByUsername(dto.Username);
@@ -97,7 +97,6 @@ public class UserService : IUserService
     
     public User UpdateUser(int id, PutUserDTO putUserDto)
     {
-        ExceptionHandlingPut(putUserDto);
         if (id != putUserDto.Id)
         {
             throw new ValidationException("ID in body and route are different");
@@ -117,25 +116,5 @@ public class UserService : IUserService
             throw new ArgumentException("ID does not exist or is null");
         }
         return _repository.DeleteUser(id);
-    }
-    
-    private void ExceptionHandlingPost(RegisterDTO user)
-    {
-        if (string.IsNullOrEmpty(user.FirstName)) throw new ArgumentException("First name cannot be null or empty");
-        if (string.IsNullOrEmpty(user.LastName)) throw new ArgumentException("Last name cannot be null or empty");
-        if (string.IsNullOrEmpty(user.Email)) throw new ArgumentException("Email cannot be null, nor empty");
-        if (String.IsNullOrEmpty(user.PhoneNumber.ToString())) throw new ArgumentException("Work number cannot be null or empty ");
-        if (string.IsNullOrEmpty(user.Location)) throw new ArgumentException("Email cannot be null, nor empty");
-        if (string.IsNullOrEmpty(user.Email)) throw new ArgumentException("Email cannot be null, nor empty");
-    }
-    private void ExceptionHandlingPut(PutUserDTO user)
-    {
-        if (user.Id == null || user.Id < 1) throw new ArgumentException("Id cannot be null or less than 1");
-        if (string.IsNullOrEmpty(user.FirstName)) throw new ArgumentException("First name cannot be null or empty");
-        if (string.IsNullOrEmpty(user.LastName)) throw new ArgumentException("Last name cannot be null or empty");
-        if (string.IsNullOrEmpty(user.Email)) throw new ArgumentException("Email cannot be null, nor empty");
-        if (String.IsNullOrEmpty(user.PhoneNumber.ToString())) throw new ArgumentException("Work number cannot be null or empty ");
-        if (string.IsNullOrEmpty(user.Location)) throw new ArgumentException("Email cannot be null, nor empty");
-        if (string.IsNullOrEmpty(user.Email)) throw new ArgumentException("Email cannot be null, nor empty");
     }
 }
