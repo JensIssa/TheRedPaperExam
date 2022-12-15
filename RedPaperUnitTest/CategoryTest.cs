@@ -47,6 +47,7 @@ public class CategoryTest
     [Fact]
     public void CreateCategoryService()
     {
+        //arrange
         Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
         ICategoryService service =
             new CategoryService(mockRepo.Object, mapper, putCategoryValidator, postCategoryValidator);
@@ -60,9 +61,10 @@ public class CategoryTest
     
     public void CreateInvalidCategoryServiceWithoutRepository(string expectedMessage)
     {
+        //act & arrange
         var action = () => new CategoryService(null, mapper, putCategoryValidator, postCategoryValidator);
-        var ex = Assert.Throws<ArgumentException>(action);
         // Assert
+        var ex = Assert.Throws<ArgumentException>(action);
         Assert.Equal(expectedMessage, ex.Message);
     }
     

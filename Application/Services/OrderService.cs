@@ -21,6 +21,7 @@ public class OrderService : IOrderService
         _imapper = imapper;
         _orderRepository = orderRepository;
         _postdto = postdto;
+        ExceptionHandlingConstructor();
     }
 
     public Order CreateOrder(PostOrderDTO dto)
@@ -48,5 +49,29 @@ public class OrderService : IOrderService
     public List<Product> GetProductsByOrderId(int orderId)
     {
         return _productrepository.GetProductsByOrderId(orderId);
+    }
+    
+    
+    public void ExceptionHandlingConstructor()
+    {
+        if (_productrepository == null)
+        {
+            throw new ArgumentException("This service cannot be constructed without a product repository");
+        }
+
+        if (_imapper == null)
+        {
+            throw new ArgumentException("This service cannot be constructed without a mapper");
+        }
+
+        if (_orderRepository == null )
+        {
+            throw new ArgumentException("This service cannot be constructed without a order repository");
+        }
+
+        if (_postdto == null)
+        {
+            throw new ArgumentException("This service cannot be constructed without a postValidator");
+        }
     }
 }
