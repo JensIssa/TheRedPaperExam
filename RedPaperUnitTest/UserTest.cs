@@ -6,6 +6,7 @@ using Application.Services;
 using Application.Validators;
 using AutoMapper;
 using Domain.Entities;
+using FluentValidation;
 using Microsoft.Extensions.Options;
 using Moq;
 
@@ -182,7 +183,8 @@ public class UserTest
             Location = user2.Location,
             PhoneNumber = user2.PhoneNumber,
             Username = user2.Username, 
-            BirthDay = user2.BirthDay
+            BirthDay = user2.BirthDay,
+            Id = user2.Id
         };
             Mock<IUserRepository> mockRepo = new Mock<IUserRepository>();
         IUserService service =
@@ -190,11 +192,38 @@ public class UserTest
         mockRepo.Setup(r => r.UpdateUser(It.IsAny<User>(), dto.Id)).Returns(user2);
         var userCreated = service.UpdateUser(dto.Id, dto);
         //Assert
-        
         Assert.Equal(user2.Id, userCreated.Id);
         Assert.Equal(user2.Username, userCreated.Username);
         mockRepo.Verify(r=>r.CreateNewUser(It.IsAny<User>()), Times.Never);
     }
-    
+
+    [Theory]
+    [InlineData(0, "Første", "Sidste", "MitUserName", "jensissa1999@gmail.com", 75453979, "Esbjerg", typeof(ValidationException))]
+    [InlineData(null, "Første", "Sidste", "MitUserName", "jensissa1999@gmail.com", 75453979, "Esbjerg", typeof(ValidationException))]
+    [InlineData(1, null, "Sidste", "MitUserName", "jensissa1999@gmail.com", 75453979, "Esbjerg", typeof(ValidationException))]
+    [InlineData(1, "", "Sidste", "MitUserName", "jensissa1999@gmail.com", 75453979, "Esbjerg", typeof(ValidationException))]
+    [InlineData(1, "Første", "", "MitUserName", "jensissa1999@gmail.com", 75453979, "Esbjerg", typeof(ValidationException))]
+    [InlineData(1, "Første", null, "MitUserName", "jensissa1999@gmail.com", 75453979, "Esbjerg", typeof(ValidationException))]
+    [InlineData(1, "Første", "Sidste", null, "jensissa1999@gmail.com", 75453979, "Esbjerg", typeof(ValidationException))]
+    [InlineData(1, "Første", "Sidste", "", "jensissa1999@gmail.com", 75453979, "Esbjerg", typeof(ValidationException))]
+    [InlineData(1, "Første", "Sidste", "MitUserName", null, 75453979, "Esbjerg", typeof(ValidationException))]
+    [InlineData(1, "Første", "Sidste", "MitUserName", "", 75453979, "Esbjerg", typeof(ValidationException))]
+    [InlineData(1, "Første", "Sidste", "MitUserName", "jensissa1999@gmail.com", 75453979, "", typeof(ValidationException))]
+    [InlineData(1, "Første", "Sidste", "MitUserName", "jensissa1999@gmail.com", 75453979, null, typeof(ValidationException))]
+    public void UpdateUserInvalid(int id, string firstName, string lastName, string username, string email, int phoneNumber, string location, Type expectedMessage)
+    {
+        PutUserDTO dto = new PutUserDTO
+        {
+            Id = id, FirstName = firstName, LastName = lastName, Location = location, Email = email,
+            Username = username, BirthDay = new DateTime(2001, 10, 15), PhoneNumber = phoneNumber
+        };
+        Mock<IUserRepository> mockRepo = new Mock<IUserRepository>();
+        IUserService service =
+            new UserService(mockRepo.Object, putUserValidator, postUserValiator, _mapper);
+        var action = () => service.UpdateUser(id, dto);
+        var ex = Assert.Throws<ValidationException>(action);
+        
+        Assert.Equal(expectedMessage, ex.GetType());
+    }
     
 }

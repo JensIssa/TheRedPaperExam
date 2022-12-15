@@ -104,7 +104,7 @@ public class UserService : IUserService
         var validation = _putValidator.Validate(putUserDto);
         if (!validation.IsValid)
         {
-            throw new ValidationTestException(validation.ToString());
+            throw new ValidationException(validation.ToString());
         }
         return _repository.UpdateUser(_imapper.Map<User>(putUserDto), id);
     }
@@ -116,5 +116,27 @@ public class UserService : IUserService
             throw new ArgumentException("ID does not exist or is null");
         }
         return _repository.DeleteUser(id);
+    }
+    
+    private void ExceptionHandlingPost(RegisterDTO user)
+    {
+        if (string.IsNullOrEmpty(user.FirstName)) throw new ArgumentException("First name cannot be null or empty");
+        if (string.IsNullOrEmpty(user.LastName)) throw new ArgumentException("Last name cannot be null or empty");
+        if (string.IsNullOrEmpty(user.Email)) throw new ArgumentException("Email cannot be null, nor empty");
+        if (String.IsNullOrEmpty(user.PhoneNumber.ToString())) throw new ArgumentException("Work number cannot be null or empty ");
+        if (string.IsNullOrEmpty(user.Location)) throw new ArgumentException("Email cannot be null, nor empty");
+        if (string.IsNullOrEmpty(user.Email)) throw new ArgumentException("Email cannot be null, nor empty");
+    }
+    private void ExceptionHandlingPut(PutUserDTO user)
+    {
+        if (user.Id == null || user.Id < 1) throw new ArgumentException("Id cannot be null or less than 1");
+        if (string.IsNullOrEmpty(user.FirstName)) throw new ArgumentException("First name cannot be null or empty");
+        if (string.IsNullOrEmpty(user.LastName)) throw new ArgumentException("Last name cannot be null or empty");
+        if (string.IsNullOrEmpty(user.Email)) throw new ArgumentException("Email cannot be null, nor empty");
+        if (String.IsNullOrEmpty(user.PhoneNumber.ToString())) throw new ArgumentException("Work number cannot be null or empty ");
+        if (string.IsNullOrEmpty(user.Location)) throw new ArgumentException("Location cannot be null, nor empty");
+        if (string.IsNullOrEmpty(user.Email)) throw new ArgumentException("Email cannot be null, nor empty");
+        if (string.IsNullOrEmpty(user.Username)) throw new ArgumentException("Username cannot be null, nor empty");
+
     }
 }

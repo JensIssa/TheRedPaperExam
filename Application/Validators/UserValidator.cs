@@ -25,13 +25,13 @@ public class UserValidator
     {
         public UserPutValidator()
         {
-            RuleFor(u => u.FirstName).NotEmpty();
-            RuleFor(u => u.LastName).NotEmpty();
-            RuleFor(u => u.Username).NotEmpty();
-            RuleFor(u => u.BirthDay).NotEmpty();
-            RuleFor(u => u.Email).NotEmpty();
-            RuleFor(u => u.PhoneNumber).NotEmpty();
-            RuleFor(u => u.Location).NotEmpty();
+            RuleFor(u => u.Id).NotNull().GreaterThan(0);
+            RuleFor(u => u.FirstName).NotEmpty().NotNull();
+            RuleFor(u => u.LastName).NotEmpty().NotNull();
+            RuleFor(u => u.Username).NotEmpty().NotNull();
+            RuleFor(u => u.Email).NotEmpty().NotNull();
+            RuleFor(u => u.PhoneNumber).NotNull();
+            RuleFor(u => u.Location).NotEmpty().NotNull();
         }
     }
     

@@ -34,6 +34,8 @@ public class OrderTest
         Assert.NotNull(service);
         Assert.True(service is OrderService);
     }
+    
+    
     [Fact]
     public void CreateValidOrderTest()
     {
@@ -53,13 +55,17 @@ public class OrderTest
         products.Add(product1);
         products.Add(product2);
 
+        List<int> productIds = new List<int>();
+        productIds.Add(1);
+        productIds.Add(1);
+
         Order order = new Order
         {
             UserId = 2, Products = products
         };
         PostOrderDTO dto = new PostOrderDTO()
         {
-            UserId = order.UserId, Products = order.Products
+            UserId = order.UserId, Products = order.Products, ProductsId = productIds
         };
         Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
         Mock<IOrderRepository> mockRepoOrder = new Mock<IOrderRepository>();
@@ -77,6 +83,7 @@ public class OrderTest
         Assert.Equal(order, OrderCreated);
         mockRepoOrder.Verify(o => o.CreateOrder(It.IsAny<Order>()), Times.Once);
     }
+    
     
     
 }
