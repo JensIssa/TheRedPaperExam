@@ -10,9 +10,6 @@
 # Token specific file
 appsettings.json
 
-#Database specific file
-db.db
-
 # User-specific files
 *.rsuser
 *.suo
