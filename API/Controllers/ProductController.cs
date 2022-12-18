@@ -2,12 +2,14 @@
 using Application.InterfaceServices;
 using Domain.Entities;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class ProductController : ControllerBase
 {
     private IProductService _service;
