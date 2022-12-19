@@ -31,7 +31,7 @@ public class UserRepository : IUserRepository
 
     public List<User> GetAllUsers()
     {
-        return _context.UserTable.Where(u => u.AssignedRole == "Customer").ToList();
+        return _context.UserTable.Where(u => u.Role == "Customer").ToList();
     }
 
     public User UpdateUser(User user, int id)
