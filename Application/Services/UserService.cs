@@ -53,15 +53,15 @@ public class UserService : IUserService
 
     public User CreateAdmin( RegisterDTO dto)
     {
-        return CreateUser(dto, Role.Admin);
+        return CreateUser(dto, "Admin");
     }
 
     public User CreateCustomer(RegisterDTO dto)
     {
-        return CreateUser(dto, Role.Customer);
+        return CreateUser(dto, "Customer");
     }
     
-    private User CreateUser(RegisterDTO dto, Role role)
+    private User CreateUser(RegisterDTO dto, string role)
     {
         try
         {
@@ -81,7 +81,7 @@ public class UserService : IUserService
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
                 Location = dto.Location,
-                AssignedRole = role
+                Role = role
             };
             var validation = _postValidator.Validate(dto);
             if (!validation.IsValid)

@@ -78,7 +78,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminPolicy", (policy) => { policy.RequireRole(nameof(Role.Admin));}); 
+    options.AddPolicy("AdminPolicy", (policy) => { policy.RequireRole("Admin");}); 
 });
 #endregion
 

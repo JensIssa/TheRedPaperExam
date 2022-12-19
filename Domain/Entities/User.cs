@@ -10,7 +10,7 @@ public class User
         set;
     }
 
-    public Role AssignedRole
+    public string Role
     {
         get;
         set;

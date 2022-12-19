@@ -41,9 +41,9 @@ public class UserTest
     /// <returns>an IEnumrable list</returns>
     public static IEnumerable<Object[]> GetALlUsers_Test()
     {
-        User user1 = new User{Id = 1, AssignedRole = Role.Customer, BirthDay = new DateTime(2001, 10, 15 ), Email = "jensissa@hotmail.com", FirstName = "Jens", Hash = " ", LastName = "Esbjerg", Username = "JensIKørestol", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
-        User user2 = new User{Id = 2, AssignedRole = Role.Admin, BirthDay = new DateTime(2005, 10, 15 ), Email = "andreasberthelsen@hotmail.com", FirstName = "Andreas", Hash = " ", LastName = "Berthelsen",Username = "BerthelDenSeje", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
-        User user3 = new User{Id = 3, AssignedRole = Role.Admin, BirthDay = new DateTime(2007, 10, 15 ), Email = "mathiasmadsen@hotmail.com", FirstName = "Mathias", Hash = " ", LastName = "Madsen",Username = "MathiasDenEmo", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
+        User user1 = new User{Id = 1, Role = "Customer", BirthDay = new DateTime(2001, 10, 15 ), Email = "jensissa@hotmail.com", FirstName = "Jens", Hash = " ", LastName = "Esbjerg", Username = "JensIKørestol", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
+        User user2 = new User{Id = 2, Role = "Admin", BirthDay = new DateTime(2005, 10, 15 ), Email = "andreasberthelsen@hotmail.com", FirstName = "Andreas", Hash = " ", LastName = "Berthelsen",Username = "BerthelDenSeje", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
+        User user3 = new User{Id = 3, Role = "Admin", BirthDay = new DateTime(2007, 10, 15 ), Email = "mathiasmadsen@hotmail.com", FirstName = "Mathias", Hash = " ", LastName = "Madsen",Username = "MathiasDenEmo", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
         yield return new object[]
         {
             new User[]
@@ -173,9 +173,9 @@ public class UserTest
     public void ValidGetUserByUsernameTest(string userUsername, string expectedResult)
     {
         //Arrange
-        User user1 = new User{Id = 1, AssignedRole = Role.Customer, BirthDay = new DateTime(2001, 10, 15 ), Email = "jensissa@hotmail.com", FirstName = "Jens", Hash = " ", LastName = "Esbjerg", Username = "JensIKørestol", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
-        User user2 = new User{Id = 2, AssignedRole = Role.Admin, BirthDay = new DateTime(2005, 10, 15 ), Email = "andreasberthelsen@hotmail.com", FirstName = "Andreas", Hash = " ", LastName = "Berthelsen",Username = "BerthelDenSeje", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
-        User user3 = new User{Id = 3, AssignedRole = Role.Admin, BirthDay = new DateTime(2007, 10, 15 ), Email = "mathiasmadsen@hotmail.com", FirstName = "Mathias", Hash = " ", LastName = "Madsen",Username = "MathiasDenEmo", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
+        User user1 = new User{Id = 1, Role = "Customer", BirthDay = new DateTime(2001, 10, 15 ), Email = "jensissa@hotmail.com", FirstName = "Jens", Hash = " ", LastName = "Esbjerg", Username = "JensIKørestol", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
+        User user2 = new User{Id = 2, Role = "Admin", BirthDay = new DateTime(2005, 10, 15 ), Email = "andreasberthelsen@hotmail.com", FirstName = "Andreas", Hash = " ", LastName = "Berthelsen",Username = "BerthelDenSeje", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
+        User user3 = new User{Id = 3, Role = "Admin", BirthDay = new DateTime(2007, 10, 15 ), Email = "mathiasmadsen@hotmail.com", FirstName = "Mathias", Hash = " ", LastName = "Madsen",Username = "MathiasDenEmo", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
 
         var fakeRepo = new List<User>();
         fakeRepo.Add(user1);
@@ -222,8 +222,8 @@ public class UserTest
     {
         //Arrange
         List<User> users = new List<User>();
-        User toBeDeleted = new User{Id = 1, AssignedRole = Role.Customer, BirthDay = new DateTime(2001, 10, 15 ), Email = "jensissa@hotmail.com", FirstName = "Jens", Hash = " ", LastName = "Issa", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
-        User user2 = new User{Id = 2, AssignedRole = Role.Customer, BirthDay = new DateTime(2001, 10, 15 ), Email = "jensissa@hotmail.com", FirstName = "Jens", Hash = " ", LastName = "Issa", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
+        User toBeDeleted = new User{Id = 1, Role = "Customer", BirthDay = new DateTime(2001, 10, 15 ), Email = "jensissa@hotmail.com", FirstName = "Jens", Hash = " ", LastName = "Issa", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
+        User user2 = new User{Id = 2, Role = "Customer", BirthDay = new DateTime(2001, 10, 15 ), Email = "jensissa@hotmail.com", FirstName = "Jens", Hash = " ", LastName = "Issa", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " "};
 
         users.Add(toBeDeleted);
         users.Add(user2);
@@ -277,7 +277,7 @@ public class UserTest
     [Fact]
     public void UpdateValidUser()
     {
-        User user2 = new User{Id = 2, AssignedRole = Role.Customer, BirthDay = new DateTime(2001, 10, 15 ), Email = "jensissa@hotmail.com", FirstName = "Jens", Hash = " ", LastName = "Issa", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " ", Username = "JensIssa"};
+        User user2 = new User{Id = 2, Role = "Customer", BirthDay = new DateTime(2001, 10, 15 ), Email = "jensissa@hotmail.com", FirstName = "Jens", Hash = " ", LastName = "Issa", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " ", Username = "JensIssa"};
         PutUserDTO dto = new PutUserDTO()
         {
             Email = user2.Email,
