@@ -395,12 +395,14 @@ public class ProductTest
           //Arrange
           Product product3 = new Product
           {
-              Id = 3, ProductName = "TestProduct 3", ImageUrl = "This is a tester",
-              Description = "This is a description", Price = 6.5, ProductConditionId = 2,
-              SubCategoryID = 3 };
+              Id = productiD, ProductName = productName, ImageUrl = imageUrl,
+              Description = description, Price = price, ProductConditionId = productConditionId,
+              SubCategoryID = subId };
+          
+          //Updated product name and description
           PutProductDTO dto = new PutProductDTO()
           {
-              Id = product3.Id, ProductName = product3.ProductName, Description = product3.Description,
+              Id = product3.Id, ProductName = "Updated productName", Description = "Updated description",
               Price = product3.Price, ImageUrl = product3.ImageUrl, ProductConditionId = product3.ProductConditionId
           };
           Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();

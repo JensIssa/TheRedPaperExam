@@ -211,27 +211,25 @@ public class CategoryTest
     /// <summary>
     /// Tests whether we can update a category
     /// </summary>
-    /// <param name="id">the id being injected into the category</param>
-    /// <param name="categoryName">the categoryName being injected into the category</param>
-    [Theory]
-    [InlineData(1, "Sko")]
-    public void UpdateCategoryValidTest(int id, string categoryName)
+    [Fact]
+    public void UpdateCategoryValidTest()
     {
         //Arrange
         Category category = new Category { Id = 1, CategoryName = "Biler" };
-        PutCategoryDTO dto = new PutCategoryDTO { Id = category.Id, CategoryName = category.CategoryName };
+        //updated categoryname
+        PutCategoryDTO dto = new PutCategoryDTO { Id = category.Id, CategoryName = "UpdatedCategoryName" };
         Mock<ICategoryRepository> mockRepo = new Mock<ICategoryRepository>();
         ICategoryService service =
             new CategoryService(mockRepo.Object, mapper, putCategoryValidator, postCategoryValidator);
-        mockRepo.Setup(r => r.UpdateCategory(id, It.IsAny<Category>())).Returns(category);
-        dto.CategoryName = categoryName;
+        mockRepo.Setup(r => r.UpdateCategory(category.Id, It.IsAny<Category>())).Returns(category);
         //Act
-        Category updateCategory = service.UpdateCategory(id, dto);
+        
+        Category updateCategory = service.UpdateCategory(category.Id, dto);
         //Assert
         Assert.Equal(category, updateCategory);
         Assert.Equal(category.Id, updateCategory.Id);
         Assert.Equal(category.CategoryName, updateCategory.CategoryName);
-        mockRepo.Verify(r=>r.UpdateCategory(id, It.IsAny<Category>()),Times.Once);
+        mockRepo.Verify(r=>r.UpdateCategory(category.Id, It.IsAny<Category>()),Times.Once);
     }
     
     /// <summary>
