@@ -10,7 +10,6 @@ public class UserValidator
     {
         public UserPostValidator()
         {
-            RuleFor(u => u.Role).NotNull();
             RuleFor(u => u.FirstName).NotEmpty();
             RuleFor(u => u.LastName).NotEmpty();
             RuleFor(u => u.Username).NotEmpty();
