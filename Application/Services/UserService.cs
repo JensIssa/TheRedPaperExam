@@ -81,7 +81,7 @@ public class UserService : IUserService
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
                 Location = dto.Location,
-                AssignedRole = role
+                Role = role
             };
             var validation = _postValidator.Validate(dto);
             if (!validation.IsValid)
