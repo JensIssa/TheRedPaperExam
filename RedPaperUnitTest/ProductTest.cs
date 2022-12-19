@@ -375,8 +375,7 @@ public class ProductTest
           var ex = Assert.Throws<ArgumentException>(action);
           Assert.Equal(expectedException, ex.Message);
       }
-      
-    /// <summary>
+     /// <summary>
     /// Tests whether we can update a product
     /// </summary>
     /// <param name="productiD">the Id being updated</param>
@@ -395,12 +394,14 @@ public class ProductTest
           //Arrange
           Product product3 = new Product
           {
-              Id = 3, ProductName = "TestProduct 3", ImageUrl = "This is a tester",
-              Description = "This is a description", Price = 6.5, ProductConditionId = 2,
-              SubCategoryID = 3 };
+              Id = productiD, ProductName = productName, ImageUrl = imageUrl,
+              Description = description, Price = price, ProductConditionId = productConditionId,
+              SubCategoryID = subId };
+          
+          //Updated product name and description
           PutProductDTO dto = new PutProductDTO()
           {
-              Id = product3.Id, ProductName = product3.ProductName, Description = product3.Description,
+              Id = product3.Id, ProductName = "Updated productName", Description = "Updated description",
               Price = product3.Price, ImageUrl = product3.ImageUrl, ProductConditionId = product3.ProductConditionId
           };
           Mock<IProductRepository> mockRepo = new Mock<IProductRepository>();
@@ -414,7 +415,7 @@ public class ProductTest
           mockRepo.Verify(r => r.UpdateProduct(productiD, It.IsAny<Product>()), Times.Once);
       }
 
-    /// <summary>
+     /// <summary>
     /// Tests whether we can get the correct ValidationException, when 
     /// </summary>
     /// <param name="id">the valid and invalid id</param>

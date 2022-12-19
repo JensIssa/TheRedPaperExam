@@ -271,33 +271,38 @@ public class UserTest
         mockRepo.Verify(r=>r.DeleteUser(userId),Times.Never);
     }
     
+ 
     /// <summary>
     /// Tests whether we can update a user 
     /// </summary>
     [Fact]
     public void UpdateValidUser()
     {
+        //Arrange
         User user2 = new User{Id = 2, Role = "Customer", BirthDay = new DateTime(2001, 10, 15 ), Email = "jensissa@hotmail.com", FirstName = "Jens", Hash = " ", LastName = "Issa", Location = "Esbjerg", PhoneNumber = 12345678, Salt = " ", Username = "JensIssa"};
+        
+        //Updating first and last name
         PutUserDTO dto = new PutUserDTO()
         {
             Email = user2.Email,
-            FirstName = user2.FirstName,
-            LastName = user2.LastName,
+            FirstName = "Updated first name",
+            LastName = "Updated last name",
             Location = user2.Location,
             PhoneNumber = user2.PhoneNumber,
             Username = user2.Username, 
             BirthDay = user2.BirthDay,
             Id = user2.Id
         };
-            Mock<IUserRepository> mockRepo = new Mock<IUserRepository>();
+        Mock<IUserRepository> mockRepo = new Mock<IUserRepository>();
         IUserService service =
             new UserService(mockRepo.Object, putUserValidator, postUserValiator, _mapper);
         mockRepo.Setup(r => r.UpdateUser(It.IsAny<User>(), dto.Id)).Returns(user2);
-        var userCreated = service.UpdateUser(dto.Id, dto);
+        //Act
+        var userCreated = service.UpdateUser(user2.Id, dto);
         //Assert
         Assert.Equal(user2.Id, userCreated.Id);
         Assert.Equal(user2.Username, userCreated.Username);
-        mockRepo.Verify(r=>r.CreateNewUser(It.IsAny<User>()), Times.Never);
+        mockRepo.Verify(r => r.UpdateUser(It.IsAny<User>(), user2.Id),Times.Once);
     }
 
     /// <summary>

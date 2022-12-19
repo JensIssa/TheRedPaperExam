@@ -276,6 +276,7 @@ public class SubCategoryTest
         Assert.Equal(expectedException, ex.Message);
     }
 
+
     /// <summary>
     /// Tests whether we can update a valid subCategory
     /// </summary>
@@ -287,15 +288,15 @@ public class SubCategoryTest
     public void UpdateSubCategoryValidTest(int id, string categoryName, int categoryId)
     {
         //Arrange
-        SubCategory subCategory = new SubCategory() { Id = 1, SubName = "Biler", CategoryID = 2 };
+        SubCategory subCategory = new SubCategory() { Id = id, SubName = categoryName, CategoryID = categoryId };
+        
+        //Updating subname
         PutSubCategoryDTO dto = new PutSubCategoryDTO()
-            { Id = subCategory.Id, SubName = subCategory.SubName, CategoryID = subCategory.CategoryID };
+            { Id = subCategory.Id, SubName = "Updated sub name", CategoryID = subCategory.CategoryID };
         Mock<ISubCategoryRepository> mockRepo = new Mock<ISubCategoryRepository>();
         ISubCategoryService service =
             new SubCategoryService(mockRepo.Object, mapper, postSubCategoryValidator, putSubCategoryValidator);
         mockRepo.Setup(r => r.UpdateSubCategory(id, It.IsAny<SubCategory>())).Returns(subCategory);
-
-        dto.SubName = categoryName; 
         //Act
         SubCategory updateSubCategory = service.UpdateSubCategory(id, dto);
         //Assert
