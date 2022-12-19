@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
+[Authorize("AdminPolicy")]
 [ApiController]
 [Route("[controller]")]
-[Authorize("AdminPolicy")]
 public class UserController : ControllerBase
 {
     private IUserService _service;
