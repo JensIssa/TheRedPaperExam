@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
+[Authorize]
 
 [ApiController]
 [Route("[controller]")]
-[Authorize]
 public class ProductController : ControllerBase
 {
     private IProductService _service;
