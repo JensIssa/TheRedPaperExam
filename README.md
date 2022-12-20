@@ -48,5 +48,5 @@ Password: okay
 
 ## AppSettings
 
-Vær opmærksom på, at man bliver nød til at have en AppSettings fil for at køre dette program med en secret, og en email. Vores AppSettings fil er til sendt med .zip'en.
+Vær opmærksom på, at man bliver nød til at have en AppSettings fil for at køre dette program med en secret, og en email. Vores AppSettings fil er til sendt med .zip'en. AppSettings eksisterer også som appendix i vores aflevering.
 Samtidig er programmet også deployed. Linket findes på forsiden af rapporten.
